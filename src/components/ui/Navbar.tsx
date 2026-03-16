@@ -98,6 +98,7 @@ export default function Navbar() {
                             <div className="flex items-center gap-5">
                                 <button 
                                     onClick={() => setIsCartOpen(true)}
+                                    aria-label={`Open side cart, ${cartCount} items`}
                                     className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-all relative group/cart"
                                 >
                                     <ShoppingCart size={20} className="group-hover/cart:scale-110 transition-transform" />
@@ -119,7 +120,11 @@ export default function Navbar() {
                                     </div>
                                 </Link>
 
-                                <button onClick={handleLogout} className="text-[hsl(var(--muted-foreground))] hover:text-red-500 transition-colors ml-2">
+                                <button 
+                                    onClick={handleLogout} 
+                                    aria-label="Disconnect terminal session"
+                                    className="text-[hsl(var(--muted-foreground))] hover:text-red-500 transition-colors ml-2"
+                                >
                                     <LogOut size={18} />
                                 </button>
                             </div>
@@ -137,6 +142,7 @@ export default function Navbar() {
                         
                         <button 
                             onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
+                            aria-label="Open Command Menu (CMD+K)"
                             className="p-2 ml-2 bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] rounded-xl hover:bg-[hsl(var(--primary))] hover:text-white transition-all shadow-sm" 
                             title="Command Menu (CMD+K)"
                         >
@@ -161,6 +167,7 @@ export default function Navbar() {
                         )}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
                             className="bg-[hsl(var(--muted))] p-2.5 rounded-2xl text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-white transition-all"
                         >
                             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}

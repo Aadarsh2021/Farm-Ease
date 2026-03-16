@@ -106,7 +106,11 @@ export default function Home() {
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-[hsl(var(--foreground))] text-[hsl(var(--background))] rounded-[1.5rem] font-black text-xs uppercase tracking-widest overflow-hidden transition-all hover:bg-[hsl(var(--primary))] active:scale-95 shadow-elite hover:shadow-glow hover:shadow-primary/20">
+                <Link 
+                  to={user ? "/dashboard" : "/market"} 
+                  aria-label={user ? "Go to your Personal Dashboard" : "Access the Marketplace Terminal"}
+                  className="group relative px-10 py-5 bg-[hsl(var(--foreground))] text-[hsl(var(--background))] rounded-[1.5rem] font-black text-xs uppercase tracking-widest overflow-hidden transition-all hover:bg-[hsl(var(--primary))] active:scale-95 shadow-elite hover:shadow-glow hover:shadow-primary/20"
+                >
                   <span className="relative z-10 flex items-center gap-3">
                     {user ? "Personal Dashboard" : "Access Terminal"} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </span>
@@ -228,7 +232,11 @@ export default function Home() {
                     {cat.desc}
                 </p>
                 
-                <Link to="/market" className="inline-flex items-center gap-3 font-black text-[10px] uppercase tracking-[0.2em] text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-colors group/link">
+                <Link 
+                  to="/market" 
+                  aria-label="View all items in the market"
+                  className="inline-flex items-center gap-3 font-black text-[10px] uppercase tracking-[0.2em] text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-colors group/link"
+                >
                   Terminal Access <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
@@ -288,6 +296,7 @@ export default function Home() {
                       <img 
                         src={product.image_url} 
                         alt={product.name} 
+                        loading="lazy"
                         className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-1000" 
                       />
                     ) : (
@@ -320,6 +329,7 @@ export default function Home() {
                         <p className="text-[9px] font-black text-[hsl(var(--muted-foreground))] uppercase tracking-widest">/{product.unit}</p>
                       </div>
                       <button 
+                        aria-label={`Add ${product.name} to acquisition collection`}
                         onClick={() => addToCart({
                           id: product.id,
                           name: product.name,
