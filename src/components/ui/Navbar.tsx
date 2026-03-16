@@ -31,9 +31,10 @@ export default function Navbar() {
     };
 
     const navLinks = [
-        { name: "Marketplace", path: "/market" },
-        { name: "About Us", path: "/about" },
-    ];
+    { name: "Market", path: "/market" },
+    { name: "AI Bio-Scan", path: "/bioscan" },
+    { name: "About", path: "/about" },
+  ];
 
     return (
         <nav 
@@ -47,7 +48,7 @@ export default function Navbar() {
                     <div className="bg-emerald-600 text-white p-2 rounded-xl group-hover:bg-emerald-700 transition-colors">
                         <Leaf size={20} />
                     </div>
-                    <span className="text-xl font-bold text-slate-900 tracking-tight">
+                    <span className="text-xl font-black text-slate-950 tracking-tight italic">
                         Farm<span className="text-emerald-600">Ease</span>
                     </span>
                 </Link>
@@ -59,8 +60,8 @@ export default function Navbar() {
                             <Link 
                                 key={link.path}
                                 to={link.path} 
-                                className={`text-sm font-medium transition-colors hover:text-emerald-600 ${
-                                    location.pathname === link.path ? "text-emerald-600" : "text-slate-600"
+                                className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:text-emerald-600 italic ${
+                                    location.pathname === link.path ? "text-emerald-600" : "text-slate-400"
                                 }`}
                             >
                                 {link.name}

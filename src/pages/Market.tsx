@@ -24,7 +24,7 @@ interface Product {
 
 const categories = [
   { id: "all", name: "All Products", icon: <Package size={18} /> },
-  { id: "seeds", name: "Seed Protocols", icon: <Tag size={18} /> },
+  { id: "seeds", name: "Seed Assets", icon: <Tag size={18} /> },
   { id: "equipment", name: "Equipment", icon: <CheckCircle2 size={18} /> },
   { id: "produce", name: "Fresh Produce", icon: <CheckCircle2 size={18} /> },
 ];
@@ -61,8 +61,8 @@ export default function Market() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Marketplace</h1>
-              <p className="text-slate-500 mt-2">Verified tools and produce for the modern agrarian.</p>
+              <h1 className="text-5xl font-black text-slate-950 tracking-tighter italic uppercase leading-none">Marketplace.</h1>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mt-3 italic">Verified Agrarian Asset Exchange</p>
             </div>
             
             <div className="flex items-center gap-3">
@@ -92,23 +92,26 @@ export default function Market() {
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all ${
+                    className={`w-full flex items-center gap-4 px-6 py-4 rounded-[2rem] font-black uppercase tracking-[0.2em] italic transition-all duration-500 ${
                       activeCategory === cat.id 
-                        ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200" 
-                        : "text-slate-600 hover:bg-white hover:shadow-sm"
+                        ? "bg-slate-950 text-white shadow-premium scale-[1.05]" 
+                        : "text-slate-400 hover:bg-white hover:text-emerald-600 hover:shadow-sm"
                     }`}
                   >
-                    {cat.icon}
+                    <div className={`${activeCategory === cat.id ? "text-emerald-400" : "text-slate-300"}`}>
+                        {cat.icon}
+                    </div>
                     {cat.name}
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="p-6 bg-emerald-900 rounded-3xl text-white">
-              <h4 className="font-bold mb-2">Smart Contracts</h4>
-              <p className="text-sm text-emerald-100/70 leading-relaxed mb-4">
-                Every trade is secured by our patented cryptographic architecture.
+            <div className="p-8 bg-slate-950 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full"></div>
+              <h4 className="font-black text-xl italic uppercase tracking-tighter mb-3">Farm-Ease Secure</h4>
+              <p className="text-[10px] font-bold text-slate-400 uppercase leading-relaxed tracking-widest mb-6">
+                Every trade is secured by our proprietary secure settlement architecture.
               </p>
               <div className="h-1 bg-emerald-800 rounded-full overflow-hidden">
                 <motion.div 
@@ -166,8 +169,8 @@ export default function Market() {
                           {product.name}
                         </h3>
                       </div>
-                      <p className="text-sm text-slate-500 line-clamp-2 mb-6">
-                        {product.description || "Premium quality agrarian asset secured by patented smart contract logic."}
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic line-clamp-2 mb-6">
+                        {product.description || "Premium quality agrarian asset secured by Farm-Ease Secure logic."}
                       </p>
                       
                       <div className="flex items-center justify-between pt-6 border-t border-slate-50">
@@ -175,20 +178,20 @@ export default function Market() {
                           <p className="text-2xl font-black text-slate-900">₹{product.price}</p>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">per {product.unit}</p>
                         </div>
-                        <button 
-                          onClick={() => addToCart({
-                            id: product.id,
-                            name: product.name,
-                            price: product.price,
-                            unit: product.unit,
-                            vendor: "Verified Seller",
-                            vendor_id: product.seller_id || "gen-1",
-                            image: product.image_url || ""
-                          })}
-                          className="flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-200"
-                        >
-                          <ShoppingCart size={18} /> Add
-                        </button>
+                          <button 
+                            onClick={() => addToCart({
+                              id: product.id,
+                              name: product.name,
+                              price: product.price,
+                              unit: product.unit,
+                              vendor: "Verified Seller",
+                              vendor_id: product.seller_id || "gen-1",
+                              image: product.image_url || ""
+                            })}
+                            className="flex items-center gap-4 bg-slate-950 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest italic hover:bg-emerald-600 transition-all active:scale-95 shadow-premium group/add"
+                          >
+                            <ShoppingCart size={18} strokeWidth={3} className="group-hover/add:rotate-12 transition-transform" /> Add Asset
+                          </button>
                       </div>
                     </div>
                   </motion.div>

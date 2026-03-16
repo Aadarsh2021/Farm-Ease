@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import SellerDashboard from "./pages/SellerDashboard";
 import NotFound from "./pages/NotFound";
+import BioScan from "./pages/BioScan";
 import Layout from "./components/ui/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -33,6 +34,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
               <Route path="/seller/dashboard" element={<SellerDashboard />} />
+              <Route path="/bioscan" element={<BioScan />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

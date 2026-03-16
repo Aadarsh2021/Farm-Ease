@@ -7,7 +7,8 @@ import {
     signInWithPopup,
     signInWithPhoneNumber,
     RecaptchaVerifier,
-    ConfirmationResult
+    ConfirmationResult,
+    User
 } from "firebase/auth";
 import { supabase } from "@/lib/supabase";
 import { Leaf, Mail, Lock, AlertCircle, Check } from "lucide-react";
@@ -29,7 +30,7 @@ export default function Login() {
 
     // Flow State
     const [authMethod, setAuthMethod] = useState<"email" | "phone">("email");
-    const [pendingRoleSelection, setPendingRoleSelection] = useState<any>(null);
+    const [pendingRoleSelection, setPendingRoleSelection] = useState<User | null>(null);
     const [selectedRole, setSelectedRole] = useState<"farmer" | "seller" | "consumer">("consumer");
 
     // Status State
@@ -51,7 +52,7 @@ export default function Login() {
         }, 1000);
     };
 
-    const syncNewUserToSupabase = async (user: any, userRole: string) => {
+    const syncNewUserToSupabase = async (user: User, userRole: string) => {
         const { error: supabaseError } = await supabase
             .from("users")
             .insert([
@@ -70,7 +71,7 @@ export default function Login() {
         }
     };
 
-    const checkExistingOrPromptRole = async (user: any) => {
+    const checkExistingOrPromptRole = async (user: User) => {
         const { data } = await supabase.from("users").select("role").eq("id", user.uid).maybeSingle();
         if (data?.role) {
             handleRedirect(data.role);
@@ -90,7 +91,7 @@ export default function Login() {
             await signInWithEmailAndPassword(auth, email, password);
             setSuccess(true);
             setTimeout(() => navigate("/"), 1000);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Login error:", err);
             setError("Invalid email or password. Please try again.");
             setLoading(false);
@@ -105,7 +106,7 @@ export default function Login() {
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
             await checkExistingOrPromptRole(result.user);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Google Auth Error:", err);
             setError(err instanceof Error ? err.message : "An error occurred during Google sign in.");
             setLoading(false);
@@ -130,7 +131,7 @@ export default function Login() {
             setConfirmationResult(confirmation);
             setOtpSent(true);
             setLoading(false);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("OTP Error:", err);
             setError(err instanceof Error ? err.message : "Failed to send OTP. Check phone number format.");
             setLoading(false);
@@ -146,7 +147,7 @@ export default function Login() {
         try {
             const result = await confirmationResult.confirm(otp);
             await checkExistingOrPromptRole(result.user);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("OTP Verification Error:", err);
             setError("Invalid OTP entered. Please try again.");
             setLoading(false);
@@ -159,7 +160,7 @@ export default function Login() {
         try {
             await syncNewUserToSupabase(pendingRoleSelection, selectedRole);
             handleRedirect(selectedRole);
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError(err instanceof Error ? err.message : "An error occurred");
             setLoading(false);
         }
@@ -183,11 +184,11 @@ export default function Login() {
                             <span className="text-2xl font-bold tracking-tight">Farm-Ease</span>
                         </Link>
 
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                            Welcome Back!
+                        <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight italic uppercase tracking-tighter">
+                            Welcome Back.
                         </h2>
-                        <p className="text-emerald-100 text-lg mb-8 max-w-sm">
-                            Access your dashboard to manage your listings, view escrow statuses, and connect with the community.
+                        <p className="text-emerald-100 text-lg mb-8 max-w-sm font-bold italic opacity-80">
+                            Access your dashboard to manage your listings, view settlement statuses, and connect with the community.
                         </p>
                     </div>
                 </div>

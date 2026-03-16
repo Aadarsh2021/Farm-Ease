@@ -8,7 +8,8 @@ import {
     signInWithPopup,
     signInWithPhoneNumber,
     RecaptchaVerifier,
-    ConfirmationResult
+    ConfirmationResult,
+    User
 } from "firebase/auth";
 import { supabase } from "@/lib/supabase";
 import { Leaf, User as UserIcon, Mail, Lock, AlertCircle, Check } from "lucide-react";
@@ -32,7 +33,7 @@ export default function Signup() {
     // Flow State
     const [authMethod, setAuthMethod] = useState<"email" | "phone">("email");
     const [role, setRole] = useState<"farmer" | "seller" | "consumer">("consumer");
-    const [pendingRoleSelection, setPendingRoleSelection] = useState<any>(null);
+    const [pendingRoleSelection, setPendingRoleSelection] = useState<User | null>(null);
 
     // Status State
     const [error, setError] = useState<string | null>(null);
@@ -44,7 +45,7 @@ export default function Signup() {
     const [otpSent, setOtpSent] = useState(false);
 
     // --- SHARED: Sync to Supabase ---
-    const syncUserToSupabase = async (user: any, userRole: string, userName: string | null) => {
+    const syncUserToSupabase = async (user: User, userRole: string, userName: string | null) => {
         const { error: supabaseError } = await supabase
             .from("users")
             .insert([
@@ -110,7 +111,7 @@ export default function Signup() {
                 setPendingRoleSelection(result.user);
                 setLoading(false);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Google Auth Error:", err);
             setError(err instanceof Error ? err.message : "An error occurred during Google sign in.");
             setLoading(false);
@@ -135,7 +136,7 @@ export default function Signup() {
             setConfirmationResult(confirmation);
             setOtpSent(true);
             setLoading(false);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("OTP Error:", err);
             setError(err instanceof Error ? err.message : "Failed to send OTP.");
             setLoading(false);
@@ -158,7 +159,7 @@ export default function Signup() {
                 setPendingRoleSelection(result.user);
                 setLoading(false);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("OTP Verification Error:", err);
             setError("Invalid OTP entered.");
             setLoading(false);
@@ -171,7 +172,7 @@ export default function Signup() {
         try {
             await syncUserToSupabase(pendingRoleSelection, role, pendingRoleSelection.displayName);
             handleRedirect(role);
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError(err instanceof Error ? err.message : "An error occurred");
             setLoading(false);
         }
@@ -195,11 +196,11 @@ export default function Signup() {
                             <span className="text-2xl font-bold tracking-tight">Farm-Ease</span>
                         </Link>
 
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                            Join the Agricultural Marketplace
+                        <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight italic uppercase tracking-tighter">
+                            Join the <br />Marketplace.
                         </h2>
-                        <p className="text-green-100 text-lg mb-8">
-                            Connect directly with buyers, sellers, and agricultural resources. Secure escrows and transparent transactions.
+                        <p className="text-green-100 text-lg mb-8 font-bold italic opacity-80">
+                            Connect directly with buyers, sellers, and agricultural resources. Secure settlements and transparent transactions.
                         </p>
                     </div>
                 </div>

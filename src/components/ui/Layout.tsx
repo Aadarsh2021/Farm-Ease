@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CartDrawer from "./CartDrawer";
 import CommandPalette from "./CommandPalette";
+import AIChatbot from "../ai/AIChatbot";
 import { useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import PageTransition from "./PageTransition";
@@ -15,9 +16,7 @@ export default function Layout({ children }: LayoutProps) {
     const location = useLocation();
 
     return (
-        <div className="min-h-screen bg-[hsl(var(--background))] flex flex-col relative">
-            <div className="mesh-bg fixed inset-0 opacity-40 pointer-events-none" />
-            
+        <div className="min-h-screen bg-white flex flex-col relative text-slate-900">
             <Navbar />
             <CartDrawer />
             <CommandPalette />
@@ -30,6 +29,7 @@ export default function Layout({ children }: LayoutProps) {
                 </AnimatePresence>
             </main>
             
+            <AIChatbot />
             <Footer />
         </div>
     );

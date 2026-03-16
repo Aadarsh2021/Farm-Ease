@@ -33,7 +33,7 @@ export default function Footer() {
               <div className="bg-emerald-600 text-white p-2 rounded-xl">
                 <Leaf size={20} />
               </div>
-              <span className="text-xl font-bold text-slate-900 tracking-tight">FarmEase</span>
+              <span className="text-xl font-black text-slate-950 tracking-tight italic">Farm<span className="text-emerald-600">Ease</span></span>
             </Link>
             <p className="text-slate-500 leading-relaxed mb-8 max-w-sm">
               Empowering the agricultural ecosystem through secure, transparent, and direct cryptographic trade protocols.
@@ -76,8 +76,8 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-slate-900 mb-6 font-mono text-xs uppercase tracking-[0.2em]">Trust</h4>
             <ul className="space-y-4">
-              <li className="flex items-center gap-2 text-emerald-600 text-sm font-bold">
-                <Shield size={16} /> Smart Escrow
+              <li className="flex items-center gap-2 text-emerald-600 text-[10px] font-black uppercase tracking-widest italic">
+                <Shield size={16} strokeWidth={3} /> Farm-Ease Secure
               </li>
               <li className="flex items-center gap-2 text-emerald-600 text-sm font-bold">
                 <Globe size={16} /> Global Reach

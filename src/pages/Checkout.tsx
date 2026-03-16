@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
-import { ArrowLeft, ShieldCheck, CreditCard, Banknote, CheckCircle, MapPin, Truck, Lock, Leaf } from "lucide-react";
+import { ArrowLeft, ShieldCheck, CreditCard, Banknote, CheckCircle, MapPin, Lock, Leaf, Sparkles, ChevronRight, Activity, ShieldAlert } from "lucide-react";
+import { motion } from "framer-motion";
+import FarmEasePay from "@/components/payments/FarmEasePay";
 
 export default function Checkout() {
     const { cart, cartTotal, clearCart } = useCart();
     const { user } = useAuth();
-    const [paymentMethod, setPaymentMethod] = useState("escrow");
+    const [isStepping, setIsStepping] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
 
@@ -16,24 +18,28 @@ export default function Checkout() {
     const platformFee = Math.round(cartTotal * 0.02);
     const totalAmount = cartTotal + platformFee;
 
-    const handlePayment = async () => {
-        setIsProcessing(true);
+    const handlePaymentBegin = () => {
         if (!user) {
             alert("Please log in to place an order.");
-            setIsProcessing(false);
             return;
         }
+        setIsStepping(true);
+    };
+
+    const handleSettlementComplete = async () => {
+        setIsStepping(false);
+        setIsProcessing(true);
 
         try {
             for (const item of cart) {
                 const { error } = await supabase.from('orders').insert({
-                    buyer_id: user.uid,
+                    buyer_id: user?.uid,
                     seller_id: item.vendor_id,
                     product_name: item.name,
                     quantity: item.quantity,
                     amount: item.price * item.quantity,
                     status: 'pending',
-                    escrow_held: paymentMethod === 'escrow'
+                    safe_pay_locked: true
                 });
                 if (error) throw error;
             }
@@ -49,245 +55,220 @@ export default function Checkout() {
 
     if (cart.length === 0 && !orderPlaced) {
         return (
-            <div className="min-h-[70vh] flex flex-col items-center justify-center bg-gray-50 px-4 py-32">
-                <div className="bg-white p-12 rounded-[3rem] shadow-premium border border-slate-100 text-center max-w-lg">
-                    <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tighter">Your cart is empty</h2>
-                    <p className="text-slate-500 mb-10 font-bold italic">You need some harvest in your basket to proceed to checkout.</p>
-                    <Link to="/market" className="bg-slate-900 text-white px-10 py-4 rounded-3xl font-black hover:bg-green-600 transition-all shadow-xl active:scale-95 uppercase tracking-widest text-xs">
-                        Return to Market
+            <div className="min-h-screen flex flex-col items-center justify-center bg-white px-10 py-32">
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-slate-50 p-20 rounded-[5rem] border border-slate-100 text-center max-w-2xl shadow-premium relative overflow-hidden"
+                >
+                    <div className="absolute top-0 left-0 w-full h-3 bg-slate-950"></div>
+                    <div className="w-40 h-40 bg-white rounded-[3.5rem] flex items-center justify-center mx-auto mb-12 shadow-inner border border-white">
+                        <Leaf className="text-slate-100" size={80} strokeWidth={1} />
+                    </div>
+                    <h2 className="text-5xl font-black text-slate-950 mb-8 tracking-tighter italic uppercase leading-none">Basket Empty.</h2>
+                    <p className="text-slate-400 mb-16 font-bold text-xl italic leading-relaxed opacity-80">You require an active harvest manifest to proceed to the secure settlement protocol.</p>
+                    <Link to="/market" className="inline-flex bg-slate-950 text-white px-16 py-8 rounded-[2.5rem] font-black hover:bg-emerald-600 transition-all shadow-2xl active:scale-95 uppercase tracking-tighter italic text-2xl group">
+                        Enter Marketplace <ArrowLeft size={32} className="ml-6 rotate-180 group-hover:translate-x-2 transition-transform" strokeWidth={3} />
                     </Link>
-                </div>
+                </motion.div>
             </div>
         );
     }
 
     if (orderPlaced) {
         return (
-            <div className="min-h-[80vh] flex flex-col items-center justify-center bg-gray-50 px-4 py-32">
-                <div className="bg-white p-16 rounded-[4rem] shadow-premium border border-green-100 flex flex-col items-center text-center max-w-xl relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-green-400 to-emerald-500"></div>
-                    <div className="bg-green-50 text-green-500 p-8 rounded-[2.5rem] mb-10 relative shadow-inner">
-                        <CheckCircle size={64} strokeWidth={2.5} />
-                        <span className="absolute -top-2 -right-2 flex h-8 w-8">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-8 w-8 bg-green-500"></span>
+            <div className="min-h-screen flex flex-col items-center justify-center bg-white px-10 py-40">
+                <motion.div 
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-slate-950 p-24 rounded-[6rem] shadow-premium flex flex-col items-center text-center max-w-3xl relative overflow-hidden border border-white/10"
+                >
+                    <div className="absolute top-0 left-0 w-full h-4 bg-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]"></div>
+                    <div className="bg-emerald-500/10 text-emerald-500 p-12 rounded-[4rem] mb-16 relative shadow-inner border border-emerald-500/20 group">
+                        <CheckCircle size={80} strokeWidth={3} className="group-hover:scale-110 transition-transform duration-700" />
+                        <span className="absolute -top-4 -right-4 flex h-10 w-10">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-10 w-10 bg-emerald-500"></span>
                         </span>
                     </div>
-                    <h2 className="text-4xl font-black text-slate-900 mb-4 tracking-tighter">Payment Secured!</h2>
-                    <p className="text-slate-600 mb-10 text-lg leading-relaxed font-medium">Your funds are now safely locked in <span className="text-green-600 font-black italic">Farm-Ease Escrow Vault™</span>. We only release it to the vendor once you confirm the harvest quality.</p>
+                    <h2 className="text-7xl font-black text-white mb-8 tracking-tighter italic uppercase leading-none">Capital <span className="text-emerald-500">Secured.</span></h2>
+                    <p className="text-slate-400 mb-16 text-xl font-bold tracking-tight italic leading-relaxed max-w-xl opacity-80">Funds are now protected by the Farm-Ease Secure protocol. Settlement is locked in the secure vault and will only be released upon your authentication of delivery metrics.</p>
 
-                    <div className="w-full bg-slate-50 p-8 rounded-[2rem] border border-slate-100 mb-12 flex flex-col gap-4 text-left shadow-inner">
-                        <div className="flex justify-between items-center">
-                            <span className="text-slate-400 font-black uppercase tracking-widest text-[10px]">Reference Code</span>
-                            <span className="font-mono font-black text-slate-900 bg-white px-3 py-1 rounded-lg border border-slate-100">ORD-{(Math.random() * 1000000).toFixed(0)}</span>
+                    <div className="w-full bg-white/5 p-12 rounded-[4rem] border border-white/10 mb-20 flex flex-col gap-8 text-left relative overflow-hidden group/receipt">
+                        <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/5 blur-3xl rounded-full"></div>
+                        <div className="flex justify-between items-center relative z-10">
+                            <span className="text-slate-500 font-black uppercase tracking-[0.5em] text-[10px] italic">Settlement Receipt ID</span>
+                            <span className="font-mono font-black text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border border-emerald-500/20 text-sm uppercase tracking-[0.3em] shadow-lg">#FE-{Math.floor(Math.random() * 900000) + 100000}</span>
                         </div>
-                        <div className="flex justify-between items-center">
-                            <span className="text-slate-400 font-black uppercase tracking-widest text-[10px]">Held in Escrow</span>
-                            <span className="text-2xl font-black text-green-600 tracking-tighter">₹{totalAmount.toLocaleString()}</span>
+                        <div className="flex justify-between items-end relative z-10">
+                            <div>
+                                <span className="text-slate-500 font-black uppercase tracking-[0.5em] text-[10px] italic mb-3 block">Capital Magnitude</span>
+                                <span className="text-6xl font-black text-white tracking-tighter italic leading-none">₹{totalAmount.toLocaleString()}</span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.4em] mb-2 italic">Status</span>
+                                <span className="px-6 py-2 bg-emerald-500 text-slate-950 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] italic shadow-emerald-500/20 shadow-xl">Funds Secured</span>
+                            </div>
                         </div>
                     </div>
 
-                    <Link to="/dashboard" className="w-full bg-slate-900 text-white px-10 py-5 rounded-3xl font-black text-xl hover:bg-green-600 transition-all shadow-premium hover:shadow-2xl active:scale-95">
-                        Track My Order
+                    <Link to="/dashboard" className="group w-full bg-white text-slate-950 px-16 py-10 rounded-[3.5rem] font-black text-3xl hover:bg-emerald-500 hover:text-white transition-all duration-500 shadow-2xl active:scale-[0.98] flex items-center justify-center gap-8 italic uppercase tracking-tighter">
+                        Track Procurement Logistics <ChevronRight size={40} className="group-hover:translate-x-2 transition-transform duration-500" strokeWidth={3} />
                     </Link>
-                </div>
+                </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-32">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-                <div className="mb-12">
-                    <Link to="/cart" className="inline-flex items-center text-slate-400 font-black text-xs uppercase tracking-widest hover:text-green-600 mb-4 transition-all group">
-                        <ArrowLeft size={14} className="mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Basket
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="min-h-screen bg-slate-50 pt-40 pb-32"
+        >
+            {isStepping && <FarmEasePay amount={totalAmount} onComplete={handleSettlementComplete} />}
+            
+            <div className="max-w-7xl mx-auto px-10">
+                <motion.div 
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="mb-20"
+                >
+                    <Link to="/cart" className="inline-flex items-center text-slate-400 font-black text-[10px] uppercase tracking-[0.5em] hover:text-slate-950 mb-10 transition-all group italic leading-none">
+                        <div className="bg-white p-4 rounded-2xl border border-slate-100 mr-6 group-hover:bg-slate-950 group-hover:text-white transition-all shadow-premium">
+                             <ArrowLeft size={18} strokeWidth={4} className="group-hover:-translate-x-1 transition-transform" />
+                        </div>
+                        Manifest / <span className="text-slate-950 ml-2">Secure Settlement</span>
                     </Link>
-                    <h1 className="text-5xl font-black text-slate-900 tracking-tight">Secure <span className="text-green-600">Checkout</span></h1>
-                </div>
+                    <h1 className="text-7xl lg:text-8xl font-black text-slate-950 tracking-tighter italic uppercase leading-none">
+                        Secure <span className="text-emerald-600">Clearing.</span>
+                    </h1>
+                </motion.div>
 
-                <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-start">
-
-                    {/* Checkout Form */}
-                    <div className="lg:col-span-7 space-y-8">
-
-                        {/* Delivery Details */}
-                        <div className="bg-white rounded-[3rem] shadow-premium border border-slate-100 p-10 md:p-12 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-2 h-full bg-slate-50"></div>
-                            <h2 className="text-2xl font-black text-slate-900 mb-10 flex items-center gap-4 tracking-tight">
-                                <span className="bg-slate-900 text-white w-10 h-10 rounded-2xl flex items-center justify-center text-lg font-black italic shadow-lg">01</span>
-                                Logistics Destination
-                                <MapPin className="text-slate-200" size={24} />
-                            </h2>
-
-                            <form className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">First Name</label>
-                                        <input type="text" className="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 outline-none ring-2 ring-transparent focus:ring-green-500/20 focus:bg-white transition-all font-bold placeholder:text-slate-300 shadow-inner" placeholder="Prakash" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Last Name</label>
-                                        <input type="text" className="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 outline-none ring-2 ring-transparent focus:ring-green-500/20 focus:bg-white transition-all font-bold placeholder:text-slate-300 shadow-inner" placeholder="Sharma" />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Verified Contact</label>
-                                    <input type="tel" className="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 outline-none ring-2 ring-transparent focus:ring-green-500/20 focus:bg-white transition-all font-bold placeholder:text-slate-300 shadow-inner" placeholder="+91 98765 43210" />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Delivery Address</label>
-                                    <textarea rows={4} className="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 outline-none ring-2 ring-transparent focus:ring-green-500/20 focus:bg-white transition-all font-bold placeholder:text-slate-300 shadow-inner resize-none" placeholder="123 Harvest Lane, Greenfield District..."></textarea>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">District / City</label>
-                                        <input type="text" className="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 outline-none ring-2 ring-transparent focus:ring-green-500/20 focus:bg-white transition-all font-bold shadow-inner" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">PIN / Postal</label>
-                                        <input type="text" className="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 outline-none ring-2 ring-transparent focus:ring-green-500/20 focus:bg-white transition-all font-bold shadow-inner" />
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        {/* Payment Method */}
-                        <div className="bg-white rounded-[3rem] shadow-premium border border-slate-100 p-10 md:p-12 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-48 h-48 bg-green-50/50 rounded-bl-full -z-0 opacity-50 blur-2xl"></div>
-
-                            <h2 className="text-2xl font-black text-slate-900 mb-10 flex items-center gap-4 tracking-tight relative z-10">
-                                <span className="bg-slate-900 text-white w-10 h-10 rounded-2xl flex items-center justify-center text-lg font-black italic shadow-lg">02</span>
-                                Trust Mechanism
-                                <Lock className="text-slate-200" size={24} />
-                            </h2>
-
-                            <div className="space-y-6 relative z-10">
-                                <label className={`block border-2 rounded-[2.5rem] p-8 cursor-pointer transition-all ${paymentMethod === 'escrow' ? 'border-green-500 bg-green-50 shadow-lg' : 'border-slate-50 bg-slate-50/50 hover:border-slate-200 opacity-50'}`}>
-                                    <div className="flex items-start gap-6">
-                                        <div className="mt-1">
-                                            <input
-                                                type="radio"
-                                                name="payment_method"
-                                                value="escrow"
-                                                checked={paymentMethod === 'escrow'}
-                                                onChange={() => setPaymentMethod('escrow')}
-                                                className="w-6 h-6 text-green-600 focus:ring-slate-900"
-                                            />
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <div className="flex items-center gap-2">
-                                                    <ShieldCheck className="text-green-600" size={24} strokeWidth={3} />
-                                                    <span className="font-black text-slate-900 text-2xl tracking-tight">Farm-Ease Escrow™</span>
-                                                </div>
-                                                <div className="bg-slate-900 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em]">Mandatory Protection</div>
-                                            </div>
-                                            <p className="text-sm font-bold text-slate-500 italic">Pay via UPI, Cards or Net Banking. Your money is held in our secure legal vault. 100% Protection for both buyer & harvester.</p>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <label className="block border-2 border-slate-50 bg-slate-50/20 rounded-[2rem] p-6 cursor-not-allowed opacity-30">
-                                    <div className="flex items-center gap-6">
-                                        <div className="bg-slate-100 p-2 rounded-xl">
-                                            <Banknote className="text-slate-300" size={24} />
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-black text-slate-300 text-lg uppercase tracking-widest">Cash on Delivery</span>
-                                            </div>
-                                            <p className="text-xs font-bold text-slate-300 italic">Disabled to prevent trade default and middleman exploitation.</p>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* Order Summary Sidebar */}
-                    <div className="lg:col-span-5 mt-8 lg:mt-0">
-                        <div className="bg-slate-900 rounded-[3.5rem] shadow-premium p-10 md:p-12 sticky top-32 text-white">
-                            <h2 className="text-2xl font-black mb-10 tracking-tight flex items-center justify-between">
-                                Manifest List
-                                <Truck size={24} className="text-green-500" />
-                            </h2>
-
-                            {/* Mini Cart Items */}
-                            <div className="max-h-[300px] overflow-y-auto mb-10 pr-4 space-y-6 custom-scrollbar">
-                                {cart.map((item) => (
-                                    <div key={item.id} className="flex gap-6 group">
-                                        <div className="w-20 h-20 bg-white/5 rounded-2xl flex-shrink-0 flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors">
-                                            {item.image ? (
-                                                <img src={item.image} alt={item.name} className="w-full h-full object-contain p-3" />
-                                            ) : (
-                                                <Leaf size={24} className="text-white/20" />
-                                            )}
-                                        </div>
-                                        <div className="flex-1 flex flex-col justify-center">
-                                            <h4 className="text-md font-black text-white line-clamp-1 italic tracking-tight">{item.name}</h4>
-                                            <div className="flex justify-between items-center mt-2">
-                                                <span className="text-[10px] font-black text-white/40 uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md">Qty {item.quantity}</span>
-                                                <span className="text-lg font-black text-green-400">₹{(item.price * item.quantity).toLocaleString()}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="space-y-6 mb-10 border-t border-white/10 pt-8">
-                                <div className="flex justify-between text-white/40 font-black uppercase tracking-widest text-[10px]">
-                                    <span>Base Produce</span>
-                                    <span className="text-white italic">₹{cartTotal.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between text-white/40 font-black uppercase tracking-widest text-[10px]">
-                                    <span>Escrow Vault Fee (2%)</span>
-                                    <span className="text-white italic">₹{platformFee.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between text-white/40 font-black uppercase tracking-widest text-[10px]">
-                                    <span>Logistic Chain</span>
-                                    <span className="text-green-500">OPTIMIZED</span>
-                                </div>
-                            </div>
-
-                            <div className="border-t border-white/20 pt-8 mb-10">
-                                <div className="flex justify-between items-end">
-                                    <div>
-                                        <span className="text-white/40 font-black uppercase tracking-[0.3em] text-[10px] block mb-2">Final Settlement</span>
-                                        <span className="text-12 text-white font-black italic">Net Obligation</span>
-                                    </div>
-                                    <span className="text-5xl font-black text-green-500 tracking-tighter italic">₹{totalAmount.toLocaleString()}</span>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={handlePayment}
-                                disabled={isProcessing}
-                                className="w-full flex items-center justify-center gap-4 bg-green-500 text-slate-900 px-8 py-6 rounded-[2rem] font-black text-xl hover:bg-white transition-all shadow-premium hover:shadow-2xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group"
+                <div className="grid lg:grid-cols-12 gap-20 items-start">
+                    {/* Settlement Manifest */}
+                    <div className="lg:col-span-12 space-y-20">
+                        <div className="grid lg:grid-cols-2 gap-12">
+                            {/* Logistics Metadata */}
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-white p-16 rounded-[4.5rem] border border-white shadow-premium flex flex-col justify-between relative overflow-hidden"
                             >
-                                {isProcessing ? (
-                                    <span className="flex items-center gap-3">
-                                        <div className="w-6 h-6 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
-                                        Locking Escrow...
-                                    </span>
-                                ) : (
-                                    <><CreditCard size={24} strokeWidth={3} className="group-hover:rotate-12 transition-transform" /> Commit Payment</>
-                                )}
-                            </button>
-                            <div className="mt-8 text-center">
-                                <p className="text-[10px] text-white/30 font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2">
-                                    <ShieldCheck size={16} className="text-green-500/50" /> 256-BIT SECURE ENCRYPTION
-                                </p>
-                            </div>
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-slate-950/5 blur-3xl rounded-full"></div>
+                                <div className="relative z-10">
+                                    <div className="flex items-center gap-6 mb-12 border-b border-slate-50 pb-8">
+                                        <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 italic">
+                                            <MapPin className="text-slate-950" size={28} strokeWidth={3} />
+                                        </div>
+                                        <div>
+                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] italic">Logistics Hub</span>
+                                            <h4 className="text-xl font-black text-slate-950 italic uppercase tracking-tighter mt-1">Delivery Destination</h4>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-8">
+                                        <div className="group/input">
+                                            <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] mb-3 block ml-4 italic group-focus-within/input:text-slate-950 transition-colors">Manifest Principal</label>
+                                            <input type="text" className="w-full bg-slate-50 rounded-3xl px-10 py-6 border border-slate-100 outline-none focus:ring-4 focus:ring-slate-950/5 focus:bg-white focus:border-slate-950/20 font-black italic text-xl uppercase tracking-tighter placeholder:text-slate-200 transition-all" placeholder="Full Name..." />
+                                        </div>
+                                        <div className="group/input">
+                                            <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] mb-3 block ml-4 italic group-focus-within/input:text-slate-950 transition-colors">Geo-Coordinates / Address</label>
+                                            <textarea rows={4} className="w-full bg-slate-50 rounded-[2.5rem] px-10 py-8 border border-slate-100 outline-none focus:ring-4 focus:ring-slate-950/5 focus:bg-white focus:border-slate-950/20 font-black italic text-xl uppercase tracking-tighter placeholder:text-slate-200 transition-all resize-none" placeholder="Standard Delivery Address..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Payment Protocol */}
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="bg-slate-950 p-16 rounded-[4.5rem] shadow-premium relative overflow-hidden text-white flex flex-col justify-between border border-white/10"
+                            >
+                                <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 blur-[80px] rounded-full"></div>
+                                <div className="absolute bottom-0 left-0 w-32 h-32 bg-slate-500/10 blur-[60px] rounded-full"></div>
+                                
+                                <div className="relative z-10">
+                                    <div className="flex items-center justify-between mb-16 border-b border-white/10 pb-10">
+                                        <div className="flex items-center gap-6">
+                                            <div className="bg-emerald-500 p-5 rounded-2xl shadow-xl shadow-emerald-500/20 text-slate-950 italic">
+                                                <ShieldCheck size={32} strokeWidth={3} />
+                                            </div>
+                                            <div>
+                                                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.5em] italic">Farm-Ease Secure Protocol Active</span>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <Activity size={12} className="text-emerald-500 animate-pulse" />
+                                                    <h4 className="text-xl font-black text-white italic uppercase tracking-tighter">Settlement Ledger</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Sparkles className="text-white/20" size={32} />
+                                    </div>
+
+                                    <div className="space-y-6 mb-16 bg-white/5 p-8 rounded-[3rem] border border-white/5">
+                                        {cart.map((item) => (
+                                            <div key={item.id} className="flex justify-between items-center group/item">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+                                                    <span className="text-lg font-black text-white italic uppercase tracking-tighter opacity-80 group-hover/item:opacity-100 transition-opacity">{item.name} <span className="text-slate-500 text-sm ml-2">× {item.quantity}</span></span>
+                                                </div>
+                                                <span className="text-xl font-black text-emerald-400 italic font-mono tabular-nums">₹{(item.price * item.quantity).toLocaleString()}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="bg-white p-12 rounded-[3.5rem] flex flex-col sm:flex-row items-center justify-between gap-10 shadow-2xl relative">
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-slate-950/2 blur-3xl rounded-full"></div>
+                                        <div className="text-left w-full sm:w-auto">
+                                            <span className="text-slate-400 font-black uppercase tracking-[0.6em] text-[10px] block mb-3 italic">Total Settlement</span>
+                                            <span className="text-6xl font-black text-slate-950 tracking-tighter italic leading-none block">₹{totalAmount.toLocaleString()}</span>
+                                        </div>
+                                        <button
+                                            onClick={handlePaymentBegin}
+                                            disabled={isProcessing}
+                                            className="w-full sm:w-auto bg-slate-950 text-white px-12 py-8 rounded-[2rem] font-black text-xl uppercase tracking-[0.2em] hover:bg-emerald-600 active:scale-[0.95] transition-all duration-500 shadow-xl flex items-center justify-center gap-6 italic group/btn overflow-hidden"
+                                        >
+                                            {isProcessing ? (
+                                                <Activity className="animate-spin" size={28} />
+                                            ) : (
+                                                <>
+                                                    <CreditCard size={28} strokeWidth={3} className="group-hover/btn:rotate-12 transition-transform" /> Commit Payment
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* Security Manifest Credentials */}
+                        <div className="grid md:grid-cols-3 gap-12 pt-10">
+                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-premium flex flex-col items-center text-center group hover:bg-slate-950 transition-all duration-500">
+                                <div className="w-20 h-20 rounded-[2rem] bg-slate-50 flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-white group-hover:rotate-6 transition-all duration-500">
+                                    <Lock size={32} className="text-slate-950" strokeWidth={3} />
+                                </div>
+                                <h4 className="text-sm font-black text-slate-950 group-hover:text-white uppercase tracking-[0.6em] mb-3 italic transition-colors">Neural Encryption</h4>
+                                <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest italic leading-relaxed group-hover:text-slate-500 transition-colors">256-bit Secure Tunnel Isolation Active</p>
+                            </motion.div>
+                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-premium flex flex-col items-center text-center group hover:bg-emerald-600 transition-all duration-500">
+                                <div className="w-20 h-20 rounded-[2rem] bg-slate-50 flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-white group-hover:-rotate-6 transition-all duration-500">
+                                    <Banknote size={32} className="text-slate-950 group-hover:text-emerald-600 transition-all duration-500" strokeWidth={3} />
+                                </div>
+                                <h4 className="text-sm font-black text-slate-950 group-hover:text-white uppercase tracking-[0.6em] mb-3 italic transition-colors">Zero-Loss Vault</h4>
+                                <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest italic leading-relaxed group-hover:text-emerald-950 transition-colors">Capital Released Post-Quality Verification</p>
+                            </motion.div>
+                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-premium flex flex-col items-center text-center group hover:bg-slate-950 transition-all duration-500">
+                                <div className="w-20 h-20 rounded-[2rem] bg-slate-50 flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-white group-hover:rotate-6 transition-all duration-500">
+                                    <ShieldAlert size={32} className="text-slate-950" strokeWidth={3} />
+                                </div>
+                                <h4 className="text-sm font-black text-slate-950 group-hover:text-white uppercase tracking-[0.6em] mb-3 italic transition-colors">Settlement Shield</h4>
+                                <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest italic leading-relaxed group-hover:text-slate-500 transition-colors">Patented Settlement Clearing Protocol</p>
+                            </motion.div>
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

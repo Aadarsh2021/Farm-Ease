@@ -34,7 +34,7 @@ export default function Home() {
     {
       icon: <Shield className="text-emerald-600" size={32} />,
       title: "Secure Payments",
-      desc: "Patented smart contract technology ensures your money is safe until delivery is confirmed."
+      desc: "Our proprietary Farm-Ease Secure protocol ensures your capital is safe until delivery is verified."
     },
     {
       icon: <Truck className="text-emerald-600" size={32} />,
@@ -75,7 +75,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="text-lg lg:text-xl text-slate-600 leading-relaxed mb-10"
             >
-              Farm-Ease creates a transparent, fair, and secure marketplace powered by our proprietary smart contract protection. Buy seeds, tools, and produce with absolute confidence.
+              Farm-Ease creates a transparent, fair, and secure marketplace powered by our proprietary Farm-Ease Secure protocol. Buy seeds, tools, and produce with absolute confidence.
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -201,7 +201,7 @@ export default function Home() {
                 <div className="flex gap-4 p-6 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
                   <div className="flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center font-bold text-emerald-400">02</div>
                   <p className="text-emerald-50/80 leading-relaxed">
-                    Our patented smart contract escrow ensures payments are only released when both parties are satisfied.
+                    The Farm-Ease Secure settlement protocol ensures payments are only released when both parties are satisfied.
                   </p>
                 </div>
               </div>
@@ -213,8 +213,8 @@ export default function Home() {
                       <Shield size={24} />
                     </div>
                     <div>
-                      <h4 className="text-slate-900 font-extrabold">Smart Contract Protection</h4>
-                      <p className="text-slate-500 text-sm">Status: Active & Verified</p>
+                      <h4 className="text-slate-900 font-extrabold text-lg uppercase tracking-tight italic">Farm-Ease Secure Protocol</h4>
+                      <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mt-1">Status: Active & Verified</p>
                     </div>
                  </div>
                  <div className="space-y-4">
