@@ -1,13 +1,11 @@
-"use client";
-
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 
 export default function Navbar() {
     const { user, userRole } = useAuth();
@@ -71,7 +69,7 @@ export default function Navbar() {
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <Link href="/" className="flex items-center gap-3 group">
+                        <Link to="/" className="flex items-center gap-3 group">
                             <div className="bg-slate-900 text-white p-2.5 rounded-2xl group-hover:bg-green-600 transition-colors shadow-lg">
                                 <Leaf size={24} className="group-hover:rotate-12 transition-transform" />
                             </div>
@@ -83,14 +81,14 @@ export default function Navbar() {
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center space-x-10 text-sm font-bold uppercase tracking-widest">
-                        <Link href="/market" className="text-slate-500 hover:text-slate-900 transition-colors">Marketplace</Link>
-                        <Link href="/about" className="text-slate-500 hover:text-slate-900 transition-colors">About Us</Link>
+                        <Link to="/market" className="text-slate-500 hover:text-slate-900 transition-colors">Marketplace</Link>
+                        <Link to="/about" className="text-slate-500 hover:text-slate-900 transition-colors">About Us</Link>
 
                         <div className="h-6 w-px bg-slate-200"></div>
 
                         {user ? (
                             <div className="flex items-center gap-6">
-                                <Link href="/cart" className="text-slate-900 hover:text-green-600 transition-all relative group">
+                                <Link to="/cart" className="text-slate-900 hover:text-green-600 transition-all relative group">
                                     <ShoppingCart size={22} />
                                     {cartCount > 0 && (
                                         <motion.span 
@@ -103,7 +101,7 @@ export default function Navbar() {
                                     )}
                                 </Link>
 
-                                <Link href={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} className="flex items-center gap-2 text-white bg-slate-900 hover:bg-green-600 px-6 py-2.5 rounded-2xl transition-all shadow-md active:scale-95">
+                                <Link to={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} className="flex items-center gap-2 text-white bg-slate-900 hover:bg-green-600 px-6 py-2.5 rounded-2xl transition-all shadow-md active:scale-95">
                                     <UserIcon size={18} />
                                     <span>Dashboard</span>
                                 </Link>
@@ -114,10 +112,10 @@ export default function Navbar() {
                             </div>
                         ) : (
                             <div className="flex items-center gap-6">
-                                <Link href="/login" className="text-slate-900 hover:text-green-600 transition-colors">
+                                <Link to="/login" className="text-slate-900 hover:text-green-600 transition-colors">
                                     Log In
                                 </Link>
-                                <Link href="/signup" className="group flex items-center gap-2 bg-slate-900 text-white px-7 py-3 rounded-2xl font-black hover:bg-green-600 transition-all shadow-xl active:scale-95">
+                                <Link to="/signup" className="group flex items-center gap-2 bg-slate-900 text-white px-7 py-3 rounded-2xl font-black hover:bg-green-600 transition-all shadow-xl active:scale-95">
                                     Join Community <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
@@ -127,7 +125,7 @@ export default function Navbar() {
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center gap-6">
                         {user && (
-                            <Link href="/cart" className="text-slate-900 relative">
+                            <Link to="/cart" className="text-slate-900 relative">
                                 <ShoppingCart size={24} />
                                 {cartCount > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">
@@ -164,15 +162,15 @@ export default function Navbar() {
 
                         <div className="flex flex-col gap-10">
                             <div className="space-y-6">
-                                <Link onClick={() => setIsMenuOpen(false)} href="/market" className="block text-4xl font-black text-slate-900 tracking-tight">Marketplace</Link>
-                                <Link onClick={() => setIsMenuOpen(false)} href="/about" className="block text-4xl font-black text-slate-900 tracking-tight">About Us</Link>
+                                <Link onClick={() => setIsMenuOpen(false)} to="/market" className="block text-4xl font-black text-slate-900 tracking-tight">Marketplace</Link>
+                                <Link onClick={() => setIsMenuOpen(false)} to="/about" className="block text-4xl font-black text-slate-900 tracking-tight">About Us</Link>
                             </div>
 
                             <div className="h-px bg-slate-100 w-full"></div>
 
                             {user ? (
                                 <div className="space-y-6">
-                                    <Link onClick={() => setIsMenuOpen(false)} href="/dashboard" className="flex items-center gap-4 text-2xl font-bold text-slate-900">
+                                    <Link onClick={() => setIsMenuOpen(false)} to="/dashboard" className="flex items-center gap-4 text-2xl font-bold text-slate-900">
                                         <div className="bg-slate-900 text-white p-3 rounded-2xl">
                                             <UserIcon size={24} />
                                         </div>
@@ -187,10 +185,10 @@ export default function Navbar() {
                                 </div>
                             ) : (
                                 <div className="flex flex-col gap-4">
-                                    <Link onClick={() => setIsMenuOpen(false)} href="/login" className="w-full text-center border-2 border-slate-900 text-slate-900 rounded-[1.5rem] py-5 text-xl font-black">
+                                    <Link onClick={() => setIsMenuOpen(false)} to="/login" className="w-full text-center border-2 border-slate-900 text-slate-900 rounded-[1.5rem] py-5 text-xl font-black">
                                         Log In
                                     </Link>
-                                    <Link onClick={() => setIsMenuOpen(false)} href="/signup" className="w-full text-center bg-slate-900 text-white rounded-[1.5rem] py-5 text-xl font-black shadow-2xl">
+                                    <Link onClick={() => setIsMenuOpen(false)} to="/signup" className="w-full text-center bg-slate-900 text-white rounded-[1.5rem] py-5 text-xl font-black shadow-2xl">
                                         Join Now
                                     </Link>
                                 </div>

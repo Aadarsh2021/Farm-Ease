@@ -1,5 +1,4 @@
-import React from "react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Leaf, Twitter, Facebook, Instagram, ShieldCheck, Truck, Headphones, ChevronRight, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
@@ -45,7 +44,7 @@ export default function Footer() {
                 <div className="py-24 grid grid-cols-1 lg:grid-cols-12 gap-16">
                     {/* Brand Section */}
                     <div className="lg:col-span-4">
-                        <Link href="/" className="flex items-center gap-3 mb-8 group">
+                        <Link to="/" className="flex items-center gap-3 mb-8 group">
                             <div className="bg-green-600 text-white p-2 rounded-xl shadow-lg shadow-green-600/20">
                                 <Leaf size={28} />
                             </div>
@@ -72,7 +71,7 @@ export default function Footer() {
                             <ul className="space-y-4">
                                 {["All Products", "Fresh Produce", "Agri-Tools", "Seeds & Soil"].map((link) => (
                                     <li key={link}>
-                                        <Link href="/market" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
+                                        <Link to="/market" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
                                             <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-green-500" />
                                             {link}
                                         </Link>
@@ -85,7 +84,7 @@ export default function Footer() {
                             <ul className="space-y-4">
                                 {["Start Selling", "Escrow Safety", "Seller Policy", "Analytics"].map((link) => (
                                     <li key={link}>
-                                        <Link href="#" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
+                                        <Link to="#" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
                                             <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-green-500" />
                                             {link}
                                         </Link>
@@ -119,9 +118,9 @@ export default function Footer() {
                         © {new Date().getFullYear()} Farm-Ease Global Corp. All rights reserved.
                     </p>
                     <div className="flex gap-8 text-[12px] font-black uppercase tracking-widest text-slate-400">
-                        <Link href="#" className="hover:text-green-500 transition-colors">Privacy</Link>
-                        <Link href="#" className="hover:text-green-500 transition-colors">Terms</Link>
-                        <Link href="#" className="hover:text-green-500 transition-colors">Cookies</Link>
+                        <Link to="#" className="hover:text-green-500 transition-colors">Privacy</Link>
+                        <Link to="#" className="hover:text-green-500 transition-colors">Terms</Link>
+                        <Link to="#" className="hover:text-green-500 transition-colors">Cookies</Link>
                     </div>
                 </div>
             </div>

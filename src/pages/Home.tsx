@@ -1,10 +1,7 @@
-"use client";
-
 import React, { useEffect, useState, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, Leaf, ShieldCheck, Sprout, Tractor, ShoppingCart, Star, CheckCircle2, ChevronRight, Play } from "lucide-react";
+import { ArrowRight, Leaf, ShieldCheck, Sprout, Tractor, ShoppingCart, Star, CheckCircle2, ChevronRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { supabase } from "@/lib/supabase";
@@ -141,20 +138,37 @@ export default function Home() {
       }
     }
     fetchTrending();
+
+    // REAL-TIME SUBSCRIPTION
+    const channel = supabase
+      .channel('realtime_products')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
+        console.log('Real-time update:', payload);
+        if (payload.eventType === 'INSERT') {
+          setTrendingProducts((prev) => [payload.new as Product, ...prev].slice(0, 8));
+        } else if (payload.eventType === 'DELETE') {
+          setTrendingProducts((prev) => prev.filter((p) => p.id !== payload.old.id));
+        } else if (payload.eventType === 'UPDATE') {
+          setTrendingProducts((prev) => prev.map((p) => p.id === payload.new.id ? payload.new as Product : p));
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return (
     <div className="relative isolate bg-white selection:bg-green-100 selection:text-green-900" ref={scrollRef}>
       <ScrollProgress />
 
-      {/* Enhanced Multi-layer Mesh Background */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-green-500/10 blur-[120px] rounded-full animate-pulse"></div>
         <div className="absolute bottom-[10%] right-[-5%] w-[35%] h-[35%] bg-emerald-500/10 blur-[100px] rounded-full animate-pulse delay-700"></div>
         <div className="absolute top-[40%] left-[20%] w-[30%] h-[30%] bg-slate-200/20 blur-[150px] rounded-full"></div>
       </div>
 
-      {/* Hero Section - Optimized Height and Proportions */}
       <section className="relative min-h-[80vh] flex items-center pt-24 pb-20 overflow-hidden z-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
           <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 items-center">
@@ -184,13 +198,13 @@ export default function Home() {
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link href={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-900 text-white rounded-[1.75rem] font-black text-lg overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] hover:bg-green-600 active:scale-95">
+                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-900 text-white rounded-[1.75rem] font-black text-lg overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] hover:bg-green-600 active:scale-95">
                   <span className="relative z-10 flex items-center gap-2">
                     {user ? "Dashboard" : "Start Trading"} 
                     <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>
-                <Link href="/register" className="group flex items-center gap-3 px-10 py-5 bg-white border-2 border-slate-100 text-slate-900 rounded-[1.75rem] font-black text-lg hover:border-green-600 transition-all active:scale-95 shadow-sm">
+                <Link to="/register" className="group flex items-center gap-3 px-10 py-5 bg-white border-2 border-slate-100 text-slate-900 rounded-[1.75rem] font-black text-lg hover:border-green-600 transition-all active:scale-95 shadow-sm">
                    Become a Seller
                 </Link>
               </div>
@@ -244,7 +258,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ecosystem Section - Reveal Polish */}
       <section className="py-32 bg-slate-950 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 pointer-events-none">
            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,rgba(22,163,74,0.3),transparent_60%)]"></div>
@@ -297,7 +310,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories - Extra Polish */}
       <section className="py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <SectionReveal className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
@@ -306,7 +318,7 @@ export default function Home() {
               <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-[1] mb-5">Trending Harvests.</h2>
               <p className="text-lg text-slate-500 font-medium">Verified local assets secured by our global community.</p>
             </div>
-            <Link href="/market" className="group flex items-center gap-2 px-10 py-5 bg-slate-50 text-slate-900 rounded-[1.5rem] font-black text-base hover:bg-slate-900 hover:text-white transition-all border border-slate-100 hover:border-slate-900">
+            <Link to="/market" className="group flex items-center gap-2 px-10 py-5 bg-slate-50 text-slate-900 rounded-[1.5rem] font-black text-base hover:bg-slate-900 hover:text-white transition-all border border-slate-100 hover:border-slate-900">
                Explore Gallery <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </SectionReveal>
@@ -331,18 +343,11 @@ export default function Home() {
                   className="group bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-card hover:shadow-premium transition-all duration-500 flex flex-col"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden bg-slate-50">
-                    {product.image_url ? (
-                      <Image 
-                        src={product.image_url} 
-                        alt={product.name} 
-                        fill 
-                        className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-green-50 to-slate-200">
-                        <Leaf size={48} className="text-green-100" strokeWidth={0.5} />
-                      </div>
-                    )}
+                    <img 
+                      src={product.image_url || "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?auto=format&fit=crop&q=80"} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                    />
                     <div className="absolute top-5 left-5">
                       <div className="px-3 py-1.5 glass rounded-xl flex items-center gap-1.5 border-white/50 shadow-sm">
                         <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
@@ -386,7 +391,7 @@ export default function Home() {
               <Sprout size={40} className="text-slate-200 mx-auto mb-6" />
               <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">Market is Preparing.</h3>
               <p className="text-slate-400 mb-8 max-w-xs mx-auto font-medium text-sm leading-relaxed">Our verified source is currently preparing new harvests. Please check back shortly.</p>
-              <Link href="/market" className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-[1.25rem] font-black text-sm hover:bg-green-600 transition-all shadow-xl active:scale-95">
+              <Link to="/market" className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-[1.25rem] font-black text-sm hover:bg-green-600 transition-all shadow-xl active:scale-95">
                  Visit Marketplace
               </Link>
             </div>
@@ -394,7 +399,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* World Class CTA - Refined */}
       <section className="py-20 px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <SectionReveal className="relative rounded-[4rem] overflow-hidden bg-slate-950 pt-24 pb-20 px-10 text-center shadow-2xl border border-slate-900">
@@ -410,10 +414,10 @@ export default function Home() {
                 Experience the most trusted agriculture ecosystem ever built. Professional, secure, and direct.
               </p>
               <div className="flex flex-wrap justify-center gap-6">
-                <Link href="/signup" className="group flex items-center gap-3 px-10 py-6 bg-white text-slate-900 rounded-[1.75rem] font-black text-xl hover:bg-green-500 hover:text-white transition-all active:scale-95">
+                <Link to="/signup" className="group flex items-center gap-3 px-10 py-6 bg-white text-slate-900 rounded-[1.75rem] font-black text-xl hover:bg-green-500 hover:text-white transition-all active:scale-95">
                   Join Now <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/about" className="group flex items-center gap-3 px-10 py-6 bg-slate-900 text-white border border-slate-800 rounded-[1.75rem] font-black text-xl hover:bg-slate-800 transition-all active:scale-95">
+                <Link to="/about" className="group flex items-center gap-3 px-10 py-6 bg-slate-900 text-white border border-slate-800 rounded-[1.75rem] font-black text-xl hover:bg-slate-800 transition-all active:scale-95">
                   Learn Story
                 </Link>
               </div>
