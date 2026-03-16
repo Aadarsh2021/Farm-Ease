@@ -1,43 +1,26 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
-import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, ChevronRight, Command } from "lucide-react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
+import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, Command } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
     const { user, userRole } = useAuth();
     const { cartCount, setIsCartOpen } = useCart();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    
-    const { scrollY } = useScroll();
-    const navHeight = useTransform(scrollY, [0, 100], ["5.5rem", "4.5rem"]);
-    const navPadding = useTransform(scrollY, [0, 100], ["1.5rem", "0.75rem"]);
-    const navBgOpacity = useTransform(scrollY, [0, 100], [0.6, 0.85]);
-    const navBorderOpacity = useTransform(scrollY, [0, 100], [0.2, 0.1]);
+    const [scrolled, setScrolled] = useState(false);
+    const location = useLocation();
 
-    // Magnetic Effect Logic
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-    const springConfig = { damping: 25, stiffness: 400 };
-    const magneticX = useSpring(mouseX, springConfig);
-    const magneticY = useSpring(mouseY, springConfig);
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const { clientX, clientY, currentTarget } = e;
-        const { left, top, width, height } = currentTarget.getBoundingClientRect();
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
-        mouseX.set((clientX - centerX) * 0.35);
-        mouseY.set((clientY - centerY) * 0.35);
-    };
-
-    const handleMouseLeave = () => {
-        mouseX.set(0);
-        mouseY.set(0);
-    };
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -47,192 +30,188 @@ export default function Navbar() {
         }
     };
 
+    const navLinks = [
+        { name: "Marketplace", path: "/market" },
+        { name: "About Us", path: "/about" },
+    ];
+
     return (
-        <motion.nav 
-            style={{ height: navHeight }}
-            className="fixed top-0 left-0 right-0 z-[100] flex items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        <nav 
+            className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+                scrolled ? "bg-white/90 backdrop-blur-md shadow-sm border-b" : "bg-transparent"
+            }`}
         >
-            <div className="max-w-7xl mx-auto w-full px-6">
-                <motion.div 
-                    style={{ 
-                        paddingTop: navPadding, 
-                        paddingBottom: navPadding,
-                        backgroundColor: `hsla(var(--background), ${navBgOpacity.get()})`,
-                        borderColor: `hsla(var(--border), ${navBorderOpacity.get()})`
-                    }}
-                    className="glass rounded-[2rem] px-8 flex justify-between items-center shadow-elite group/nav"
-                >
-                    {/* Logo with Magnetic Effect */}
-                    <motion.div
-                        style={{ x: magneticX, y: magneticY }}
-                        onMouseMove={handleMouseMove}
-                        onMouseLeave={handleMouseLeave}
-                        className="relative z-10"
-                    >
-                        <Link to="/" className="flex items-center gap-3 group/logo">
-                            <div className="bg-[hsl(var(--primary))] text-white p-2.5 rounded-2xl group-hover/logo:bg-[hsl(var(--primary-light))] transition-colors shadow-glow shadow-primary/20">
-                                <Leaf size={22} className="group-hover/logo:rotate-12 transition-transform duration-500" />
-                            </div>
-                            <span className="text-xl font-black text-[hsl(var(--foreground))] tracking-tighter">
-                                Farm<span className="text-[hsl(var(--primary-light))]">Ease</span>
-                            </span>
-                        </Link>
-                    </motion.div>
+            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                {/* Logo */}
+                <Link to="/" className="flex items-center gap-2 group">
+                    <div className="bg-emerald-600 text-white p-2 rounded-xl group-hover:bg-emerald-700 transition-colors">
+                        <Leaf size={20} />
+                    </div>
+                    <span className="text-xl font-bold text-slate-900 tracking-tight">
+                        Farm<span className="text-emerald-600">Ease</span>
+                    </span>
+                </Link>
 
-                    {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center gap-10">
-                        <div className="flex items-center space-x-8 text-[11px] font-black uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-                            <Link to="/market" className="hover:text-[hsl(var(--foreground))] transition-colors relative group">
-                                Marketplace
-                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[hsl(var(--primary))] transition-all group-hover:w-full" />
+                {/* Desktop Nav */}
+                <div className="hidden md:flex items-center gap-8">
+                    <div className="flex items-center gap-6">
+                        {navLinks.map((link) => (
+                            <Link 
+                                key={link.path}
+                                to={link.path} 
+                                className={`text-sm font-medium transition-colors hover:text-emerald-600 ${
+                                    location.pathname === link.path ? "text-emerald-600" : "text-slate-600"
+                                }`}
+                            >
+                                {link.name}
                             </Link>
-                            <Link to="/about" className="hover:text-[hsl(var(--foreground))] transition-colors relative group">
-                                About Us
-                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[hsl(var(--primary))] transition-all group-hover:w-full" />
-                            </Link>
-                        </div>
+                        ))}
+                    </div>
 
-                        <div className="h-4 w-px bg-[hsl(var(--border))]"></div>
+                    <div className="h-6 w-px bg-slate-200 ml-2"></div>
 
+                    <div className="flex items-center gap-4">
                         {user ? (
-                            <div className="flex items-center gap-5">
+                            <>
                                 <button 
                                     onClick={() => setIsCartOpen(true)}
-                                    aria-label={`Open side cart, ${cartCount} items`}
-                                    className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-all relative group/cart"
+                                    aria-label={`Cart: ${cartCount} items`}
+                                    className="p-2 text-slate-600 hover:text-emerald-600 transition-colors relative"
                                 >
-                                    <ShoppingCart size={20} className="group-hover/cart:scale-110 transition-transform" />
+                                    <ShoppingCart size={20} />
                                     {cartCount > 0 && (
-                                        <motion.span 
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            className="absolute -top-2 -right-2 bg-[hsl(var(--primary))] text-white text-[9px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center shadow-primary/30 shadow-lg"
-                                        >
+                                        <span className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">
                                             {cartCount}
-                                        </motion.span>
+                                        </span>
                                     )}
                                 </button>
 
-                                <Link to={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} className="flex items-center gap-2 group/btn">
-                                    <span className="text-[10px] font-black text-[hsl(var(--foreground))] uppercase tracking-widest group-hover/btn:text-[hsl(var(--primary))] transition-colors">Dashboard</span>
-                                    <div className="bg-[hsl(var(--foreground))] text-[hsl(var(--background))] p-2 rounded-xl group-hover/btn:bg-[hsl(var(--primary))] transition-all shadow-premium active:scale-95">
-                                        <UserIcon size={16} />
+                                <Link 
+                                    to={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} 
+                                    className="flex items-center gap-2 pl-2 group"
+                                >
+                                    <div className="bg-slate-100 p-2 rounded-full group-hover:bg-emerald-50 transition-colors">
+                                        <UserIcon size={18} className="text-slate-600 group-hover:text-emerald-600" />
                                     </div>
+                                    <span className="text-xs font-semibold text-slate-700 group-hover:text-emerald-600 transition-colors">Dashboard</span>
                                 </Link>
 
                                 <button 
-                                    onClick={handleLogout} 
-                                    aria-label="Disconnect terminal session"
-                                    className="text-[hsl(var(--muted-foreground))] hover:text-red-500 transition-colors ml-2"
+                                    onClick={handleLogout}
+                                    aria-label="Logout"
+                                    className="p-2 text-slate-400 hover:text-red-500 transition-colors"
                                 >
                                     <LogOut size={18} />
                                 </button>
-                            </div>
+                            </>
                         ) : (
-                            <div className="flex items-center gap-6">
-                                <Link to="/login" className="text-[11px] font-black text-[hsl(var(--foreground))] uppercase tracking-widest hover:text-[hsl(var(--primary))] transition-colors">
+                            <div className="flex items-center gap-4">
+                                <Link to="/login" className="text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors">
                                     Sign In
                                 </Link>
-                                <Link to="/signup" className="group flex items-center gap-3 bg-[hsl(var(--foreground))] text-[hsl(var(--background))] px-6 py-2.5 rounded-2xl font-black hover:bg-[hsl(var(--primary))] transition-all shadow-elite active:scale-95">
-                                    <span className="text-[11px] uppercase tracking-widest">Join Elite</span> 
-                                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                                <Link 
+                                    to="/signup" 
+                                    className="bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-emerald-700 transition-all shadow-md active:scale-95"
+                                >
+                                    Get Started
                                 </Link>
                             </div>
                         )}
                         
                         <button 
                             onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
-                            aria-label="Open Command Menu (CMD+K)"
-                            className="p-2 ml-2 bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] rounded-xl hover:bg-[hsl(var(--primary))] hover:text-white transition-all shadow-sm" 
+                            aria-label="Command Menu"
+                            className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-slate-100 transition-colors border"
                             title="Command Menu (CMD+K)"
                         >
-                            <Command size={18} />
+                            <Command size={16} />
                         </button>
                     </div>
+                </div>
 
-                    {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center gap-4">
-                        {user && (
-                            <button 
-                                onClick={() => setIsCartOpen(true)}
-                                className="text-[hsl(var(--foreground))] relative"
-                            >
-                                <ShoppingCart size={22} />
-                                {cartCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-[hsl(var(--primary))] text-white text-[9px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center">
-                                        {cartCount}
-                                    </span>
-                                )}
-                            </button>
-                        )}
-                        <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-                            className="bg-[hsl(var(--muted))] p-2.5 rounded-2xl text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-white transition-all"
+                {/* Mobile Controls */}
+                <div className="md:hidden flex items-center gap-3">
+                    {user && (
+                        <button 
+                            onClick={() => setIsCartOpen(true)}
+                            className="p-2 text-slate-600 relative"
                         >
-                            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                            <ShoppingCart size={22} />
+                            {cartCount > 0 && (
+                                <span className="absolute top-1 right-1 bg-emerald-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                    {cartCount}
+                                </span>
+                            )}
                         </button>
-                    </div>
-                </motion.div>
+                    )}
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="p-2 text-slate-600"
+                    >
+                        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu */}
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, x: "100%" }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: "100%" }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="md:hidden fixed inset-0 z-[110] bg-[hsl(var(--background))] p-8"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="md:hidden absolute top-20 left-0 right-0 bg-white border-b shadow-lg p-6 flex flex-col gap-6"
                     >
-                        <div className="flex justify-between items-center mb-16">
-                            <span className="text-xl font-black tracking-tighter">Menu</span>
-                            <button 
-                                onClick={() => setIsMenuOpen(false)}
-                                className="bg-[hsl(var(--muted))] p-4 rounded-3xl"
-                            >
-                                <X size={28} />
-                            </button>
+                        <div className="flex flex-col gap-4">
+                            {navLinks.map((link) => (
+                                <Link 
+                                    key={link.path}
+                                    to={link.path} 
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="text-lg font-semibold text-slate-900 border-b pb-2"
+                                >
+                                    {link.name}
+                                </Link>
+                            ))}
                         </div>
 
-                        <div className="flex flex-col gap-8">
-                            <div className="space-y-4">
-                                <Link onClick={() => setIsMenuOpen(false)} to="/market" className="block text-5xl font-black text-[hsl(var(--foreground))] tracking-tighter hover:text-[hsl(var(--primary))] transition-colors">Market</Link>
-                                <Link onClick={() => setIsMenuOpen(false)} to="/about" className="block text-5xl font-black text-[hsl(var(--foreground))] tracking-tighter hover:text-[hsl(var(--primary))] transition-colors">About</Link>
+                        {user ? (
+                            <div className="flex flex-col gap-4">
+                                <Link 
+                                    to="/dashboard" 
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="flex items-center gap-3 text-lg font-semibold text-emerald-600"
+                                >
+                                    <UserIcon size={20} /> Dashboard
+                                </Link>
+                                <button 
+                                    onClick={() => { handleLogout(); setIsMenuOpen(false); }}
+                                    className="flex items-center gap-3 text-lg font-semibold text-red-500"
+                                >
+                                    <LogOut size={20} /> Sign Out
+                                </button>
                             </div>
-
-                            <div className="h-px bg-[hsl(var(--border))] w-full my-4"></div>
-
-                            {user ? (
-                                <div className="space-y-6">
-                                    <Link onClick={() => setIsMenuOpen(false)} to="/dashboard" className="flex items-center gap-5 text-2xl font-bold">
-                                        <div className="bg-[hsl(var(--primary))] text-white p-4 rounded-[1.5rem] shadow-glow shadow-primary/40">
-                                            <UserIcon size={32} />
-                                        </div>
-                                        Personal Terminal
-                                    </Link>
-                                    <button onClick={handleLogout} className="flex items-center gap-5 text-2xl font-bold text-red-500 w-full text-left">
-                                        <div className="bg-red-50 p-4 rounded-[1.5rem]">
-                                            <LogOut size={32} />
-                                        </div>
-                                        Disconnect
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-4">
-                                    <Link onClick={() => setIsMenuOpen(false)} to="/login" className="w-full text-center border-2 border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] rounded-3xl py-6 text-xl font-black">
-                                        Sign In
-                                    </Link>
-                                    <Link onClick={() => setIsMenuOpen(false)} to="/signup" className="w-full text-center bg-[hsl(var(--foreground))] text-[hsl(var(--background))] rounded-3xl py-6 text-xl font-black shadow-elite">
-                                        Join Today
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
+                        ) : (
+                            <div className="flex flex-col gap-3">
+                                <Link 
+                                    to="/login" 
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="w-full text-center py-3 border rounded-xl font-bold text-slate-600"
+                                >
+                                    Sign In
+                                </Link>
+                                <Link 
+                                    to="/signup" 
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="w-full text-center py-3 bg-emerald-600 text-white rounded-xl font-bold"
+                                >
+                                    Get Started
+                                </Link>
+                            </div>
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
-        </motion.nav>
+        </nav>
     );
 }
