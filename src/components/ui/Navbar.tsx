@@ -1,23 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
-import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, ChevronRight, Command } from "lucide-react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 
 export default function Navbar() {
     const { user, userRole } = useAuth();
-    const { cartCount } = useCart();
+    const { cartCount, setIsCartOpen } = useCart();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
+    
+    const { scrollY } = useScroll();
+    const navHeight = useTransform(scrollY, [0, 100], ["5.5rem", "4.5rem"]);
+    const navPadding = useTransform(scrollY, [0, 100], ["1.5rem", "0.75rem"]);
+    const navBgOpacity = useTransform(scrollY, [0, 100], [0.6, 0.85]);
+    const navBorderOpacity = useTransform(scrollY, [0, 100], [0.2, 0.1]);
 
     // Magnetic Effect Logic
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const springConfig = { damping: 20, stiffness: 300 };
+    const springConfig = { damping: 25, stiffness: 400 };
     const magneticX = useSpring(mouseX, springConfig);
     const magneticY = useSpring(mouseY, springConfig);
 
@@ -26,30 +30,14 @@ export default function Navbar() {
         const { left, top, width, height } = currentTarget.getBoundingClientRect();
         const centerX = left + width / 2;
         const centerY = top + height / 2;
-        mouseX.set((clientX - centerX) * 0.4);
-        mouseY.set((clientY - centerY) * 0.4);
+        mouseX.set((clientX - centerX) * 0.35);
+        mouseY.set((clientY - centerY) * 0.35);
     };
 
     const handleMouseLeave = () => {
         mouseX.set(0);
         mouseY.set(0);
     };
-
-    // Hide on Scroll Logic
-    useEffect(() => {
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                setIsVisible(false);
-            } else {
-                setIsVisible(true);
-            }
-            setLastScrollY(currentScrollY);
-        };
-
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [lastScrollY]);
 
     const handleLogout = async () => {
         try {
@@ -60,136 +48,177 @@ export default function Navbar() {
     };
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}>
-            <div className="max-w-7xl mx-auto px-6 py-4">
-                <div className="glass rounded-3xl px-8 py-3 flex justify-between items-center border border-white/40 shadow-premium">
+        <motion.nav 
+            style={{ height: navHeight }}
+            className="fixed top-0 left-0 right-0 z-[100] flex items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        >
+            <div className="max-w-7xl mx-auto w-full px-6">
+                <motion.div 
+                    style={{ 
+                        paddingTop: navPadding, 
+                        paddingBottom: navPadding,
+                        backgroundColor: `hsla(var(--background), ${navBgOpacity.get()})`,
+                        borderColor: `hsla(var(--border), ${navBorderOpacity.get()})`
+                    }}
+                    className="glass rounded-[2rem] px-8 flex justify-between items-center shadow-elite group/nav"
+                >
                     {/* Logo with Magnetic Effect */}
                     <motion.div
                         style={{ x: magneticX, y: magneticY }}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
+                        className="relative z-10"
                     >
-                        <Link to="/" className="flex items-center gap-3 group">
-                            <div className="bg-slate-950 text-white p-2.5 rounded-2xl group-hover:bg-green-600 transition-colors shadow-lg">
-                                <Leaf size={24} className="group-hover:rotate-12 transition-transform" />
+                        <Link to="/" className="flex items-center gap-3 group/logo">
+                            <div className="bg-[hsl(var(--primary))] text-white p-2.5 rounded-2xl group-hover/logo:bg-[hsl(var(--primary-light))] transition-colors shadow-glow shadow-primary/20">
+                                <Leaf size={22} className="group-hover/logo:rotate-12 transition-transform duration-500" />
                             </div>
-                            <span className="text-2xl font-extrabold text-slate-950 tracking-tight">
-                                Farm<span className="text-green-600">Ease</span>
+                            <span className="text-xl font-black text-[hsl(var(--foreground))] tracking-tighter">
+                                Farm<span className="text-[hsl(var(--primary-light))]">Ease</span>
                             </span>
                         </Link>
                     </motion.div>
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center space-x-10 text-sm font-bold uppercase tracking-widest">
-                        <Link to="/market" className="text-slate-500 hover:text-slate-900 transition-colors">Marketplace</Link>
-                        <Link to="/about" className="text-slate-500 hover:text-slate-900 transition-colors">About Us</Link>
+                    <div className="hidden md:flex items-center gap-10">
+                        <div className="flex items-center space-x-8 text-[11px] font-black uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
+                            <Link to="/market" className="hover:text-[hsl(var(--foreground))] transition-colors relative group">
+                                Marketplace
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[hsl(var(--primary))] transition-all group-hover:w-full" />
+                            </Link>
+                            <Link to="/about" className="hover:text-[hsl(var(--foreground))] transition-colors relative group">
+                                About Us
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[hsl(var(--primary))] transition-all group-hover:w-full" />
+                            </Link>
+                        </div>
 
-                        <div className="h-6 w-px bg-slate-200"></div>
+                        <div className="h-4 w-px bg-[hsl(var(--border))]"></div>
 
                         {user ? (
-                            <div className="flex items-center gap-6">
-                                <Link to="/cart" className="text-slate-900 hover:text-green-600 transition-all relative group">
-                                    <ShoppingCart size={22} />
+                            <div className="flex items-center gap-5">
+                                <button 
+                                    onClick={() => setIsCartOpen(true)}
+                                    className="text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-all relative group/cart"
+                                >
+                                    <ShoppingCart size={20} className="group-hover/cart:scale-110 transition-transform" />
                                     {cartCount > 0 && (
                                         <motion.span 
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
-                                            className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white"
+                                            className="absolute -top-2 -right-2 bg-[hsl(var(--primary))] text-white text-[9px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center shadow-primary/30 shadow-lg"
                                         >
                                             {cartCount}
                                         </motion.span>
                                     )}
+                                </button>
+
+                                <Link to={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} className="flex items-center gap-2 group/btn">
+                                    <span className="text-[10px] font-black text-[hsl(var(--foreground))] uppercase tracking-widest group-hover/btn:text-[hsl(var(--primary))] transition-colors">Dashboard</span>
+                                    <div className="bg-[hsl(var(--foreground))] text-[hsl(var(--background))] p-2 rounded-xl group-hover/btn:bg-[hsl(var(--primary))] transition-all shadow-premium active:scale-95">
+                                        <UserIcon size={16} />
+                                    </div>
                                 </Link>
 
-                                <Link to={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} className="flex items-center gap-2 text-white bg-slate-900 hover:bg-green-600 px-6 py-2.5 rounded-2xl transition-all shadow-md active:scale-95">
-                                    <UserIcon size={18} />
-                                    <span>Dashboard</span>
-                                </Link>
-
-                                <button onClick={handleLogout} className="text-slate-400 hover:text-red-500 transition-colors">
-                                    <LogOut size={22} />
+                                <button onClick={handleLogout} className="text-[hsl(var(--muted-foreground))] hover:text-red-500 transition-colors ml-2">
+                                    <LogOut size={18} />
                                 </button>
                             </div>
                         ) : (
                             <div className="flex items-center gap-6">
-                                <Link to="/login" className="text-slate-900 hover:text-green-600 transition-colors">
-                                    Log In
+                                <Link to="/login" className="text-[11px] font-black text-[hsl(var(--foreground))] uppercase tracking-widest hover:text-[hsl(var(--primary))] transition-colors">
+                                    Sign In
                                 </Link>
-                                <Link to="/signup" className="group flex items-center gap-2 bg-slate-900 text-white px-7 py-3 rounded-2xl font-black hover:bg-green-600 transition-all shadow-xl active:scale-95">
-                                    Join Community <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                <Link to="/signup" className="group flex items-center gap-3 bg-[hsl(var(--foreground))] text-[hsl(var(--background))] px-6 py-2.5 rounded-2xl font-black hover:bg-[hsl(var(--primary))] transition-all shadow-elite active:scale-95">
+                                    <span className="text-[11px] uppercase tracking-widest">Join Elite</span> 
+                                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
                         )}
+                        
+                        <button 
+                            onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
+                            className="p-2 ml-2 bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] rounded-xl hover:bg-[hsl(var(--primary))] hover:text-white transition-all shadow-sm" 
+                            title="Command Menu (CMD+K)"
+                        >
+                            <Command size={18} />
+                        </button>
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center gap-6">
+                    <div className="md:hidden flex items-center gap-4">
                         {user && (
-                            <Link to="/cart" className="text-slate-900 relative">
-                                <ShoppingCart size={24} />
+                            <button 
+                                onClick={() => setIsCartOpen(true)}
+                                className="text-[hsl(var(--foreground))] relative"
+                            >
+                                <ShoppingCart size={22} />
                                 {cartCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">
+                                    <span className="absolute -top-2 -right-2 bg-[hsl(var(--primary))] text-white text-[9px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center">
                                         {cartCount}
                                     </span>
                                 )}
-                            </Link>
+                            </button>
                         )}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="bg-slate-100 p-2.5 rounded-xl text-slate-900 hover:bg-slate-200 transition-colors"
+                            className="bg-[hsl(var(--muted))] p-2.5 rounded-2xl text-[hsl(var(--foreground))] hover:bg-[hsl(var(--primary))] hover:text-white transition-all"
                         >
-                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                     </div>
-                </div>
+                </motion.div>
             </div>
 
             {/* Mobile Menu */}
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="md:hidden fixed inset-0 z-[110] bg-white/95 backdrop-blur-xl p-8 pt-24"
+                        initial={{ opacity: 0, x: "100%" }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        className="md:hidden fixed inset-0 z-[110] bg-[hsl(var(--background))] p-8"
                     >
-                        <button 
-                            onClick={() => setIsMenuOpen(false)}
-                            className="absolute top-8 right-8 bg-slate-100 p-3 rounded-2xl"
-                        >
-                            <X size={28} />
-                        </button>
+                        <div className="flex justify-between items-center mb-16">
+                            <span className="text-xl font-black tracking-tighter">Menu</span>
+                            <button 
+                                onClick={() => setIsMenuOpen(false)}
+                                className="bg-[hsl(var(--muted))] p-4 rounded-3xl"
+                            >
+                                <X size={28} />
+                            </button>
+                        </div>
 
-                        <div className="flex flex-col gap-10">
-                            <div className="space-y-6">
-                                <Link onClick={() => setIsMenuOpen(false)} to="/market" className="block text-4xl font-black text-slate-900 tracking-tight">Marketplace</Link>
-                                <Link onClick={() => setIsMenuOpen(false)} to="/about" className="block text-4xl font-black text-slate-900 tracking-tight">About Us</Link>
+                        <div className="flex flex-col gap-8">
+                            <div className="space-y-4">
+                                <Link onClick={() => setIsMenuOpen(false)} to="/market" className="block text-5xl font-black text-[hsl(var(--foreground))] tracking-tighter hover:text-[hsl(var(--primary))] transition-colors">Market</Link>
+                                <Link onClick={() => setIsMenuOpen(false)} to="/about" className="block text-5xl font-black text-[hsl(var(--foreground))] tracking-tighter hover:text-[hsl(var(--primary))] transition-colors">About</Link>
                             </div>
 
-                            <div className="h-px bg-slate-100 w-full"></div>
+                            <div className="h-px bg-[hsl(var(--border))] w-full my-4"></div>
 
                             {user ? (
                                 <div className="space-y-6">
-                                    <Link onClick={() => setIsMenuOpen(false)} to="/dashboard" className="flex items-center gap-4 text-2xl font-bold text-slate-900">
-                                        <div className="bg-slate-900 text-white p-3 rounded-2xl">
-                                            <UserIcon size={24} />
+                                    <Link onClick={() => setIsMenuOpen(false)} to="/dashboard" className="flex items-center gap-5 text-2xl font-bold">
+                                        <div className="bg-[hsl(var(--primary))] text-white p-4 rounded-[1.5rem] shadow-glow shadow-primary/40">
+                                            <UserIcon size={32} />
                                         </div>
-                                        Dashboard
+                                        Personal Terminal
                                     </Link>
-                                    <button onClick={handleLogout} className="flex items-center gap-4 text-2xl font-bold text-red-500 w-full text-left">
-                                        <div className="bg-red-50 p-3 rounded-2xl">
-                                            <LogOut size={24} />
+                                    <button onClick={handleLogout} className="flex items-center gap-5 text-2xl font-bold text-red-500 w-full text-left">
+                                        <div className="bg-red-50 p-4 rounded-[1.5rem]">
+                                            <LogOut size={32} />
                                         </div>
-                                        Log Out
+                                        Disconnect
                                     </button>
                                 </div>
                             ) : (
                                 <div className="flex flex-col gap-4">
-                                    <Link onClick={() => setIsMenuOpen(false)} to="/login" className="w-full text-center border-2 border-slate-900 text-slate-900 rounded-[1.5rem] py-5 text-xl font-black">
-                                        Log In
+                                    <Link onClick={() => setIsMenuOpen(false)} to="/login" className="w-full text-center border-2 border-[hsl(var(--foreground))] text-[hsl(var(--foreground))] rounded-3xl py-6 text-xl font-black">
+                                        Sign In
                                     </Link>
-                                    <Link onClick={() => setIsMenuOpen(false)} to="/signup" className="w-full text-center bg-slate-900 text-white rounded-[1.5rem] py-5 text-xl font-black shadow-2xl">
-                                        Join Now
+                                    <Link onClick={() => setIsMenuOpen(false)} to="/signup" className="w-full text-center bg-[hsl(var(--foreground))] text-[hsl(var(--background))] rounded-3xl py-6 text-xl font-black shadow-elite">
+                                        Join Today
                                     </Link>
                                 </div>
                             )}
@@ -197,6 +226,6 @@ export default function Navbar() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </motion.nav>
     );
 }

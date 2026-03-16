@@ -11,8 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import SellerDashboard from "./pages/SellerDashboard";
 import NotFound from "./pages/NotFound";
-import Navbar from "./components/ui/Navbar";
-import Footer from "./components/ui/Footer";
+import Layout from "./components/ui/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 
@@ -21,26 +20,22 @@ function App() {
     <Router>
       <AuthProvider>
         <CartProvider>
-          <div className="min-h-screen bg-white">
-            <Navbar />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/market" element={<Market />} />
-                <Route path="/market/:id" element={<ProductDetails />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
-                <Route path="/seller/dashboard" element={<SellerDashboard />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/market" element={<Market />} />
+              <Route path="/market/:id" element={<ProductDetails />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+              <Route path="/seller/dashboard" element={<SellerDashboard />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
         </CartProvider>
       </AuthProvider>
     </Router>
