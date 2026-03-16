@@ -8,8 +8,8 @@
 }
 
 :root {
-  /* Premium HSL Palette */
-  --primary: 142.1 76.2% 36.3%; /* Premium Green */
+  /* Ultra-Premium HSL Palette */
+  --primary: 142.1 76.2% 36.3%; /* Professional Green */
   --primary-foreground: 355.7 100% 97.3%;
   
   --background: 0 0% 100%;
@@ -37,7 +37,7 @@
   --input: 240 5.9% 90%;
   --ring: 142.1 76.2% 36.3%;
 
-  --radius: 0.75rem;
+  --radius: 1rem;
 }
 
 .dark {
@@ -79,40 +79,135 @@ body {
   color: hsl(var(--foreground));
   font-feature-settings: "rlig" 1, "calt" 1;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glassmorphism Utilities */
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 5px;
+  border: 3px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* Glassmorphism Ultra */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .dark .glass {
-  background: rgba(10, 10, 10, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Animated Mesh Background */
+.mesh-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(142, 76%, 36%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(160, 84%, 39%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(180, 100%, 36%, 0.15) 0px, transparent 50%);
+  filter: blur(100px);
+  animation: mesh-float 20s ease-infinite alternate;
+}
+
+@keyframes mesh-float {
+  0% { transform: scale(1) translate(0px, 0px); }
+  50% { transform: scale(1.1) translate(20px, -20px); }
+  100% { transform: scale(1) translate(-20px, 20px); }
 }
 
 /* Premium Shadows */
 .shadow-premium {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.12);
 }
 
+.shadow-card {
+  box-shadow: 
+    0 0 0 1px rgba(0, 0, 0, 0.03),
+    0 2px 4px rgba(0, 0, 0, 0.02),
+    0 12px 24px rgba(0, 0, 0, 0.04);
+}
+
+/* Micro-interactions */
 .hover-lift {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.18);
+}
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(22, 163, 74, 0.08),
+    transparent 40%
+  );
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
 }
 
 /* Gradient Text Wrapper */
 .text-gradient {
-  background: linear-gradient(135deg, #166534, #10b981);
+  background: linear-gradient(135deg, #166534 0%, #10b981 50%, #34d399 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: text-shine 5s linear infinite;
+}
+
+@keyframes text-shine {
+  to { background-position: 200% center; }
+}
+
+/* Nav Hide/Show Utils */
+.nav-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-visible {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Fix for invisible text in inputs */
@@ -121,4 +216,5 @@ textarea,
 select {
   color: hsl(var(--foreground));
   background-color: transparent;
+  outline: none;
 }

@@ -1,99 +1,127 @@
 import React from "react";
 import Link from "next/link";
-import { Leaf, Twitter, Facebook, Instagram, ShieldCheck, Truck, Headphones } from "lucide-react";
+import { Leaf, Twitter, Facebook, Instagram, ShieldCheck, Truck, Headphones, ChevronRight, Mail, MapPin, Phone } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="bg-white border-t border-gray-100 pt-16 mt-auto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <footer className="bg-slate-950 text-white pt-24 pb-12 mt-auto overflow-hidden relative">
+            {/* Background Decoration */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-green-500/10 blur-[120px] rounded-full"></div>
 
-                {/* Top features row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 border-b border-gray-100">
-                    <div className="flex items-center gap-4">
-                        <div className="bg-green-50 p-3 rounded-full text-green-600">
-                            <ShieldCheck size={28} strokeWidth={1.5} />
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+                {/* Top Features / Trust Section */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-20 border-b border-slate-900">
+                    <div className="flex items-start gap-6 group">
+                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-[1.5rem] text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all shadow-xl">
+                            <ShieldCheck size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-semibold text-gray-900">Secure Escrow</h4>
-                            <p className="text-sm text-gray-500">100% payment protection</p>
+                            <h4 className="font-black text-xl mb-2 tracking-tight">Escrow Secured</h4>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed">Advanced encryption and payment protection for every agrarian trade.</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <div className="bg-blue-50 p-3 rounded-full text-blue-600">
-                            <Truck size={28} strokeWidth={1.5} />
+                    <div className="flex items-start gap-6 group">
+                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-[1.5rem] text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-xl">
+                            <Truck size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-semibold text-gray-900">Direct Delivery</h4>
-                            <p className="text-sm text-gray-500">Farm fresh straight to you</p>
+                            <h4 className="font-black text-xl mb-2 tracking-tight">Farm Logistics</h4>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed">Direct farm-to-door network ensuring peak freshness and speed.</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <div className="bg-orange-50 p-3 rounded-full text-orange-600">
-                            <Headphones size={28} strokeWidth={1.5} />
+                    <div className="flex items-start gap-6 group">
+                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-[1.5rem] text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xl">
+                            <Headphones size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-semibold text-gray-900">24/7 Support</h4>
-                            <p className="text-sm text-gray-500">Always here to help you</p>
+                            <h4 className="font-black text-xl mb-2 tracking-tight">Expert Support</h4>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed">Multilingual dedicated support for farmers and global agri-sellers.</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Main Footer Content */}
-                <div className="py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div className="col-span-1 md:col-span-1">
-                        <Link href="/" className="flex items-center gap-2 mb-4">
-                            <div className="bg-green-600 text-white p-1.5 rounded-lg">
-                                <Leaf size={24} />
+                {/* Main Content */}
+                <div className="py-24 grid grid-cols-1 lg:grid-cols-12 gap-16">
+                    {/* Brand Section */}
+                    <div className="lg:col-span-4">
+                        <Link href="/" className="flex items-center gap-3 mb-8 group">
+                            <div className="bg-green-600 text-white p-2 rounded-xl shadow-lg shadow-green-600/20">
+                                <Leaf size={28} />
                             </div>
-                            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-700 to-emerald-500">
-                                Farm-Ease
+                            <span className="text-3xl font-black tracking-tighter">
+                                Farm<span className="text-green-500">Ease</span>
                             </span>
                         </Link>
-                        <p className="text-gray-500 text-sm leading-relaxed mb-6">
-                            Connecting farmers, agri-sellers, and consumers through a secure, transparent, and fair agricultural marketplace.
+                        <p className="text-slate-400 font-medium leading-relaxed mb-10 max-w-sm">
+                            The world's premier digital ecosystem for modern agriculture. Connecting the source directly to the future.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="text-gray-400 hover:text-green-600 transition-colors"><Twitter size={20} /></a>
-                            <a href="#" className="text-gray-400 hover:text-green-600 transition-colors"><Facebook size={20} /></a>
-                            <a href="#" className="text-gray-400 hover:text-green-600 transition-colors"><Instagram size={20} /></a>
+                            {[Twitter, Facebook, Instagram].map((Icon, idx) => (
+                                <a key={idx} href="#" className="h-12 w-12 rounded-2xl bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-green-600 hover:text-white hover:-translate-y-1 transition-all shadow-lg">
+                                    <Icon size={20} />
+                                </a>
+                            ))}
                         </div>
                     </div>
 
-                    <div>
-                        <h4 className="font-semibold text-gray-900 mb-4">Marketplace</h4>
-                        <ul className="space-y-3 text-sm text-gray-500">
-                            <li><Link href="/market" className="hover:text-green-600 transition-colors">All Products</Link></li>
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">Fresh Produce</Link></li>
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">Seeds & Fertilizers</Link></li>
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">Farming Tools</Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 className="font-semibold text-gray-900 mb-4">Vendors</h4>
-                        <ul className="space-y-3 text-sm text-gray-500">
-                            <li><Link href="/sell" className="hover:text-green-600 transition-colors">Start Selling</Link></li>
-                            <li><Link href="/sell" className="hover:text-green-600 transition-colors">Seller Policies</Link></li>
-                            <li><Link href="/escrow" className="hover:text-green-600 transition-colors">Escrow Protection</Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 className="font-semibold text-gray-900 mb-4">Legal & Support</h4>
-                        <ul className="space-y-3 text-sm text-gray-500">
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">Terms of Service</Link></li>
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">Contact Us</Link></li>
-                            <li><Link href="#" className="hover:text-green-600 transition-colors">FAQ</Link></li>
-                        </ul>
+                    {/* Links Sections */}
+                    <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-12">
+                        <div>
+                            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-slate-200 mb-8">Marketplace</h4>
+                            <ul className="space-y-4">
+                                {["All Products", "Fresh Produce", "Agri-Tools", "Seeds & Soil"].map((link) => (
+                                    <li key={link}>
+                                        <Link href="/market" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
+                                            <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-green-500" />
+                                            {link}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-slate-200 mb-8">Platform</h4>
+                            <ul className="space-y-4">
+                                {["Start Selling", "Escrow Safety", "Seller Policy", "Analytics"].map((link) => (
+                                    <li key={link}>
+                                        <Link href="#" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
+                                            <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-green-500" />
+                                            {link}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-slate-200 mb-8">Get in Touch</h4>
+                            <ul className="space-y-6">
+                                <li className="flex items-center gap-4 text-slate-400">
+                                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-green-500">
+                                        <Mail size={18} />
+                                    </div>
+                                    <span className="font-bold text-sm">support@farm-ease.com</span>
+                                </li>
+                                <li className="flex items-center gap-4 text-slate-400">
+                                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-blue-500">
+                                        <Phone size={18} />
+                                    </div>
+                                    <span className="font-bold text-sm">+1 (800) AGRI-HELP</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
-                {/* Bottom copyright */}
-                <div className="py-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-sm text-gray-500 text-center md:text-left">
-                    <p>© {new Date().getFullYear()} Farm-Ease. All rights reserved.</p>
-                    <div className="mt-4 md:mt-0 space-x-4">
-                        <span>Made with precision & security.</span>
+                {/* Bottom Bar */}
+                <div className="pt-12 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <p className="text-slate-500 font-bold text-sm italic">
+                        © {new Date().getFullYear()} Farm-Ease Global Corp. All rights reserved.
+                    </p>
+                    <div className="flex gap-8 text-[12px] font-black uppercase tracking-widest text-slate-400">
+                        <Link href="#" className="hover:text-green-500 transition-colors">Privacy</Link>
+                        <Link href="#" className="hover:text-green-500 transition-colors">Terms</Link>
+                        <Link href="#" className="hover:text-green-500 transition-colors">Cookies</Link>
                     </div>
                 </div>
             </div>
