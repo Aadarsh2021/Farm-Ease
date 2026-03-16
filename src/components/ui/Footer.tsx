@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Leaf, Twitter, Facebook, Instagram, ShieldCheck, Truck, Headphones, ChevronRight, Mail, MapPin, Phone } from "lucide-react";
+import { Leaf, Twitter, Facebook, Instagram, ShieldCheck, Truck, Headphones, ChevronRight, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
     return (
@@ -54,7 +54,7 @@ export default function Footer() {
                             </span>
                         </Link>
                         <p className="text-slate-400 font-medium leading-relaxed mb-10 max-w-sm">
-                            The world's premier digital ecosystem for modern agriculture. Connecting the source directly to the future.
+                            The world&apos;s premier digital ecosystem for modern agriculture. Connecting the source directly to the future.
                         </p>
                         <div className="flex gap-4">
                             {[Twitter, Facebook, Instagram].map((Icon, idx) => (

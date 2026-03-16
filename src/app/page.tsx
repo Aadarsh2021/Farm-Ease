@@ -3,8 +3,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
-import { ArrowRight, Leaf, ShieldCheck, Sprout, Tractor, ShoppingCart, User, Loader2, Star, CheckCircle2, ChevronRight, Play } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, Leaf, ShieldCheck, Sprout, Tractor, ShoppingCart, Star, CheckCircle2, ChevronRight, Play } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { supabase } from "@/lib/supabase";
@@ -23,7 +23,7 @@ interface Product {
 
 const SpotlightCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
@@ -153,7 +153,7 @@ export default function Home() {
               </h1>
               
               <p className="text-xl lg:text-2xl text-slate-600 leading-relaxed max-w-2xl mb-12 font-medium">
-                The world's most sophisticated agricultural marketplace. Real-time escrow, verified local sourcing, and a global community of modern farmers.
+                The world&apos;s most sophisticated agricultural marketplace. Real-time escrow, verified local sourcing, and a global community of modern farmers.
               </p>
               
               <div className="flex flex-wrap gap-5 justify-center lg:justify-start">
@@ -244,7 +244,7 @@ export default function Home() {
                 Our Ecosystem
               </motion.span>
               <h2 className="text-6xl font-black mb-10 leading-[1] tracking-tight">Everything for the digital <span className="text-green-500 italic">agrarian.</span></h2>
-              <p className="text-xl text-slate-400 mb-12 leading-relaxed font-medium">From professional seeds to heavy industrial solutions, we've curated the ultimate collection for your success.</p>
+              <p className="text-xl text-slate-400 mb-12 leading-relaxed font-medium">From professional seeds to heavy industrial solutions, we&apos;ve curated the ultimate collection for your success.</p>
               
               <div className="flex flex-col gap-6">
                  {[
