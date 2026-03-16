@@ -1,7 +1,12 @@
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://fwdzzlzpkfjnxuotghmq.supabase.co';
-const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3ZHp6bHpwa2Zqbnh1b3RnaG1xIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTU4MDYwMiwiZXhwIjoyMDg3MTU2NjAyfQ.04AGeovgaFrAOV6blVXwv5XxFX45jWO9xDZ6pmoD1IQ';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseServiceKey) {
+    console.error('Error: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set in environment variables.');
+    process.exit(1);
+}
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -41,7 +46,7 @@ const products = [
 async function seed() {
     console.log('Seeding products to:', supabaseUrl);
     try {
-        const { data, error } = await supabase.from('products').insert(products);
+        const { error } = await supabase.from('products').insert(products);
         if (error) {
             console.error('Error seeding data:', JSON.stringify(error, null, 2));
         } else {

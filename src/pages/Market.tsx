@@ -73,21 +73,21 @@ export default function Market() {
                 {/* Page Header */}
                 <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
-                        <h1 className="text-5xl font-black text-slate-900 tracking-tight mb-4">
-                            Global <span className="text-green-600">Market</span>
+                        <h1 className="text-5xl font-extrabold text-slate-950 tracking-tight mb-4 leading-none lowercase">
+                            Global <span className="text-gradient">Market</span>
                         </h1>
-                        <p className="text-slate-500 font-bold text-lg max-w-xl">
+                        <p className="text-slate-500 font-medium text-lg max-w-xl">
                             Elite agricultural produce directly from verified source origins.
                         </p>
                     </div>
-                    <div className="flex bg-white rounded-3xl shadow-premium border border-slate-100 overflow-hidden max-w-md w-full focus-within:ring-4 focus-within:ring-green-100 transition-all">
-                        <div className="px-5 py-4 text-slate-400 group-focus-within:text-green-600 transition-colors">
-                            <Search size={24} />
+                    <div className="flex bg-white rounded-2xl shadow-premium border border-slate-100 overflow-hidden max-w-md w-full focus-within:ring-4 focus-within:ring-green-100/50 transition-all">
+                        <div className="px-5 py-4 text-slate-400">
+                            <Search size={22} strokeWidth={2.5} />
                         </div>
                         <input
                             type="text"
                             placeholder="Search products, seeds, tools..."
-                            className="flex-1 py-4 pr-6 outline-none text-slate-900 w-full font-bold"
+                            className="flex-1 py-4 pr-6 outline-none text-slate-950 w-full font-bold placeholder:text-slate-400 placeholder:font-medium"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -97,14 +97,14 @@ export default function Market() {
                 <div className="flex flex-col lg:flex-row gap-12">
                     {/* Sidebar Filters */}
                     <div className="w-full lg:w-72 flex-shrink-0">
-                        <div className="bg-white rounded-[2.5rem] shadow-premium border border-slate-100 p-8 sticky top-32">
-                            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-slate-50">
-                                <div className="bg-green-600 p-2 rounded-xl text-white shadow-lg shadow-green-100">
-                                    <SlidersHorizontal size={20} />
+                        <div className="bg-white rounded-[2rem] shadow-premium border border-slate-100 p-6 sticky top-32">
+                            <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-50">
+                                <div className="bg-slate-950 p-2.5 rounded-xl text-white shadow-lg">
+                                    <SlidersHorizontal size={18} strokeWidth={2.5} />
                                 </div>
-                                <h3 className="font-black text-slate-900 text-xl tracking-tight">Categories</h3>
+                                <h3 className="font-extrabold text-slate-950 text-lg tracking-tight">Categories</h3>
                             </div>
-                            <ul className="space-y-4">
+                            <ul className="space-y-2">
                                 {[
                                     { id: "all", label: "All Products", icon: Filter },
                                     { id: "fresh", label: "Fresh Produce", icon: Leaf },
@@ -114,29 +114,29 @@ export default function Market() {
                                     <li key={cat.id}>
                                         <button
                                             onClick={() => setActiveTab(cat.id)}
-                                            className={`flex items-center gap-4 w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 ${activeTab === cat.id ? 'bg-slate-900 text-white font-black shadow-xl scale-[1.02]' : 'text-slate-500 hover:bg-slate-50 font-bold'}`}
+                                            className={`flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl transition-all duration-300 ${activeTab === cat.id ? 'bg-slate-950 text-white font-bold shadow-xl' : 'text-slate-500 hover:bg-slate-50 font-medium'}`}
                                         >
-                                            <cat.icon size={20} className={activeTab === cat.id ? "text-green-400" : "text-slate-400"} />
+                                            <cat.icon size={18} className={activeTab === cat.id ? "text-green-400" : "text-slate-400"} />
                                             {cat.label}
                                         </button>
                                     </li>
                                 ))}
                             </ul>
-                            <div className="mt-10 pt-8 border-t border-slate-50">
-                                <h3 className="font-black text-slate-900 mb-6 flex justify-between items-center text-lg">
+                            <div className="mt-8 pt-8 border-t border-slate-50">
+                                <h3 className="font-extrabold text-slate-950 mb-4 flex justify-between items-center text-md">
                                     Price Cap
-                                    <span className="text-green-600 bg-green-50 px-3 py-1 rounded-xl text-sm italic font-black tracking-widest whitespace-nowrap ml-2">₹{priceRange}</span>
+                                    <span className="text-green-600 bg-green-50 px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap ml-2">₹{priceRange}</span>
                                 </h3>
                                 <input
                                     type="range"
-                                    className="w-full accent-green-600 cursor-pointer h-2 bg-slate-100 rounded-lg appearance-none"
+                                    className="w-full accent-green-600 cursor-pointer h-1.5 bg-slate-100 rounded-lg appearance-none"
                                     min="0"
                                     max="10000"
                                     step="100"
                                     value={priceRange}
                                     onChange={(e) => setPriceRange(parseInt(e.target.value))}
                                 />
-                                <div className="flex justify-between text-[10px] text-slate-400 mt-4 font-black uppercase tracking-widest">
+                                <div className="flex justify-between text-[10px] text-slate-400 mt-4 font-bold uppercase tracking-widest">
                                     <span>₹0</span>
                                     <span>₹10,000+</span>
                                 </div>
@@ -167,39 +167,37 @@ export default function Market() {
                         ) : products.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {products.map((product) => (
-                                    <div key={product.id} className="bg-white rounded-[2.5rem] shadow-premium border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500 group flex flex-col relative active:scale-[0.98]">
-                                        <div className="absolute top-4 left-4 z-10 translate-y-0 group-hover:-translate-y-1 transition-transform">
-                                            <span className="px-3 py-1.5 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-black rounded-xl shadow-lg border border-slate-100 uppercase tracking-widest">
+                                    <div key={product.id} className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden transition-all duration-500 group flex flex-col relative active:scale-[0.98] hover-lift">
+                                        <div className="absolute top-4 left-4 z-10">
+                                            <span className="px-3 py-1.5 bg-white/90 backdrop-blur-md text-slate-950 text-[10px] font-bold rounded-lg shadow-sm border border-slate-100 uppercase tracking-widest">
                                                 {product.category}
                                             </span>
                                         </div>
                                         <Link to={`/market/${product.id}`} className="block relative">
                                             <div className="aspect-[4/5] bg-slate-50 relative overflow-hidden flex items-center justify-center p-8">
                                                 {product.image_url ? (
-                                                    <img src={product.image_url} alt={product.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out" />
+                                                    <img src={product.image_url} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out" />
                                                 ) : (
                                                     <>
-                                                        <div className="absolute inset-0 bg-gradient-to-tr from-green-50 to-slate-50 opacity-50"></div>
-                                                        <Leaf size={64} className="text-green-200 z-10 group-hover:rotate-12 transition-transform duration-500" strokeWidth={1} />
+                                                        <Leaf size={48} className="text-slate-200 z-10 group-hover:rotate-12 transition-transform duration-500" strokeWidth={1} />
                                                     </>
                                                 )}
-                                                <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-all duration-500" />
                                             </div>
                                         </Link>
                                         <div className="p-8 flex-1 flex flex-col">
                                             <div className="mb-6">
                                                 <Link to={`/market/${product.id}`}>
-                                                    <h3 className="text-xl font-black text-slate-900 group-hover:text-green-600 transition-colors line-clamp-2 mb-2 leading-tight tracking-tight">{product.name}</h3>
+                                                    <h3 className="text-lg font-bold text-slate-950 group-hover:text-green-600 transition-colors line-clamp-2 mb-2 leading-tight tracking-tight">{product.name}</h3>
                                                 </Link>
                                                 <div className="flex items-center gap-2">
-                                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                                    <p className="text-xs text-slate-400 font-black uppercase tracking-widest">Verified Provenance</p>
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Verified Provenance</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center justify-between mt-auto pt-6 border-t border-slate-50">
                                                 <div className="flex flex-col">
-                                                    <span className="text-2xl font-black text-slate-900 tracking-tighter">₹{product.price}</span>
-                                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">per {product.unit}</span>
+                                                    <span className="text-xl font-extrabold text-slate-950 tracking-tight">₹{product.price}</span>
+                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">per {product.unit}</span>
                                                 </div>
                                                 <button
                                                     onClick={() => addToCart({
@@ -211,10 +209,10 @@ export default function Market() {
                                                         vendor_id: product.seller_id,
                                                         image: product.image_url || ""
                                                     })}
-                                                    className="bg-slate-900 text-white hover:bg-green-600 p-4 rounded-2xl transition-all shadow-xl active:hover:scale-95 group/btn"
+                                                    className="bg-slate-950 text-white hover:bg-green-600 p-3.5 rounded-xl transition-all shadow-md active:scale-95 group/btn"
                                                     title="Add to Collection"
                                                 >
-                                                    <ShoppingCart size={22} className="group-hover/btn:rotate-12 transition-transform" />
+                                                    <ShoppingCart size={20} className="group-hover/btn:rotate-12 transition-transform" />
                                                 </button>
                                             </div>
                                         </div>

@@ -12,30 +12,30 @@ export default function Footer() {
                 {/* Top Features / Trust Section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-20 border-b border-slate-900">
                     <div className="flex items-start gap-6 group">
-                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-[1.5rem] text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all shadow-xl">
+                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-green-500 group-hover:bg-green-600 group-hover:text-white transition-all shadow-xl">
                             <ShieldCheck size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-black text-xl mb-2 tracking-tight">Escrow Secured</h4>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed">Advanced encryption and payment protection for every agrarian trade.</p>
+                            <h4 className="font-extrabold text-xl mb-2 tracking-tight">Escrow Secured</h4>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed opacity-80">Advanced encryption and payment protection for every agrarian trade.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-6 group">
-                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-[1.5rem] text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-xl">
+                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-xl">
                             <Truck size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-black text-xl mb-2 tracking-tight">Farm Logistics</h4>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed">Direct farm-to-door network ensuring peak freshness and speed.</p>
+                            <h4 className="font-extrabold text-xl mb-2 tracking-tight">Farm Logistics</h4>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed opacity-80">Direct farm-to-door network ensuring peak freshness and speed.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-6 group">
-                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-[1.5rem] text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-all shadow-xl">
+                        <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-amber-500 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-xl">
                             <Headphones size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-black text-xl mb-2 tracking-tight">Expert Support</h4>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed">Multilingual dedicated support for farmers and global agri-sellers.</p>
+                            <h4 className="font-extrabold text-xl mb-2 tracking-tight">Expert Support</h4>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed opacity-80">Multilingual dedicated support for farmers and global agri-sellers.</p>
                         </div>
                     </div>
                 </div>
@@ -45,10 +45,10 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div className="lg:col-span-4">
                         <Link to="/" className="flex items-center gap-3 mb-8 group">
-                            <div className="bg-green-600 text-white p-2 rounded-xl shadow-lg shadow-green-600/20">
-                                <Leaf size={28} />
+                            <div className="bg-green-600 text-white p-2 rounded-xl shadow-lg">
+                                <Leaf size={24} />
                             </div>
-                            <span className="text-3xl font-black tracking-tighter">
+                            <span className="text-2xl font-extrabold tracking-tight">
                                 Farm<span className="text-green-500">Ease</span>
                             </span>
                         </Link>
@@ -67,11 +67,11 @@ export default function Footer() {
                     {/* Links Sections */}
                     <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-12">
                         <div>
-                            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-slate-200 mb-8">Marketplace</h4>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-200 mb-8">Marketplace</h4>
                             <ul className="space-y-4">
                                 {["All Products", "Fresh Produce", "Agri-Tools", "Seeds & Soil"].map((link) => (
                                     <li key={link}>
-                                        <Link to="/market" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
+                                        <Link to="/market" className="text-slate-400 hover:text-green-500 font-medium transition-all flex items-center gap-2 group text-sm">
                                             <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-green-500" />
                                             {link}
                                         </Link>
@@ -80,11 +80,11 @@ export default function Footer() {
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-slate-200 mb-8">Platform</h4>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-200 mb-8">Platform</h4>
                             <ul className="space-y-4">
                                 {["Start Selling", "Escrow Safety", "Seller Policy", "Analytics"].map((link) => (
                                     <li key={link}>
-                                        <Link to="#" className="text-slate-400 hover:text-green-500 font-bold transition-all flex items-center gap-2 group">
+                                        <Link to="#" className="text-slate-400 hover:text-green-500 font-medium transition-all flex items-center gap-2 group text-sm">
                                             <ChevronRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-green-500" />
                                             {link}
                                         </Link>
@@ -93,19 +93,19 @@ export default function Footer() {
                             </ul>
                         </div>
                         <div className="col-span-2 md:col-span-1">
-                            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-slate-200 mb-8">Get in Touch</h4>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-200 mb-8">Get in Touch</h4>
                             <ul className="space-y-6">
                                 <li className="flex items-center gap-4 text-slate-400">
-                                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-green-500">
-                                        <Mail size={18} />
+                                    <div className="bg-slate-900 border border-slate-800 p-2.5 rounded-xl text-green-500">
+                                        <Mail size={16} />
                                     </div>
-                                    <span className="font-bold text-sm">support@farm-ease.com</span>
+                                    <span className="font-medium text-xs">support@farm-ease.com</span>
                                 </li>
                                 <li className="flex items-center gap-4 text-slate-400">
-                                    <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-blue-500">
-                                        <Phone size={18} />
+                                    <div className="bg-slate-900 border border-slate-800 p-2.5 rounded-xl text-blue-500">
+                                        <Phone size={16} />
                                     </div>
-                                    <span className="font-bold text-sm">+1 (800) AGRI-HELP</span>
+                                    <span className="font-medium text-xs">+1 (800) AGRI-HELP</span>
                                 </li>
                             </ul>
                         </div>

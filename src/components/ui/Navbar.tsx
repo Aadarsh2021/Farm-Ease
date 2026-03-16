@@ -62,7 +62,7 @@ export default function Navbar() {
     return (
         <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}>
             <div className="max-w-7xl mx-auto px-6 py-4">
-                <div className="glass rounded-[2rem] px-8 py-3 flex justify-between items-center border-white/20 shadow-premium">
+                <div className="glass rounded-3xl px-8 py-3 flex justify-between items-center border border-white/40 shadow-premium">
                     {/* Logo with Magnetic Effect */}
                     <motion.div
                         style={{ x: magneticX, y: magneticY }}
@@ -70,10 +70,10 @@ export default function Navbar() {
                         onMouseLeave={handleMouseLeave}
                     >
                         <Link to="/" className="flex items-center gap-3 group">
-                            <div className="bg-slate-900 text-white p-2.5 rounded-2xl group-hover:bg-green-600 transition-colors shadow-lg">
+                            <div className="bg-slate-950 text-white p-2.5 rounded-2xl group-hover:bg-green-600 transition-colors shadow-lg">
                                 <Leaf size={24} className="group-hover:rotate-12 transition-transform" />
                             </div>
-                            <span className="text-2xl font-black text-slate-900 tracking-tight">
+                            <span className="text-2xl font-extrabold text-slate-950 tracking-tight">
                                 Farm<span className="text-green-600">Ease</span>
                             </span>
                         </Link>

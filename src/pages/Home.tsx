@@ -58,15 +58,13 @@ export default function Home() {
 
   return (
     <div className="relative isolate pt-20">
-      {/* Background Decor */}
-      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-green-200 to-emerald-400 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" }}></div>
-      </div>
+      {/* Dynamic Background */}
+      <div className="mesh-bg opacity-40" />
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-32 sm:pt-32 sm:pb-40 overflow-hidden">
+      <section className="relative pt-16 pb-24 sm:pt-24 sm:pb-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 items-center">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-x-16 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -79,7 +77,7 @@ export default function Home() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 text-green-700 text-sm font-semibold mb-8 shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 backdrop-blur-md border border-white/40 text-green-700 text-sm font-semibold mb-8 shadow-sm"
                   >
                     <User size={16} /> 
                     <span>Welcome back, <span className="text-green-900 font-bold">{user.displayName || user.email?.split('@')[0] || "Farmer"}</span></span>
@@ -87,83 +85,86 @@ export default function Home() {
                 )}
               </AnimatePresence>
               
-              <h1 className="text-5xl lg:text-8xl font-black text-slate-900 leading-[1.1] tracking-tighter mb-8 italic">
-                Empowering <span className="text-green-600">Agriculture</span> through Innovation.
+              <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-950 leading-[1.05] tracking-tight mb-8">
+                Empowering <span className="text-gradient">Agriculture</span> Through Innovation.
               </h1>
               
-              <p className="text-xl text-slate-500 leading-relaxed max-w-2xl mb-12 lg:mx-0 mx-auto font-bold italic">
+              <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mb-12 lg:mx-0 mx-auto font-medium">
                 The ultimate digital ecosystem where modern farmers meet verified sellers. Secure escrow payments, direct connections, and premium quality guaranteed.
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-950 text-white rounded-[2rem] font-black text-lg overflow-hidden transition-all hover:shadow-2xl hover:bg-green-600 hover:text-slate-950 active:scale-95 uppercase tracking-tighter italic">
+                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-950 text-white rounded-[1.5rem] font-bold text-lg overflow-hidden transition-all hover:shadow-2xl hover:bg-green-600 active:scale-95">
                   <span className="relative z-10 flex items-center gap-4">
-                    {user ? "Go to Dashboard" : "Start Shopping"} <ArrowRight size={24} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
+                    {user ? "Go to Dashboard" : "Start Shopping"} <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>
-                <Link to="/signup" className="px-10 py-5 bg-white border-4 border-slate-950 text-slate-950 rounded-[2rem] font-black text-lg hover:bg-slate-50 transition-all active:scale-95 shadow-premium uppercase tracking-tighter italic">
+                <Link to="/signup" className="px-10 py-5 bg-white border border-slate-200 text-slate-950 rounded-[1.5rem] font-bold text-lg hover:bg-slate-50 transition-all active:scale-95 shadow-sm">
                   Become a Seller
                 </Link>
               </div>
 
               <div className="mt-16 flex items-center justify-center lg:justify-start gap-12">
                 <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-4xl font-black text-slate-950 italic tracking-tighter">10K+</span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Farmers</span>
+                  <span className="text-4xl font-extrabold text-slate-950 tracking-tight">10K+</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Farmers</span>
                 </div>
-                <div className="h-12 w-1 bg-slate-100"></div>
+                <div className="h-12 w-px bg-slate-200"></div>
                 <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-4xl font-black text-slate-950 italic tracking-tighter">500+</span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Entities</span>
+                  <span className="text-4xl font-extrabold text-slate-950 tracking-tight">500+</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Entities</span>
                 </div>
-                <div className="h-12 w-1 bg-slate-100"></div>
+                <div className="h-12 w-px bg-slate-200"></div>
                 <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-4xl font-black text-slate-950 italic tracking-tighter">100%</span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Encrypted</span>
+                  <span className="text-4xl font-extrabold text-slate-950 tracking-tight">100%</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Secure</span>
                 </div>
               </div>
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
               className="mt-20 lg:mt-0 relative"
             >
-              <div className="relative rounded-[4rem] overflow-hidden bg-white p-6 shadow-premium border-8 border-white group">
-                <div className="aspect-[4/3] bg-slate-950 rounded-[3rem] flex items-center justify-center relative overflow-hidden">
-                   <div className="absolute inset-0 opacity-20">
+              <div className="relative rounded-[3rem] overflow-hidden bg-white/40 backdrop-blur-sm p-4 shadow-premium border border-white/60 group">
+                <div className="aspect-[4/3] bg-slate-100 rounded-[2.5rem] flex items-center justify-center relative overflow-hidden">
+                   <div className="absolute inset-0 opacity-10">
                      <div className="grid grid-cols-5 gap-4 p-8 h-full w-full">
                         {[...Array(20)].map((_, i) => (
-                          <div key={i} className="bg-white/10 rounded-xl animate-pulse" style={{ animationDelay: `${i * 0.15}s` }}></div>
+                          <div key={i} className="bg-slate-950 rounded-lg animate-pulse" style={{ animationDelay: `${i * 0.15}s` }}></div>
                         ))}
                      </div>
                    </div>
-                   <Tractor size={160} className="text-green-500 drop-shadow-[0_0_30px_rgba(34,197,94,0.3)] z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" strokeWidth={1} />
+                   <Tractor size={160} className="text-green-600 drop-shadow-[0_0_30px_rgba(22,163,74,0.2)] z-10 transition-transform duration-700 group-hover:scale-105" strokeWidth={1} />
                    
-                   <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/90 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 shadow-2xl z-20 transform group-hover:translate-y-2 transition-transform">
-                      <div className="flex items-center gap-6">
-                        <div className="bg-slate-950 p-4 rounded-2xl text-white shadow-xl">
-                          <ShieldCheck size={32} strokeWidth={3} />
+                   <div className="absolute bottom-8 left-8 right-8 p-6 glass rounded-[2rem] border border-white/20 shadow-2xl z-20">
+                      <div className="flex items-center gap-5">
+                        <div className="bg-slate-950 p-3.5 rounded-2xl text-white shadow-xl">
+                          <ShieldCheck size={28} strokeWidth={2} />
                         </div>
                         <div>
-                          <p className="font-black text-slate-950 text-xl italic uppercase tracking-tighter leading-none mb-1">Decentralized Trade</p>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Encrypted Ledger Protection</p>
+                          <p className="font-extrabold text-slate-950 tracking-tight leading-none mb-1">Escrow Protected</p>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">End-to-End Encryption</p>
                         </div>
                       </div>
                    </div>
                 </div>
               </div>
 
-              {/* Floating Element */}
+              {/* Floating Status Indicator */}
               <motion.div 
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-12 -right-12 hidden xl:flex bg-slate-950 p-8 rounded-[2.5rem] shadow-premium border-4 border-white z-30"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-6 -right-6 hidden xl:flex bg-white px-6 py-4 rounded-2xl shadow-premium border border-slate-100 z-30"
               >
-                <div className="flex items-center gap-4">
-                  <div className="h-4 w-4 rounded-full bg-green-500 animate-ping"></div>
-                  <span className="font-black text-white text-xs uppercase tracking-[0.4em] italic leading-none">Live Escrow Pulse</span>
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                    <div className="absolute inset-0 h-3 w-3 rounded-full bg-green-500 animate-ping"></div>
+                  </div>
+                  <span className="font-bold text-slate-900 text-xs uppercase tracking-widest leading-none">Live Market Pulse</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -195,21 +196,21 @@ export default function Home() {
           >
             {[
               { title: "Prime Produce", desc: "Strategic bio-assets harvested from verified decentralized field nodes.", icon: Leaf, color: "green", path: "/market" },
-              { title: "Soil Matrices", desc: "High-yield soil structures and genetic genetic catalysts.", icon: Sprout, color: "emerald", path: "/market" },
+              { title: "Soil Matrices", desc: "High-yield soil structures and genetic catalysts for optimized growth.", icon: Sprout, color: "emerald", path: "/market" },
               { title: "Precision Gear", desc: "Mechanized assets and smart harvesting systems for peak throughput.", icon: Tractor, color: "blue", path: "/market" }
             ].map((cat, idx) => (
               <motion.div 
                 key={idx}
                 variants={fadeInUp}
-                className="group p-12 bg-white rounded-[3.5rem] border border-slate-100 shadow-sm hover:shadow-premium transition-all duration-500 hover:-translate-y-2"
+                className="group p-10 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-premium transition-all duration-500 hover:-translate-y-2 spotlight-card"
               >
-                <div className="w-20 h-20 rounded-[1.5rem] bg-slate-950 text-white flex items-center justify-center mb-10 group-hover:bg-green-600 transition-colors shadow-2xl">
-                  <cat.icon size={36} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" />
+                <div className="w-16 h-16 rounded-2xl bg-slate-950 text-white flex items-center justify-center mb-8 group-hover:bg-green-600 transition-colors shadow-xl">
+                  <cat.icon size={32} strokeWidth={2} className="group-hover:rotate-12 transition-transform" />
                 </div>
-                <h3 className="text-3xl font-black text-slate-950 mb-4 italic uppercase tracking-tighter">{cat.title}</h3>
-                <p className="text-slate-400 mb-10 leading-relaxed font-bold italic text-sm">{cat.desc}</p>
-                <Link to={cat.path} className="flex items-center gap-4 font-black text-[10px] uppercase tracking-[0.4em] text-slate-950 hover:text-green-600 transition-colors">
-                  Access Manifest <ArrowRight size={18} strokeWidth={3} />
+                <h3 className="text-2xl font-extrabold text-slate-950 mb-3 tracking-tight">{cat.title}</h3>
+                <p className="text-slate-500 mb-8 leading-relaxed font-medium text-sm">{cat.desc}</p>
+                <Link to={cat.path} className="flex items-center gap-3 font-bold text-xs uppercase tracking-widest text-slate-950 hover:text-green-600 transition-colors">
+                  Access Manifest <ArrowRight size={16} />
                 </Link>
               </motion.div>
             ))}
@@ -248,7 +249,7 @@ export default function Home() {
                 <motion.div 
                   key={product.id}
                   variants={fadeInUp}
-                  className="group bg-white rounded-[3rem] border border-slate-100 overflow-hidden shadow-premium hover:shadow-2xl transition-all duration-700 flex flex-col hover:-translate-y-2"
+                  className="group bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-premium transition-all duration-500 flex flex-col hover-lift"
                 >
                   <div className="relative aspect-square overflow-hidden bg-slate-50">
                     {product.image_url ? (
@@ -270,21 +271,21 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="p-10 flex-1 flex flex-col">
-                    <div className="mb-8">
-                       <div className="flex items-center gap-3 text-green-600 mb-3">
-                          <CheckCircle2 size={16} strokeWidth={3} />
-                          <span className="text-[10px] font-black uppercase tracking-[0.3em] italic">Validated Asset</span>
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="mb-6">
+                       <div className="flex items-center gap-2 text-green-600 mb-2">
+                          <CheckCircle2 size={14} strokeWidth={3} />
+                          <span className="text-[10px] font-bold uppercase tracking-widest">Verified Quality</span>
                        </div>
                        <Link to={`/market/${product.id}`} className="block">
-                        <h3 className="text-3xl font-black text-slate-950 group-hover:text-green-600 transition-colors line-clamp-1 italic uppercase tracking-tighter leading-none">{product.name}</h3>
+                        <h3 className="text-xl font-bold text-slate-950 group-hover:text-green-600 transition-colors line-clamp-1 tracking-tight">{product.name}</h3>
                        </Link>
                     </div>
 
-                    <div className="mt-auto flex items-center justify-between pt-8 border-t border-slate-50">
+                    <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-50">
                       <div>
-                        <p className="text-4xl font-black text-slate-950 tracking-tighter italic">₹{product.price.toLocaleString()}</p>
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest italic">/{product.unit}</p>
+                        <p className="text-2xl font-extrabold text-slate-950 tracking-tight">₹{product.price.toLocaleString()}</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">/{product.unit}</p>
                       </div>
                       <button 
                         onClick={() => addToCart({
@@ -296,9 +297,9 @@ export default function Home() {
                           vendor_id: product.seller_id,
                           image: product.image_url || ""
                         })}
-                        className="h-16 w-16 bg-slate-950 text-white rounded-2xl flex items-center justify-center hover:bg-green-600 hover:text-slate-950 transition-all hover:shadow-2xl active:scale-95 group/btn"
+                        className="h-12 w-12 bg-slate-950 text-white rounded-xl flex items-center justify-center hover:bg-green-600 active:scale-95 group/btn shadow-lg"
                       >
-                        <ShoppingCart size={28} strokeWidth={3} className="group-hover/btn:rotate-12 transition-transform" />
+                        <ShoppingCart size={20} className="group-hover/btn:rotate-12 transition-transform" />
                       </button>
                     </div>
                   </div>
@@ -334,15 +335,15 @@ export default function Home() {
               viewport={{ once: true }}
               className="relative z-10"
             >
-              <h2 className="text-6xl lg:text-8xl font-black text-white mb-10 tracking-tighter italic uppercase leading-none">Forge Your <span className="text-green-500">Legacy.</span></h2>
-              <p className="text-2xl text-slate-400 mb-16 max-w-3xl mx-auto font-bold italic opacity-80 uppercase tracking-tight">
+              <h2 className="text-6xl lg:text-7xl font-extrabold text-white mb-10 tracking-tight leading-none uppercase">Forge Your <span className="text-green-500">Legacy.</span></h2>
+              <p className="text-xl text-slate-400 mb-16 max-w-3xl mx-auto font-medium opacity-90">
                 Join the vanguard of the modern agrarian movement. Scalable. Transparent. Hyper-Secure.
               </p>
-              <div className="flex flex-wrap justify-center gap-10">
-                <Link to="/signup" className="px-12 py-6 bg-white text-slate-950 rounded-[2rem] font-black text-xl hover:bg-green-50 hover:shadow-2xl transition-all active:scale-95 italic uppercase tracking-tighter">
+              <div className="flex flex-wrap justify-center gap-6">
+                <Link to="/signup" className="px-12 py-5 bg-white text-slate-950 rounded-[1.5rem] font-bold text-lg hover:bg-green-50 transition-all active:scale-95">
                   Initialize Profile
                 </Link>
-                <Link to="/market" className="px-12 py-6 bg-slate-900 text-white border-4 border-slate-800 rounded-[2rem] font-black text-xl hover:border-white transition-all active:scale-95 italic uppercase tracking-tighter">
+                <Link to="/market" className="px-12 py-5 bg-slate-900 text-white border border-slate-800 rounded-[1.5rem] font-bold text-lg hover:border-white transition-all active:scale-95">
                   Enter Ecosystem
                 </Link>
               </div>
