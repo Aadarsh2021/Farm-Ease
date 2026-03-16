@@ -61,56 +61,61 @@ export default function BioScan() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-32 pb-20">
-      <div className="max-w-4xl mx-auto px-6">
+    <div className="min-h-screen bg-slate-950 pt-32 pb-20 relative overflow-hidden">
+      {/* Background Aesthetics */}
+      <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-emerald-600/5 rounded-full blur-[180px] -mr-96 -mt-96 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[150px] -ml-64 -mb-64 pointer-events-none"></div>
+
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold mb-6 uppercase tracking-widest"
+            className="inline-flex items-center gap-3 px-6 py-2 bg-emerald-500/10 text-emerald-500 rounded-full text-[10px] font-black mb-10 uppercase tracking-[0.3em] border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)]"
           >
-            <Sparkles size={14} /> Quantum Accuracy Diagnostics
+            <Sparkles size={16} /> Quantum Accuracy Diagnostics
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight"
+            className="text-5xl lg:text-7xl font-black text-white mb-8 tracking-tighter italic uppercase leading-none"
           >
-            AI <span className="text-emerald-600 font-black italic">Farm-Ease Bio-Scan</span> Protocol
+            AI <span className="text-emerald-500 uppercase not-italic">Bio-Scan</span> <br /> Protocol.
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-slate-500 max-w-2xl mx-auto"
+            className="text-xl text-slate-500 max-w-2xl mx-auto font-bold italic leading-relaxed"
           >
             Our neural nodes process high-resolution crop imagery to detect disease, nutrient deficiencies, and pest infestations with sub-field precision.
           </motion.p>
         </div>
 
         {/* Diagnostic Area */}
-        <div className="bg-white border border-slate-100 rounded-[3.5rem] p-8 lg:p-16 shadow-premium relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
+        <div className="bg-slate-900/50 backdrop-blur-3xl border border-white/5 rounded-[4rem] p-10 lg:p-16 shadow-premium relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]"></div>
           {!selectedImage ? (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-slate-200 rounded-[2rem] bg-white group hover:border-emerald-300 transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center py-24 border-4 border-dashed border-white/5 rounded-[3rem] bg-white/5 group/upload hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all duration-700 cursor-pointer relative overflow-hidden"
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="w-20 h-20 bg-emerald-50 rounded-3xl flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
-                <Camera size={40} />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05),transparent)] opacity-0 group-hover/upload:opacity-100 transition-opacity duration-700"></div>
+              <div className="bg-slate-950 p-10 rounded-[2.5rem] mb-10 group-hover/upload:scale-110 group-hover/upload:rotate-12 group-hover/upload:shadow-2xl transition-all duration-700 relative z-10 border border-white/5">
+                <Camera size={56} className="text-slate-700 group-hover/upload:text-emerald-500 transition-colors" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Upload Content for Analysis</h3>
-              <p className="text-slate-400 text-sm mb-8 text-center max-w-xs">
-                Drag and drop high-res images or click to browse. Supported formats: JPG, PNG, RAW.
+              <h3 className="text-3xl font-black text-white mb-4 tracking-tighter italic uppercase relative z-10">Upload Content</h3>
+              <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.4em] mb-12 text-center max-w-xs relative z-10 italic">
+                Drag and drop high-res images or click to begin neural processing
               </p>
               <button 
-                className="px-10 py-5 bg-slate-950 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] italic flex items-center gap-4 hover:bg-emerald-600 transition-all shadow-premium active:scale-95"
+                className="px-12 py-6 bg-emerald-600 text-slate-950 rounded-[2rem] font-black uppercase tracking-[0.2em] italic flex items-center gap-4 hover:bg-white transition-all shadow-2xl active:scale-95 relative z-10"
               >
-                <Upload size={20} strokeWidth={3} /> Select Field Data
+                <Upload size={24} strokeWidth={4} /> Select Field Data
               </button>
               <input 
                 type="file" 
@@ -121,27 +126,27 @@ export default function BioScan() {
               />
             </motion.div>
           ) : (
-            <div className="grid lg:grid-cols-2 gap-12">
+            <div className="grid lg:grid-cols-2 gap-16">
               {/* Image Preview */}
-              <div className="relative group">
-                <div className="aspect-square rounded-[2rem] overflow-hidden bg-slate-200 border-4 border-white shadow-xl">
+              <div className="relative group/preview">
+                <div className="aspect-square rounded-[3rem] overflow-hidden bg-slate-950 border-8 border-white/5 shadow-2xl relative">
                   <img 
                     src={selectedImage} 
                     alt="Preview" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover opacity-80 group-hover/preview:opacity-100 transition-opacity duration-700"
                   />
                   {isAnalyzing && (
-                    <div className="absolute inset-0 bg-emerald-900/40 backdrop-blur-sm flex items-center justify-center">
-                      <div className="text-center text-white">
-                         <div className="w-16 h-1 w-32 bg-emerald-800 rounded-full mx-auto mb-4 overflow-hidden">
+                    <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center">
+                      <div className="text-center">
+                         <div className="w-48 h-1.5 bg-white/10 rounded-full mx-auto mb-8 overflow-hidden relative">
                             <motion.div 
-                              className="h-full bg-emerald-400"
+                              className="h-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
                               initial={{ x: "-100%" }}
                               animate={{ x: "100%" }}
-                              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                             />
                          </div>
-                         <p className="text-xs font-bold uppercase tracking-[0.2em] font-mono">Scanning Tissue...</p>
+                         <p className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.5em] italic animate-pulse">Scanning Bio-Signal Matrix...</p>
                       </div>
                     </div>
                   )}
@@ -149,9 +154,9 @@ export default function BioScan() {
                 {!isAnalyzing && !result && (
                   <button 
                     onClick={reset}
-                    className="absolute -top-3 -right-3 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors"
+                    className="absolute -top-4 -right-4 w-14 h-14 bg-white text-slate-950 shadow-2xl rounded-[1.5rem] flex items-center justify-center hover:bg-red-500 hover:text-white transition-all duration-500 hover:rotate-90"
                   >
-                    <X size={20} />
+                    <X size={28} strokeWidth={4} />
                   </button>
                 )}
               </div>
@@ -165,16 +170,20 @@ export default function BioScan() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
+                      className="space-y-8"
                     >
-                      <h3 className="text-2xl font-bold text-slate-900 mb-4">Neural Processing Ready</h3>
-                      <p className="text-slate-500 mb-8 leading-relaxed">
-                        Data nodes are calibrated. Analysis will perform pathogen detection, moisture mapping, and nutrient assessment.
+                      <div>
+                        <h3 className="text-4xl font-black text-white mb-4 tracking-tighter italic uppercase">Identity Ready</h3>
+                        <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.5em] mb-8 italic">Neural Processing Sub-Grid Online</p>
+                      </div>
+                      <p className="text-slate-400 font-bold italic text-lg leading-relaxed">
+                        Data nodes are calibrated. Analysis will perform pathogen detection, moisture mapping, and nutrient assessment at 99.8% precision.
                       </p>
                       <button 
                         onClick={startAnalysis}
-                        className="w-full py-6 bg-emerald-600 text-slate-950 rounded-[2rem] font-black uppercase tracking-[0.2em] italic flex items-center justify-center gap-4 hover:bg-slate-950 hover:text-white transition-all shadow-premium active:scale-95"
+                        className="w-full py-8 bg-emerald-600 text-slate-950 rounded-[2.5rem] font-black uppercase tracking-[0.2em] italic flex items-center justify-center gap-6 hover:bg-white hover:scale-[1.02] transition-all shadow-[0_20px_50px_rgba(16,185,129,0.2)] active:scale-95 text-2xl"
                       >
-                        <Zap size={22} strokeWidth={3} /> Initialize Diagnostic
+                        <Zap size={28} strokeWidth={4} className="group-hover:rotate-12 transition-transform" /> Initialize Scan
                       </button>
                     </motion.div>
                   ) : isAnalyzing ? (
@@ -182,21 +191,25 @@ export default function BioScan() {
                       key="analyzing"
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="space-y-6"
+                      className="space-y-8"
                     >
-                      <div className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                        <div className="flex items-center gap-3 mb-4">
-                           <Microscope className="text-emerald-600 animate-spin-slow" size={20} />
-                           <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Protocol status</span>
+                      <div className="p-10 bg-white/5 rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden group/status">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full -mr-16 -mt-16"></div>
+                        <div className="flex items-center gap-5 mb-8">
+                           <div className="bg-slate-950 p-4 rounded-2xl border border-white/5">
+                              <Microscope className="text-emerald-500 animate-spin" size={28} />
+                           </div>
+                           <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] italic">Protocol Status</span>
                         </div>
-                        <h4 className="font-bold text-slate-900">Synchronizing Nodes...</h4>
-                        <div className="mt-4 h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <h4 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-8 leading-none">Establishing <br /> <span className="text-emerald-500">Neural Sync...</span></h4>
+                        <div className="h-3 bg-slate-950 rounded-full overflow-hidden shadow-inner border border-white/5">
                            <motion.div 
-                            className="h-full bg-emerald-500"
-                            animate={{ width: ["10%", "45%", "65%", "90%"] }}
+                            className="h-full bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)]"
+                            animate={{ width: ["10%", "45%", "65%", "100%"] }}
                             transition={{ duration: 3.5, ease: "easeInOut" }}
                            />
                         </div>
+                        <p className="text-[9px] text-slate-600 font-black uppercase tracking-[0.3em] mt-6 italic">Accessing Agrarian Datasets: 1,482 Nodes Sampled</p>
                       </div>
                     </motion.div>
                   ) : (
@@ -205,45 +218,54 @@ export default function BioScan() {
                       key="result"
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="space-y-6"
+                      className="space-y-8"
                     >
-                      <div className="p-8 bg-white rounded-[2rem] border border-red-100 shadow-xl shadow-red-500/5">
-                        <div className="flex items-center gap-3 mb-6">
-                           <AlertCircle className="text-red-500" size={24} />
-                           <h3 className="text-xl font-bold text-slate-900">{result.status}</h3>
+                      <div className="p-10 bg-slate-950/80 rounded-[4rem] border border-red-500/20 shadow-2xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-full h-2 bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]"></div>
+                        <div className="flex items-center gap-5 mb-10">
+                           <div className="bg-red-500/10 p-4 rounded-2xl border border-red-500/20">
+                              <AlertCircle className="text-red-500" size={32} />
+                           </div>
+                           <div>
+                              <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter leading-none">{result.status}</h3>
+                              <p className="text-[9px] text-red-500 font-black uppercase tracking-[0.4em] mt-2 italic">Alert Protocol 04-X</p>
+                           </div>
                         </div>
                         
-                        <div className="space-y-4 mb-8">
-                           <div className="flex justify-between items-center text-sm">
-                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Detected Host</span>
-                              <span className="text-slate-900 font-bold">{result.pathogen}</span>
+                        <div className="space-y-6 mb-12">
+                           <div className="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all">
+                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] italic">Detected Host</span>
+                              <span className="text-white font-black italic uppercase tracking-tight">{result.pathogen}</span>
                            </div>
-                           <div className="flex justify-between items-center text-sm">
-                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Confidence</span>
-                              <span className="text-emerald-600 font-black">{result.confidence}%</span>
+                           <div className="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all">
+                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] italic">Confidence</span>
+                              <span className="text-emerald-500 font-black text-2xl italic tracking-tighter">{result.confidence}%</span>
                            </div>
-                           <div className="flex justify-between items-center text-sm">
-                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Severity</span>
-                              <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-lg font-bold text-[10px]">{result.severity}</span>
+                           <div className="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all">
+                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] italic">Severity</span>
+                              <span className="px-6 py-2 bg-red-500 text-slate-950 rounded-xl font-black text-[10px] uppercase tracking-widest italic">{result.severity}</span>
                            </div>
                         </div>
 
-                        <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 mb-8">
-                           <p className="text-sm text-emerald-800 leading-relaxed font-medium">
-                              <strong>Recommended Remedy:</strong> {result.remedy}
+                        <div className="p-8 bg-emerald-500/10 rounded-[2.5rem] border border-emerald-500/20 mb-12 relative group/remedy">
+                           <div className="absolute top-4 right-6 opacity-20 group-hover/remedy:opacity-100 transition-opacity">
+                              <ShieldCheck size={28} className="text-emerald-500" />
+                           </div>
+                           <p className="text-lg text-emerald-200 leading-relaxed font-bold italic">
+                              <strong className="text-white uppercase tracking-widest text-[10px] block mb-3 opacity-50">Recommended Protocol:</strong> {result.remedy}
                            </p>
                         </div>
 
-                        <div className="flex gap-6">
+                        <div className="flex flex-col sm:flex-row gap-6">
                           <Link 
                             to="/market"
-                            className="flex-1 py-6 bg-slate-950 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] italic flex items-center justify-center gap-4 hover:bg-emerald-600 transition-all shadow-premium active:scale-95"
+                            className="flex-1 py-7 bg-emerald-600 text-slate-950 rounded-[2.2rem] font-black uppercase tracking-[0.2em] italic flex items-center justify-center gap-5 hover:bg-white transition-all shadow-2xl active:scale-95 text-xl"
                           >
-                            Find Remedy <ArrowRight size={20} strokeWidth={3} />
+                            Find Remedy <ArrowRight size={22} strokeWidth={4} />
                           </Link>
                           <button 
                             onClick={reset}
-                            className="px-10 py-6 bg-slate-50 text-slate-400 rounded-[2rem] font-black uppercase tracking-[0.2em] italic hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
+                            className="px-10 py-7 bg-white/5 text-slate-500 rounded-[2.2rem] font-black uppercase tracking-[0.2em] italic hover:bg-red-500/10 hover:text-red-500 border border-white/5 transition-all active:scale-95 text-[10px]"
                           >
                             New Scan
                           </button>

@@ -215,9 +215,9 @@ export default function FarmerDashboard() {
     };
 
     if (loading) return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-            <div className="w-12 h-12 border-4 border-green-200 border-t-green-600 rounded-full animate-spin mb-6"></div>
-            <p className="font-black text-slate-400 uppercase tracking-widest text-[10px]">Loading Farm Access...</p>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950">
+            <div className="w-16 h-16 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(16,185,129,0.2)]"></div>
+            <p className="font-black text-slate-500 uppercase tracking-[0.5em] text-[10px] animate-pulse">Syncing Farm Node...</p>
         </div>
     );
 
@@ -275,40 +275,40 @@ export default function FarmerDashboard() {
             </motion.div>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto bg-white custom-scrollbar relative">
-                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.03),transparent)] pointer-events-none"></div>
+            <div className="flex-1 overflow-y-auto bg-slate-950 custom-scrollbar relative">
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.05),transparent)] pointer-events-none"></div>
                 
                 <motion.header 
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="bg-white/80 backdrop-blur-2xl px-12 py-8 flex justify-between items-center sticky top-0 z-20 border-b border-slate-100"
+                    className="bg-slate-900/50 backdrop-blur-3xl px-12 py-8 flex justify-between items-center sticky top-0 z-40 border-b border-white/5"
                 >
                     <div className="flex items-center gap-6">
-                        <div className="bg-slate-950 p-3 rounded-2xl text-white shadow-xl">
-                            <Activity size={24} />
+                        <div className="bg-emerald-600 p-4 rounded-2xl text-slate-950 shadow-[0_0_30px_rgba(16,185,129,0.3)] rotate-3">
+                            <Activity size={24} strokeWidth={3} />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-black text-slate-950 capitalize tracking-tighter italic leading-none">{activeTab}</h1>
-                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-2">Node Status: <span className="text-emerald-500">Active</span></p>
+                            <h1 className="text-4xl font-black text-white capitalize tracking-tighter italic leading-none">{activeTab}</h1>
+                            <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em] mt-2">Protocol: <span className="text-emerald-500">Live & Encrypted</span></p>
                         </div>
                     </div>
                     <div className="flex items-center gap-8">
                         <div className="hidden sm:flex flex-col items-end mr-4">
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Cycle Progress</p>
-                            <div className="w-32 h-1.5 bg-slate-100 rounded-full mt-2 overflow-hidden shadow-inner">
-                                <div className="w-3/4 h-full bg-emerald-500 rounded-full"></div>
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">Resource Utilization</p>
+                            <div className="w-32 h-1.5 bg-white/5 rounded-full mt-2 overflow-hidden shadow-inner">
+                                <div className="w-3/4 h-full bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
                             </div>
                         </div>
-                        <button className="text-slate-300 hover:text-emerald-600 relative p-4 rounded-[1.5rem] hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100">
+                        <button className="text-slate-500 hover:text-emerald-500 relative p-4 rounded-[1.5rem] hover:bg-white/5 transition-all border border-transparent hover:border-white/5">
                             <Bell size={28} />
-                            {orders.length > 0 && <span className="absolute top-4 right-4 bg-emerald-500 w-3 h-3 rounded-full ring-4 ring-white animate-pulse"></span>}
+                            {orders.length > 0 && <span className="absolute top-4 right-4 bg-emerald-500 w-3 h-3 rounded-full ring-4 ring-slate-900 animate-pulse"></span>}
                         </button>
-                        <div className="flex items-center gap-6 border-l border-slate-100 pl-8 ml-2">
+                        <div className="flex items-center gap-6 border-l border-white/5 pl-8 ml-2">
                             <div className="text-right hidden md:block">
-                                <p className="font-black text-slate-950 leading-none mb-1 text-lg">{displayName}</p>
-                                <p className="text-[9px] text-emerald-600 uppercase font-black tracking-[0.3em] flex items-center justify-end gap-2 italic">Master Harvester</p>
+                                <p className="font-black text-white leading-none mb-1 text-lg">{displayName}</p>
+                                <p className="text-[9px] text-emerald-500 uppercase font-black tracking-[0.3em] flex items-center justify-end gap-2 italic">Master Operator</p>
                             </div>
-                            <div className="w-16 h-16 rounded-[2rem] bg-emerald-500 text-slate-950 font-black text-3xl flex items-center justify-center shadow-2xl italic border-4 border-white rotate-3">{initials}</div>
+                            <div className="w-16 h-16 rounded-[2rem] bg-emerald-600 text-slate-950 font-black text-3xl flex items-center justify-center shadow-[0_20px_40px_rgba(16,185,129,0.2)] italic border-4 border-slate-950 rotate-3 transition-transform hover:rotate-0 cursor-pointer">{initials}</div>
                         </div>
                     </div>
                 </motion.header>
@@ -317,41 +317,41 @@ export default function FarmerDashboard() {
                     {/* Overview Tab */}
                     {(activeTab === "overview" || activeTab === "listings") && (
                         <div className="space-y-16">
-                            {/* Stats */}
+                            {/* Stats Matrix */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                                 <motion.div 
                                     whileHover={{ y: -10 }}
-                                    className="bg-white rounded-[3.5rem] shadow-premium p-12 group transition-all border border-slate-100 relative overflow-hidden"
+                                    className="bg-slate-900/50 backdrop-blur-3xl rounded-[3.5rem] p-12 group transition-all border border-white/5 relative overflow-hidden"
                                 >
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full -mr-16 -mt-16"></div>
                                     <div className="flex justify-between items-start mb-10">
-                                        <div className="bg-emerald-50 p-5 rounded-2xl text-emerald-600 shadow-inner group-hover:scale-110 transition-transform"><Banknote size={32} /></div>
-                                        <span className="bg-emerald-100 text-emerald-900 text-[10px] font-black px-4 py-2 rounded-xl flex items-center gap-2 uppercase tracking-[0.2em] italic border border-emerald-200">
+                                        <div className="bg-emerald-500/10 p-5 rounded-2xl text-emerald-500 shadow-inner group-hover:scale-110 transition-transform"><Banknote size={32} /></div>
+                                        <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-black px-4 py-2 rounded-xl flex items-center gap-2 uppercase tracking-[0.2em] italic border border-emerald-500/20">
                                             Liquid Capital <ArrowUpRight size={14} />
                                         </span>
                                     </div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block italic">Settled Balance</p>
-                                    <h3 className="text-6xl font-black text-slate-950 tracking-tighter italic mb-4 leading-none">₹{clearedBalance.toLocaleString()}</h3>
-                                    <p className="text-[11px] font-bold text-slate-400 flex items-center gap-3">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> All verifications passed.
+                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-3 block italic">Settled Balance</p>
+                                    <h3 className="text-6xl font-black text-white tracking-tighter italic mb-4 leading-none">₹{clearedBalance.toLocaleString()}</h3>
+                                    <p className="text-[11px] font-bold text-slate-400 flex items-center gap-3 italic">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div> Verification Protocol Passed
                                     </p>
                                 </motion.div>
 
                                 <motion.div 
                                     whileHover={{ y: -10 }}
-                                    className="bg-white rounded-[3.5rem] shadow-premium p-12 group transition-all border-2 border-slate-950 relative overflow-hidden"
+                                    className="bg-slate-900/50 backdrop-blur-3xl rounded-[3.5rem] p-12 group transition-all border border-emerald-500/30 relative overflow-hidden ring-1 ring-emerald-500/20"
                                 >
-                                    <div className="absolute inset-0 bg-slate-950 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none opacity-0"></div>
+                                    <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                                     <div className="flex justify-between items-start mb-10">
-                                        <div className="bg-slate-50 p-5 rounded-2xl text-slate-400 shadow-inner group-hover:bg-amber-100 group-hover:text-amber-600 transition-all"><ShieldCheck size={32} strokeWidth={2.5} /></div>
-                                        <span className="bg-amber-100 text-amber-900 text-[10px] font-black px-4 py-2 rounded-xl uppercase tracking-[0.2em] italic border border-amber-200">
-                                            Farm-Ease Protocol
+                                        <div className="bg-white/5 p-5 rounded-2xl text-slate-400 shadow-inner group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-all"><ShieldCheck size={32} strokeWidth={2.5} /></div>
+                                        <span className="bg-white/5 text-slate-400 text-[10px] font-black px-4 py-2 rounded-xl uppercase tracking-[0.2em] italic border border-white/10">
+                                            Secure Escrow Active
                                         </span>
                                     </div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block italic">Secured Procurement Capital</p>
-                                    <h3 className="text-6xl font-black text-slate-950 tracking-tighter italic mb-4 leading-none">₹{paymentSecured.toLocaleString()}</h3>
-                                    <p className="text-[11px] font-bold text-amber-600 flex items-center gap-3 italic">
-                                        <Clock size={16} /> {securedCount} Operations Pending
+                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-3 block italic">Secured Procurement Pool</p>
+                                    <h3 className="text-6xl font-black text-white tracking-tighter italic mb-4 leading-none">₹{paymentSecured.toLocaleString()}</h3>
+                                    <p className="text-[11px] font-bold text-emerald-500 flex items-center gap-3 italic">
+                                        <Clock size={16} /> {securedCount} Operations In Transit
                                     </p>
                                 </motion.div>
 
@@ -359,14 +359,14 @@ export default function FarmerDashboard() {
                                     whileHover={{ y: -10, scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => { setActiveTab("listings"); setShowAddForm(true); }}
-                                    className="bg-slate-950 p-12 rounded-[3.5rem] shadow-2xl flex flex-col items-center justify-center text-center cursor-pointer group hover:bg-emerald-600 transition-all duration-500 border-4 border-slate-900 relative overflow-hidden"
+                                    className="bg-emerald-600 p-12 rounded-[3.5rem] shadow-[0_20px_60px_rgba(16,185,129,0.3)] flex flex-col items-center justify-center text-center cursor-pointer group transition-all duration-500 border-4 border-white/10 relative overflow-hidden"
                                 >
-                                    <div className="absolute top-0 left-0 w-full h-1 bg-white/20"></div>
-                                    <div className="bg-white/10 group-hover:bg-slate-950/20 p-8 rounded-[2.5rem] text-white shadow-2xl transition-all mb-6 border border-white/5 group-hover:rotate-90">
-                                        <Plus size={48} strokeWidth={3} />
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-white/30"></div>
+                                    <div className="bg-slate-950 p-8 rounded-[2.5rem] text-emerald-500 shadow-2xl transition-all mb-6 group-hover:rotate-90">
+                                        <Plus size={48} strokeWidth={4} />
                                     </div>
-                                    <h3 className="font-black text-white text-3xl tracking-tighter italic leading-none uppercase">Initialize</h3>
-                                    <p className="text-[10px] font-black text-white/30 group-hover:text-white uppercase tracking-[0.3em] mt-3">Deploy New Asset Block</p>
+                                    <h3 className="font-black text-slate-950 text-3xl tracking-tighter italic leading-none uppercase">Initialize</h3>
+                                    <p className="text-[10px] font-black text-slate-950/60 group-hover:text-slate-950 uppercase tracking-[0.3em] mt-3 italic">Deploy Asset Block</p>
                                 </motion.button>
                             </div>
 
@@ -377,32 +377,32 @@ export default function FarmerDashboard() {
                                         initial={{ opacity: 0, height: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, height: "auto", scale: 1 }}
                                         exit={{ opacity: 0, height: 0, scale: 0.95 }}
-                                        className="bg-white rounded-[4rem] shadow-2xl border border-slate-100 p-16 relative overflow-hidden group/form"
+                                        className="bg-slate-900/80 backdrop-blur-3xl rounded-[4rem] shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-white/10 p-16 relative overflow-hidden group/form"
                                     >
-                                        <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-emerald-500/5 blur-[100px] rounded-full -mr-80 -mt-80 pointer-events-none"></div>
+                                        <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-emerald-500/10 blur-[120px] rounded-full -mr-80 -mt-80 pointer-events-none"></div>
                                         <div className="flex justify-between items-center mb-16 relative z-10">
                                             <div>
-                                                <h2 className="text-5xl font-black text-slate-950 tracking-tighter italic uppercase leading-none">Initialization <span className="text-emerald-600">Phase.</span></h2>
-                                                <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-3">Ready for asset deployment to market grid</p>
+                                                <h2 className="text-5xl font-black text-white tracking-tighter italic uppercase leading-none">Asset <span className="text-emerald-500">Injection.</span></h2>
+                                                <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em] mt-3 italic">Calibrating new asset for market deployment</p>
                                             </div>
-                                            <button onClick={() => { setShowAddForm(false); setImagePreview(null); setImageFile(null); }} className="text-slate-200 hover:text-red-500 bg-slate-50 p-6 rounded-[2rem] transition-all hover:rotate-90"><X size={32} strokeWidth={3} /></button>
+                                            <button onClick={() => { setShowAddForm(false); setImagePreview(null); setImageFile(null); }} className="text-slate-500 hover:text-white bg-white/5 p-6 rounded-[2rem] transition-all hover:rotate-90 border border-white/5"><X size={32} strokeWidth={4} /></button>
                                         </div>
                                         <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
                                             {/* Image Upload */}
                                             <div className="md:col-span-2">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 mb-4 block italic">Visual Documentation (High Res)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 mb-4 block italic">Optical Proof (Produce Image)</label>
                                                 <div
                                                     onClick={() => fileInputRef.current?.click()}
-                                                    className="w-full h-80 border-4 border-dashed border-slate-100 rounded-[3rem] flex flex-col items-center justify-center cursor-pointer hover:border-emerald-400 hover:bg-emerald-50 transition-all overflow-hidden relative group"
+                                                    className="w-full h-80 border-4 border-dashed border-white/5 rounded-[3rem] flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all overflow-hidden relative group"
                                                 >
                                                     {imagePreview ? (
-                                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                                                     ) : (
                                                         <div className="text-center group-hover:scale-110 transition-transform duration-500">
-                                                            <div className="bg-slate-50 p-8 rounded-[2rem] mb-6 mx-auto w-fit group-hover:bg-white group-hover:shadow-2xl transition-all">
-                                                                <ImageIcon size={64} className="text-slate-100 group-hover:text-emerald-500" />
+                                                            <div className="bg-white/5 p-8 rounded-[2rem] mb-6 mx-auto w-fit group-hover:bg-white/10 group-hover:shadow-2xl transition-all border border-white/5">
+                                                                <ImageIcon size={64} className="text-slate-700 group-hover:text-emerald-500" />
                                                             </div>
-                                                            <p className="font-black text-slate-400 uppercase tracking-[0.3em] text-[10px]">Capture Produce Proof</p>
+                                                            <p className="font-black text-slate-600 uppercase tracking-[0.3em] text-[10px] group-hover:text-slate-400 transition-colors">Capture Asset Visual</p>
                                                         </div>
                                                     )}
                                                 </div>
@@ -410,53 +410,53 @@ export default function FarmerDashboard() {
                                             </div>
 
                                             <div className="md:col-span-2 space-y-4">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 italic">Designation (Batch Name)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 italic">Asset Designation</label>
                                                 <input required type="text" value={newProduct.name} onChange={e => setNewProduct(p => ({ ...p, name: e.target.value }))}
-                                                    className="w-full border-none bg-slate-50 rounded-[2rem] px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/5 focus:bg-white transition-all font-black text-3xl shadow-inner placeholder:text-slate-200"
-                                                    placeholder="e.g. Organic Black Wheat Batch #04" />
+                                                    className="w-full border-none bg-white/5 border border-white/5 rounded-[2rem] px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 transition-all font-black text-3xl text-white shadow-inner placeholder:text-slate-700"
+                                                    placeholder="e.g. Master Grade Black Wheat" />
                                             </div>
                                             <div className="md:col-span-2 space-y-4">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 italic">Technical Composition (Bio Data)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 italic">Technical Composition (Bio-Specs)</label>
                                                 <textarea value={newProduct.description} onChange={e => setNewProduct(p => ({ ...p, description: e.target.value }))}
-                                                    className="w-full border-none bg-slate-50 rounded-[2.5rem] px-10 py-8 outline-none focus:ring-8 focus:ring-emerald-500/5 focus:bg-white transition-all font-bold text-xl shadow-inner resize-none h-44 placeholder:text-slate-200"
-                                                    placeholder="Specify moisture content, organic certifications, harvest date..." />
+                                                    className="w-full border-none bg-white/5 border border-white/5 rounded-[2.5rem] px-10 py-8 outline-none focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 transition-all font-bold text-xl text-white shadow-inner resize-none h-44 placeholder:text-slate-700"
+                                                    placeholder="Incorporate moisture levels, organic certs, harvest window..." />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 italic">Valuation (₹ / Unit)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 italic">Valuation (₹ / Quantifier)</label>
                                                 <input required type="number" value={newProduct.price} onChange={e => setNewProduct(p => ({ ...p, price: e.target.value }))}
-                                                    className="w-full border-none bg-slate-50 rounded-[2rem] px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/5 focus:bg-white transition-all font-black text-3xl shadow-inner" placeholder="₹ Value" />
+                                                    className="w-full border-none bg-white/5 border border-white/5 rounded-[2rem] px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 transition-all font-black text-3xl text-white shadow-inner" placeholder="₹ Rate" />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 italic">Batch Magnitude (Stock)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 italic">Batch Magnitude</label>
                                                 <input required type="number" value={newProduct.stock} onChange={e => setNewProduct(p => ({ ...p, stock: e.target.value }))}
-                                                    className="w-full border-none bg-slate-50 rounded-[2rem] px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/5 focus:bg-white transition-all font-black text-3xl shadow-inner" placeholder="Units Count" />
+                                                    className="w-full border-none bg-white/5 border border-white/5 rounded-[2rem] px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 transition-all font-black text-3xl text-white shadow-inner" placeholder="Units Count" />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 italic">Quantifier Scale</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 italic">Quantifier Scale</label>
                                                 <select value={newProduct.unit} onChange={e => setNewProduct(p => ({ ...p, unit: e.target.value }))}
-                                                    className="w-full border-none bg-slate-50 rounded-3xl px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/5 focus:bg-white transition-all font-black text-xl shadow-inner appearance-none cursor-pointer">
-                                                    <option value="kg">KILOGRAM (KG)</option>
-                                                    <option value="bag">GUNNY BAG</option>
-                                                    <option value="pkt">PACKET</option>
-                                                    <option value="piece">UNIT / PIECE</option>
-                                                    <option value="litre">LITRE</option>
+                                                    className="w-full border-none bg-white/5 border border-white/5 rounded-3xl px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 transition-all font-black text-xl text-white shadow-inner appearance-none cursor-pointer">
+                                                    <option className="bg-slate-900" value="kg">KILOGRAM (KG)</option>
+                                                    <option className="bg-slate-900" value="bag">GUNNY BAG</option>
+                                                    <option className="bg-slate-900" value="pkt">PACKET</option>
+                                                    <option className="bg-slate-900" value="piece">UNIT / PIECE</option>
+                                                    <option className="bg-slate-900" value="litre">LITRE</option>
                                                 </select>
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] ml-2 italic">Deployment Protocol</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] ml-2 italic">Sector Protocol</label>
                                                 <select value={newProduct.category} onChange={e => setNewProduct(p => ({ ...p, category: e.target.value }))}
-                                                    className="w-full border-none bg-slate-50 rounded-3xl px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/5 focus:bg-white transition-all font-black text-xl shadow-inner appearance-none cursor-pointer">
-                                                    <option value="fresh">FRESH PRODUCE</option>
-                                                    <option value="seeds">SEED & GENETICS</option>
-                                                    <option value="tools">AGRI-EQUIPMENT</option>
+                                                    className="w-full border-none bg-white/5 border border-white/5 rounded-3xl px-10 py-7 outline-none focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 transition-all font-black text-xl text-white shadow-inner appearance-none cursor-pointer">
+                                                    <option className="bg-slate-900" value="fresh">FRESH PRODUCE</option>
+                                                    <option className="bg-slate-900" value="seeds">SEED & GENETICS</option>
+                                                    <option className="bg-slate-900" value="tools">AGRI-EQUIPMENT</option>
                                                 </select>
                                             </div>
                                             <div className="md:col-span-2 flex gap-8 pt-12">
-                                                <button type="submit" disabled={submitting} className="flex-1 bg-slate-950 text-white font-black px-16 py-8 rounded-[2.5rem] hover:bg-emerald-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 disabled:opacity-70 active:scale-95 text-2xl uppercase tracking-tighter italic group/btn">
-                                                    {submitting ? <><Loader2 size={32} className="animate-spin" /> Deep Porting...</> : <><Sparkles size={32} className="group-hover/btn:rotate-12 transition-transform" /> Deploy Listing</>}
+                                                <button type="submit" disabled={submitting} className="flex-1 bg-emerald-600 text-slate-950 font-black px-16 py-8 rounded-[2.5rem] hover:bg-white hover:text-slate-950 transition-all shadow-[0_20px_40px_rgba(16,185,129,0.3)] flex items-center justify-center gap-4 disabled:opacity-70 active:scale-95 text-2xl uppercase tracking-tighter italic group/btn">
+                                                    {submitting ? <><Loader2 size={32} className="animate-spin" /> Committing Grid...</> : <><Sparkles size={32} className="group-hover/btn:rotate-12 transition-transform" /> Deploy Listing</>}
                                                 </button>
-                                                <button type="button" onClick={() => { setShowAddForm(false); setImagePreview(null); setImageFile(null); }} className="px-12 py-8 bg-slate-50 text-slate-400 font-black rounded-[2rem] hover:bg-red-50 hover:text-red-500 transition-all uppercase tracking-[0.3em] text-xs">
-                                                    Abort Deployment
+                                                <button type="button" onClick={() => { setShowAddForm(false); setImagePreview(null); setImageFile(null); }} className="px-12 py-8 bg-white/5 text-slate-500 font-black rounded-[2rem] hover:bg-red-500/10 hover:text-red-500 transition-all uppercase tracking-[0.3em] text-[10px] border border-white/5 italic">
+                                                    Abort Injection
                                                 </button>
                                             </div>
                                         </form>
@@ -466,31 +466,31 @@ export default function FarmerDashboard() {
 
                             {/* Orders + Listings Grid */}
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                                {/* Recent Orders */}
-                                <div className="bg-white rounded-[4rem] shadow-premium border border-slate-50 overflow-hidden relative group/ops">
-                                    <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
-                                    <div className="p-12 border-b border-slate-50 flex justify-between items-center bg-slate-50/20">
+                                {/* Sales Pipeline */}
+                                <div className="bg-slate-900/50 backdrop-blur-3xl rounded-[4rem] shadow-premium border border-white/5 overflow-hidden relative group/ops">
+                                    <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]"></div>
+                                    <div className="p-12 border-b border-white/5 flex justify-between items-center bg-white/5">
                                         <div>
-                                            <h2 className="font-black text-slate-950 text-3xl tracking-tighter italic uppercase leading-none">Sales Pipeline</h2>
-                                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-2">Active Trade Streams</p>
+                                            <h2 className="font-black text-white text-3xl tracking-tighter italic uppercase leading-none">Sales Pipeline</h2>
+                                            <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em] mt-2 italic">Active Trade Streams</p>
                                         </div>
-                                        <div className="bg-white px-5 py-3 rounded-2xl border border-slate-100 shadow-sm">
-                                            <span className="text-[12px] font-black text-slate-950 italic">{orders.length} LOGS</span>
+                                        <div className="bg-slate-950 px-5 py-3 rounded-2xl border border-white/5 shadow-sm">
+                                            <span className="text-[12px] font-black text-emerald-500 italic">{orders.length} LOGS</span>
                                         </div>
                                     </div>
-                                    <div className="divide-y divide-slate-50">
+                                    <div className="divide-y divide-white/5">
                                         {loadingOrders && (
                                             <div className="p-32 text-center flex flex-col items-center">
-                                                <div className="w-16 h-16 border-4 border-slate-100 border-t-emerald-600 rounded-full animate-spin mb-8"></div>
-                                                <p className="text-slate-200 font-black uppercase tracking-[0.5em] text-[10px]">Filtering Chain Logs...</p>
+                                                <div className="w-16 h-16 border-4 border-white/5 border-t-emerald-500 rounded-full animate-spin mb-8"></div>
+                                                <p className="text-slate-500 font-black uppercase tracking-[0.5em] text-[10px]">Filtering Chain Logs...</p>
                                             </div>
                                         )}
                                         {!loadingOrders && orders.length === 0 && (
                                             <div className="p-32 text-center">
-                                                <div className="bg-slate-50 w-24 h-24 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-inner border border-slate-100">
-                                                    <Package size={44} className="text-slate-100" />
+                                                <div className="bg-white/5 w-24 h-24 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-inner border border-white/5">
+                                                    <Package size={44} className="text-slate-700" />
                                                 </div>
-                                                <p className="text-slate-300 font-black uppercase tracking-[0.3em] text-[10px] italic">Zero Active Trade Signals</p>
+                                                <p className="text-slate-600 font-black uppercase tracking-[0.3em] text-[10px] italic">Zero Active Trade Signals</p>
                                             </div>
                                         )}
                                         {orders.slice(0, 5).map((order, idx) => (
@@ -499,34 +499,34 @@ export default function FarmerDashboard() {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: idx * 0.1 }}
                                                 key={order.id} 
-                                                className="p-12 hover:bg-slate-50/50 transition-all group relative border-l-4 border-transparent hover:border-emerald-500"
+                                                className="p-12 hover:bg-white/5 transition-all group relative border-l-4 border-transparent hover:border-emerald-500"
                                             >
                                                 <div className="flex justify-between items-start mb-6">
                                                     <div className="space-y-3">
-                                                        <span className="text-[10px] font-black bg-slate-950 text-white px-4 py-1.5 rounded-xl uppercase italic tracking-tighter shadow-lg">XFER #{(order.id || "").substring(0, 10).toUpperCase()}</span>
-                                                        <h4 className="font-black text-slate-950 text-3xl tracking-tighter italic group-hover:text-emerald-600 transition-colors uppercase leading-none">{order.product_name} <span className="text-slate-200 font-bold ml-2 italic text-2xl">× {order.quantity}</span></h4>
-                                                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] italic">{new Date(order.created_at).toLocaleString()}</p>
+                                                        <span className="text-[10px] font-black bg-white text-slate-950 px-4 py-1.5 rounded-xl uppercase italic tracking-tighter shadow-lg">XFER #{(order.id || "").substring(0, 10).toUpperCase()}</span>
+                                                        <h4 className="font-black text-white text-3xl tracking-tighter italic group-hover:text-emerald-500 transition-colors uppercase leading-none">{order.product_name} <span className="text-slate-500 font-bold ml-2 italic text-2xl">× {order.quantity}</span></h4>
+                                                        <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] italic">{new Date(order.created_at).toLocaleString()}</p>
                                                     </div>
-                                                    <p className="font-black text-slate-950 text-4xl tracking-tighter italic">₹{Number(order.amount).toLocaleString()}</p>
+                                                    <p className="font-black text-white text-4xl tracking-tighter italic">₹{Number(order.amount).toLocaleString()}</p>
                                                 </div>
                                                 <div className="flex justify-between items-center mt-10">
                                                     <div className="flex items-center gap-4">
-                                                        <span className={`px-6 py-2 text-[10px] font-black rounded-full uppercase tracking-[0.3em] shadow-sm flex items-center gap-2 ${order.status === "pending" ? "bg-amber-100 text-amber-800" : order.status === "shipped" ? "bg-blue-100 text-blue-800" : "bg-emerald-100 text-emerald-800"}`}>
+                                                        <span className={`px-6 py-2 text-[10px] font-black rounded-full uppercase tracking-[0.3em] shadow-sm flex items-center gap-2 ${order.status === "pending" ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : order.status === "shipped" ? "bg-blue-500/10 text-blue-500 border border-blue-500/20" : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"}`}>
                                                             {order.status === "pending" && <Clock size={14} />} {order.status}
                                                         </span>
                                                         {order.payment_secured && order.status !== "delivered" && (
-                                                            <div className="flex items-center gap-2 text-[10px] font-black text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 uppercase tracking-widest italic shadow-sm">
-                                                                <ShieldCheck size={14} /> Farm-Ease Secure Active
+                                                            <div className="flex items-center gap-2 text-[10px] font-black text-emerald-500 bg-emerald-500/5 px-4 py-2 rounded-full border border-emerald-500/10 uppercase tracking-widest italic shadow-sm">
+                                                                <ShieldCheck size={14} /> Protocol Active
                                                             </div>
                                                         )}
                                                     </div>
                                                     {order.status === "pending" && (
-                                                        <button onClick={() => handleMarkShipped(order.id)} className="flex items-center gap-4 text-[12px] font-black text-white bg-slate-950 px-8 py-4 rounded-[2rem] hover:bg-emerald-600 transition-all active:scale-95 shadow-2xl uppercase tracking-widest italic group-hover:shadow-emerald-500/20">
+                                                        <button onClick={() => handleMarkShipped(order.id)} className="flex items-center gap-4 text-[12px] font-black text-slate-950 bg-emerald-600 px-8 py-4 rounded-[2rem] hover:bg-white transition-all active:scale-95 shadow-2xl uppercase tracking-widest italic group-hover:shadow-emerald-500/20">
                                                             <Truck size={20} strokeWidth={3} /> Commit Logistic
                                                         </button>
                                                     )}
                                                     {order.status === "delivered" && (
-                                                        <div className="flex items-center gap-3 text-emerald-600 font-black uppercase tracking-widest text-[11px] italic bg-emerald-50 px-6 py-3 rounded-2xl border border-emerald-100 shadow-inner">
+                                                        <div className="flex items-center gap-3 text-emerald-500 font-black uppercase tracking-widest text-[11px] italic bg-emerald-500/5 px-6 py-3 rounded-2xl border border-emerald-500/10 shadow-inner">
                                                             <CheckCircle2 size={20} strokeWidth={3} /> Capital Disbursed
                                                         </div>
                                                     )}
@@ -535,34 +535,34 @@ export default function FarmerDashboard() {
                                         ))}
                                     </div>
                                     <div className="p-10 bg-slate-950 text-white flex justify-center">
-                                        <button onClick={() => setActiveTab("orders")} className="text-[10px] font-black uppercase tracking-[0.5em] hover:text-emerald-400 transition-colors italic">Deep Audit All Transactions →</button>
+                                        <button onClick={() => setActiveTab("orders")} className="text-[10px] font-black uppercase tracking-[0.5em] hover:text-emerald-500 transition-colors italic">Registry Full Audit →</button>
                                     </div>
                                 </div>
 
-                                {/* Active Inventory */}
-                                <div className="bg-white rounded-[4rem] shadow-premium border border-slate-50 overflow-hidden relative">
-                                    <div className="absolute top-0 right-0 w-full h-2 bg-slate-950"></div>
-                                    <div className="p-12 border-b border-slate-50 flex justify-between items-center bg-emerald-950 text-white relative">
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.2),transparent)] pointer-events-none"></div>
+                                {/* Catalog Core */}
+                                <div className="bg-slate-900/50 backdrop-blur-3xl rounded-[4rem] shadow-premium border border-white/5 overflow-hidden relative">
+                                    <div className="absolute top-0 right-0 w-full h-2 bg-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"></div>
+                                    <div className="p-12 border-b border-white/5 flex justify-between items-center bg-emerald-600 text-slate-950 relative">
+                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] pointer-events-none"></div>
                                         <div className="relative z-10">
                                             <h2 className="font-black text-3xl tracking-tighter italic uppercase leading-none">Catalog Core</h2>
-                                            <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.4em] mt-2 italic">Live Listing Reservoir</p>
+                                            <p className="text-[10px] text-slate-950/40 font-black uppercase tracking-[0.4em] mt-2 italic text-slate-900">Live Asset Reservoir</p>
                                         </div>
-                                        <button onClick={() => setShowAddForm(true)} className="relative z-10 bg-white/10 hover:bg-white text-white hover:text-emerald-950 px-6 py-3 rounded-2xl transition-all font-black text-[10px] uppercase tracking-widest flex items-center gap-3 border border-white/20 shadow-2xl active:scale-95">
-                                            <Plus size={18} strokeWidth={3} /> Inject Block
+                                        <button onClick={() => setShowAddForm(true)} className="relative z-10 bg-slate-950 hover:bg-white text-emerald-500 hover:text-slate-950 px-6 py-3 rounded-2xl transition-all font-black text-[10px] uppercase tracking-widest flex items-center gap-3 border border-white/5 shadow-2xl active:scale-95">
+                                            <Plus size={18} strokeWidth={4} /> Inject Asset
                                         </button>
                                     </div>
-                                    <div className="divide-y divide-slate-50">
+                                    <div className="divide-y divide-white/5">
                                         {loadingListings && (
                                             <div className="p-32 text-center flex flex-col items-center">
-                                                <div className="w-16 h-16 border-4 border-slate-100 border-t-slate-950 rounded-full animate-spin mb-8"></div>
-                                                <p className="text-slate-200 font-black uppercase tracking-[0.5em] text-[10px]">Indexing Asset Schema...</p>
+                                                <div className="w-16 h-16 border-4 border-white/5 border-t-white rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(255,255,255,0.1)]"></div>
+                                                <p className="text-slate-500 font-black uppercase tracking-[0.5em] text-[10px]">Indexing Asset Schema...</p>
                                             </div>
                                         )}
                                         {!loadingListings && listings.length === 0 && (
                                             <div className="p-40 text-center">
-                                                <div className="bg-slate-50 w-24 h-24 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-inner"><Box size={44} className="text-slate-100" /></div>
-                                                <p className="text-slate-300 font-black uppercase tracking-[0.3em] text-[10px] italic">Global Reservoir Void</p>
+                                                <div className="bg-white/5 w-24 h-24 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-inner border border-white/5"><Box size={44} className="text-slate-700" /></div>
+                                                <p className="text-slate-600 font-black uppercase tracking-[0.3em] text-[10px] italic">Global Reservoir Void</p>
                                             </div>
                                         )}
                                         {listings.map((product, idx) => (
@@ -571,24 +571,24 @@ export default function FarmerDashboard() {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: idx * 0.05 }}
                                                 key={product.id} 
-                                                className="p-10 flex items-center gap-10 hover:bg-slate-50 transition-all group"
+                                                className="p-10 flex items-center gap-10 hover:bg-white/5 transition-all group"
                                             >
-                                                <div className="w-28 h-28 bg-white rounded-[2.5rem] flex items-center justify-center flex-shrink-0 border-4 border-slate-50 overflow-hidden relative shadow-2xl group-hover:scale-110 transition-all duration-700">
+                                                <div className="w-28 h-28 bg-slate-950 rounded-[2.5rem] flex items-center justify-center flex-shrink-0 border-4 border-white/5 overflow-hidden relative shadow-2xl group-hover:scale-110 transition-all duration-700 group-hover:border-emerald-500/30">
                                                     {product.image_url ? (
-                                                        <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                                                        <img src={product.image_url} alt={product.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                                                     ) : (
-                                                        <Leaf size={44} className="text-slate-100" />
+                                                        <Leaf size={44} className="text-slate-800" />
                                                     )}
                                                 </div>
                                                 <div className="flex-1 space-y-3">
                                                     <div className="flex items-center gap-3">
-                                                        <span className="text-[9px] font-black bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg uppercase tracking-widest italic border border-emerald-100">Market Protocol Active</span>
+                                                        <span className="text-[9px] font-black bg-emerald-500/10 text-emerald-500 px-3 py-1 rounded-lg uppercase tracking-widest italic border border-emerald-500/20">Market Node Active</span>
                                                     </div>
-                                                    <h4 className="font-black text-slate-950 text-3xl tracking-tighter italic uppercase group-hover:text-emerald-600 transition-colors leading-none">{product.name}</h4>
+                                                    <h4 className="font-black text-white text-3xl tracking-tighter italic uppercase group-hover:text-emerald-500 transition-colors leading-none">{product.name}</h4>
                                                     <div className="flex items-center gap-8 pt-2">
-                                                        <span className="text-2xl font-black text-slate-950 italic tracking-tighter leading-none">₹{product.price}<span className="text-[10px] text-slate-300 not-italic ml-2 italic tracking-widest uppercase">/ {product.unit}</span></span>
-                                                        <span className={`text-[10px] font-black px-6 py-2 rounded-2xl uppercase tracking-[0.2em] shadow-sm border ${product.stock > 20 ? "bg-slate-950 text-white border-transparent" : "bg-red-50 text-red-800 border-red-100"}`}>
-                                                            {product.stock} Units Reservoir
+                                                        <span className="text-2xl font-black text-white italic tracking-tighter leading-none">₹{product.price}<span className="text-[10px] text-slate-500 not-italic ml-2 italic tracking-widest uppercase">/ {product.unit}</span></span>
+                                                        <span className={`text-[10px] font-black px-6 py-2 rounded-2xl uppercase tracking-[0.2em] shadow-sm border ${product.stock > 20 ? "bg-white text-slate-950 border-transparent" : "bg-red-500/10 text-red-500 border-red-500/20"}`}>
+                                                            {product.stock} Units Stock
                                                         </span>
                                                     </div>
                                                 </div>
@@ -607,30 +607,30 @@ export default function FarmerDashboard() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -20 }}
-                                className="bg-white rounded-[4rem] shadow-premium border border-slate-50 overflow-hidden relative"
+                                className="bg-slate-900/50 backdrop-blur-3xl rounded-[4rem] shadow-premium border border-white/5 overflow-hidden relative"
                             >
-                                <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
-                                <div className="p-16 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+                                <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]"></div>
+                                <div className="p-16 border-b border-white/5 flex justify-between items-center bg-white/5">
                                     <div>
-                                        <h2 className="font-black text-slate-950 text-5xl tracking-tighter italic uppercase leading-none">Master Registry</h2>
-                                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-3">Comprehensive Transaction History</p>
+                                        <h2 className="font-black text-white text-5xl tracking-tighter italic uppercase leading-none">Master Registry</h2>
+                                        <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em] mt-3 italic">Comprehensive Transaction Log</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Cycle Volume</p>
-                                        <p className="text-3xl font-black text-slate-950 italic tracking-tighter leading-none">₹{clearedBalance.toLocaleString()}</p>
+                                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Cycle Volume</p>
+                                        <p className="text-3xl font-black text-white italic tracking-tighter leading-none">₹{clearedBalance.toLocaleString()}</p>
                                     </div>
                                 </div>
-                                <div className="divide-y divide-slate-50">
+                                <div className="divide-y divide-white/5">
                                     {loadingOrders && (
                                         <div className="p-32 text-center flex flex-col items-center">
-                                            <div className="w-16 h-16 border-4 border-slate-100 border-t-emerald-600 rounded-full animate-spin mb-8"></div>
-                                            <p className="text-slate-200 font-black uppercase tracking-[0.5em] text-[10px]">Accessing Secure Node...</p>
+                                            <div className="w-16 h-16 border-4 border-white/5 border-t-emerald-500 rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(16,185,129,0.3)]"></div>
+                                            <p className="text-slate-500 font-black uppercase tracking-[0.5em] text-[10px]">Accessing Secure Node...</p>
                                         </div>
                                     )}
                                     {!loadingOrders && orders.length === 0 && (
                                         <div className="p-40 text-center">
-                                            <Package size={80} className="text-slate-100 mx-auto mb-10" />
-                                            <p className="text-slate-300 font-black uppercase tracking-[0.4em] text-[10px] italic leading-relaxed max-w-xs mx-auto">Protocol initialized. Waiting for inbound trade signals from the market grid.</p>
+                                            <Package size={80} className="text-slate-800 mx-auto mb-10 opacity-30" />
+                                            <p className="text-slate-600 font-black uppercase tracking-[0.4em] text-[10px] italic leading-relaxed max-w-xs mx-auto">Registry currently empty. Waiting for inbound trade signals from the market grid.</p>
                                         </div>
                                     )}
                                     {orders.map((order, idx) => (
@@ -639,41 +639,41 @@ export default function FarmerDashboard() {
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: idx * 0.05 }}
                                             key={order.id} 
-                                            className="p-16 hover:bg-slate-50/80 transition-all group relative border-l-8 border-transparent hover:border-emerald-500"
+                                            className="p-16 hover:bg-white/5 transition-all group relative border-l-8 border-transparent hover:border-emerald-500"
                                         >
                                             <div className="flex flex-col xl:flex-row justify-between items-start gap-12">
                                                 <div className="space-y-6">
                                                     <div className="flex items-center gap-6">
-                                                        <span className="text-[10px] font-black bg-slate-950 text-white px-5 py-2 rounded-xl uppercase italic tracking-tighter shadow-xl">XLOG #{(order.id || "").substring(0, 12).toUpperCase()}</span>
-                                                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><Clock size={14} /> {new Date(order.created_at).toLocaleString()}</span>
+                                                        <span className="text-[10px] font-black bg-white text-slate-950 px-5 py-2 rounded-xl uppercase italic tracking-tighter shadow-xl">XLOG #{(order.id || "").substring(0, 12).toUpperCase()}</span>
+                                                        <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 italic"><Clock size={14} /> {new Date(order.created_at).toLocaleString()}</span>
                                                     </div>
-                                                    <h4 className="font-black text-slate-950 text-5xl tracking-tighter italic group-hover:text-emerald-600 transition-colors uppercase leading-none">{order.product_name} <span className="text-slate-200 font-bold ml-4 italic text-4xl leading-none">× {order.quantity}</span></h4>
+                                                    <h4 className="font-black text-white text-5xl tracking-tighter italic group-hover:text-emerald-500 transition-colors uppercase leading-none">{order.product_name} <span className="text-slate-600 font-bold ml-4 italic text-4xl leading-none">× {order.quantity}</span></h4>
                                                     <div className="flex flex-wrap gap-6 pt-2">
-                                                        <span className={`px-8 py-2.5 text-[10px] font-black rounded-full uppercase tracking-[0.3em] shadow-sm flex items-center gap-2 ${order.status === "pending" ? "bg-amber-100 text-amber-800" : order.status === "shipped" ? "bg-blue-100 text-blue-800" : "bg-emerald-100 text-emerald-800"}`}>
+                                                        <span className={`px-8 py-2.5 text-[10px] font-black rounded-full uppercase tracking-[0.3em] shadow-sm flex items-center gap-2 ${order.status === "pending" ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : order.status === "shipped" ? "bg-blue-500/10 text-blue-500 border border-blue-500/20" : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"}`}>
                                                             {order.status === "pending" && <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>}
                                                             {order.status === "shipped" && <Truck size={14} />}
                                                             {order.status === "delivered" && <CheckCircle2 size={14} />}
                                                             Status: {order.status}
                                                         </span>
                                                         {order.status !== "delivered" && order.payment_secured && (
-                                                            <span className="flex items-center gap-3 text-[10px] font-black text-emerald-600 bg-emerald-50 px-8 py-2.5 rounded-full border border-emerald-100 uppercase tracking-[0.2em] italic shadow-sm">
-                                                                <ShieldCheck size={18} strokeWidth={3} /> Farm-Ease Secure Protocol Locked
+                                                            <span className="flex items-center gap-3 text-[10px] font-black text-emerald-500 bg-emerald-500/5 px-8 py-2.5 rounded-full border border-emerald-500/10 uppercase tracking-[0.2em] italic shadow-sm">
+                                                                <ShieldCheck size={18} strokeWidth={3} /> Protocol Secured
                                                             </span>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <div className="text-left xl:text-right w-full xl:w-auto mt-6 xl:mt-0">
-                                                    <p className="font-black text-slate-950 text-7xl tracking-tighter italic mb-10 leading-none">₹{Number(order.amount).toLocaleString()}</p>
+                                                    <p className="font-black text-white text-7xl tracking-tighter italic mb-10 leading-none">₹{Number(order.amount).toLocaleString()}</p>
                                                     {order.status === "pending" && (
                                                         <button 
                                                             onClick={() => handleMarkShipped(order.id)} 
-                                                            className="w-full xl:w-auto flex items-center justify-center gap-6 text-2xl font-black text-white bg-slate-950 px-16 py-8 rounded-[3rem] hover:bg-emerald-600 transition-all active:scale-95 shadow-[0_20px_40px_rgba(0,0,0,0.1)] uppercase tracking-tighter italic group/ship"
+                                                            className="w-full xl:w-auto flex items-center justify-center gap-6 text-2xl font-black text-slate-950 bg-emerald-600 px-16 py-8 rounded-[3rem] hover:bg-white transition-all active:scale-95 shadow-[0_20px_40px_rgba(16,185,129,0.2)] uppercase tracking-tighter italic group/ship"
                                                         >
                                                             <Truck size={32} strokeWidth={3} className="group-hover:translate-x-2 transition-transform" /> Execute Delivery
                                                         </button>
                                                     )}
                                                     {order.status === "delivered" && (
-                                                        <div className="flex items-center xl:justify-end gap-4 text-emerald-600 font-black uppercase tracking-[0.3em] text-[12px] italic bg-emerald-50 p-6 rounded-[2rem] border border-emerald-100 shadow-inner">
+                                                        <div className="flex items-center xl:justify-end gap-4 text-emerald-500 font-black uppercase tracking-[0.3em] text-[12px] italic bg-emerald-500/5 p-6 rounded-[2rem] border border-emerald-500/10 shadow-inner">
                                                             <CheckCircle2 size={28} strokeWidth={3} /> Capital Disbursed to Account
                                                         </div>
                                                     )}
@@ -885,79 +885,78 @@ export default function FarmerDashboard() {
                             </div>
                         </motion.div>
                     )}
-
                     {activeTab === "profile" && (
                         <div className="max-w-4xl mx-auto py-10">
                             <motion.div 
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="bg-white rounded-[5rem] shadow-2xl border border-slate-50 p-20 relative overflow-hidden"
+                                className="bg-slate-900/50 backdrop-blur-3xl rounded-[5rem] shadow-2xl border border-white/5 p-20 relative overflow-hidden"
                             >
-                                <div className="absolute top-0 left-0 w-full h-4 bg-emerald-500 shadow-lg shadow-emerald-500/20"></div>
-                                <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-emerald-500/5 blur-[100px] rounded-full -mr-40 -mt-40 pointer-events-none"></div>
+                                <div className="absolute top-0 left-0 w-full h-4 bg-emerald-600 shadow-[0_0_30px_rgba(16,185,129,0.2)]"></div>
+                                <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-emerald-600/5 blur-[120px] rounded-full -mr-40 -mt-40 pointer-events-none"></div>
                                 
-                                <div className="flex flex-col md:flex-row items-center gap-16 mb-20 pb-16 border-b border-slate-50">
-                                    <div className="w-56 h-56 rounded-[4rem] bg-emerald-500 text-slate-950 font-black text-8xl flex items-center justify-center shadow-2xl italic border-[12px] border-white rotate-3 relative hover:rotate-0 transition-transform duration-700 cursor-pointer group">
+                                <div className="flex flex-col md:flex-row items-center gap-16 mb-20 pb-16 border-b border-white/5">
+                                    <div className="w-56 h-56 rounded-[4rem] bg-emerald-600 text-slate-950 font-black text-8xl flex items-center justify-center shadow-[0_20px_60px_rgba(16,185,129,0.3)] italic border-[12px] border-slate-950 rotate-3 relative hover:rotate-0 transition-transform duration-700 cursor-pointer group">
                                         {initials}
-                                        <div className="absolute inset-0 bg-slate-950/20 rounded-[4rem] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="absolute inset-0 bg-slate-950/40 rounded-[4rem] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <ImageIcon size={48} className="text-white" />
                                         </div>
                                     </div>
                                     <div className="text-center md:text-left space-y-4">
                                         <div className="flex items-center gap-4 justify-center md:justify-start">
-                                            <span className="text-[10px] font-black bg-slate-950 text-white px-5 py-2 rounded-xl uppercase tracking-[0.3em] italic shadow-lg">Authority Node Verified</span>
+                                            <span className="text-[10px] font-black bg-white text-slate-950 px-5 py-2 rounded-xl uppercase tracking-[0.3em] italic shadow-lg">Authority Node Verified</span>
                                         </div>
-                                        <h2 className="text-7xl font-black text-slate-950 tracking-tighter italic uppercase leading-none">{displayName}</h2>
-                                        <p className="text-[12px] font-black text-slate-400 uppercase tracking-[0.6em] flex items-center justify-center md:justify-start gap-4">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Protocol ID: {user?.email}
+                                        <h2 className="text-7xl font-black text-white tracking-tighter italic uppercase leading-none">{displayName}</h2>
+                                        <p className="text-[12px] font-black text-slate-500 uppercase tracking-[0.6em] flex items-center justify-center md:justify-start gap-4 italic font-bold">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div> Protocol ID: {user?.email}
                                         </p>
                                     </div>
                                 </div>
 
                                 <form onSubmit={handleUpdateProfile} className="space-y-16">
                                     <div className="space-y-6">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] flex items-center gap-4 ml-6 italic">
+                                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] flex items-center gap-4 ml-6 italic">
                                             <User size={16} /> Identity Designation
                                         </label>
                                         <input
                                             type="text"
                                             value={profileName}
                                             onChange={(e) => setProfileName(e.target.value)}
-                                            className="w-full p-10 bg-slate-50 border-none rounded-[3rem] focus:ring-8 focus:ring-emerald-500/5 focus:bg-white outline-none font-black text-4xl text-slate-950 transition-all shadow-inner placeholder:text-slate-200"
-                                            placeholder="Your Legal Entity Name"
+                                            className="w-full p-10 bg-white/5 border border-white/5 rounded-[3rem] focus:ring-8 focus:ring-emerald-500/10 focus:bg-slate-900 outline-none font-black text-4xl text-white transition-all shadow-inner placeholder:text-slate-800"
+                                            placeholder="Entity Legal Name"
                                             required
                                         />
                                     </div>
 
-                                    <div className="p-10 bg-emerald-950 text-white rounded-[3.5rem] flex items-center gap-10 shadow-2xl relative group/shield pointer-events-none">
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.2),transparent)] opacity-50"></div>
-                                        <div className="bg-white/10 p-8 rounded-[2.5rem] text-emerald-400 shadow-inner group-hover/shield:scale-110 transition-transform">
-                                            <ShieldCheck size={56} strokeWidth={3} />
+                                    <div className="p-10 bg-emerald-600 text-slate-950 rounded-[3.5rem] flex items-center gap-10 shadow-2xl relative group/shield pointer-events-none">
+                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)] opacity-50"></div>
+                                        <div className="bg-slate-950 p-8 rounded-[2.5rem] text-emerald-500 shadow-inner group-hover/shield:scale-110 transition-transform">
+                                            <ShieldCheck size={56} strokeWidth={4} />
                                         </div>
                                         <div className="space-y-1">
-                                            <h4 className="text-3xl font-black italic tracking-tighter uppercase leading-none mb-2">Authenticated Harvester Node</h4>
-                                            <p className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.4em] italic opacity-70">Security Protocol Level: ALPHA-PRIME</p>
+                                            <h4 className="text-3xl font-black italic tracking-tighter uppercase leading-none mb-2">Authenticated Operator Node</h4>
+                                            <p className="text-[10px] font-black text-slate-950/60 uppercase tracking-[0.4em] italic opacity-70">Security Protocol: ALPHA - SUPREME</p>
                                         </div>
                                     </div>
 
                                     <button
                                         type="submit"
                                         disabled={isSaving}
-                                        className="w-full bg-slate-950 text-white font-black py-10 rounded-[3rem] shadow-2xl hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-6 disabled:opacity-50 active:scale-[0.98] text-3xl uppercase tracking-tighter italic group/save"
+                                        className="w-full bg-white text-slate-950 font-black py-10 rounded-[3rem] shadow-2xl hover:bg-emerald-600 transition-all flex items-center justify-center gap-6 disabled:opacity-50 active:scale-[0.98] text-3xl uppercase tracking-tighter italic group/save"
                                     >
-                                        {isSaving ? <Loader2 size={40} className="animate-spin" /> : <Save size={40} strokeWidth={3} className="group-hover/save:rotate-12 transition-transform" />}
+                                        {isSaving ? <Loader2 size={40} className="animate-spin" /> : <Save size={40} strokeWidth={4} className="group-hover/save:rotate-12 transition-transform" />}
                                         {isSaving ? "Syncing Grid..." : "Commit Update"}
                                     </button>
                                 </form>
 
-                                <div className="mt-24 pt-16 border-t border-slate-100 flex items-center justify-between px-10">
+                                <div className="mt-24 pt-16 border-t border-white/5 flex items-center justify-between px-10">
                                     <div className="space-y-2">
                                         <p className="text-red-500 font-black text-[10px] uppercase tracking-[0.4em] italic leading-none flex items-center gap-3">
                                             <ShieldAlert size={14} /> Sever Connection
                                         </p>
-                                        <p className="text-slate-300 font-bold text-[10px] uppercase tracking-widest italic">Terminate Hub Interface Session</p>
+                                        <p className="text-slate-600 font-bold text-[10px] uppercase tracking-widest italic">Terminate Hub Session</p>
                                     </div>
-                                    <button onClick={handleLogout} className="bg-red-50 text-red-600 px-12 py-5 font-black text-[12px] rounded-[2rem] hover:bg-red-500 hover:text-white transition-all uppercase tracking-[0.3em] shadow-sm italic active:scale-90 border border-red-100">
+                                    <button onClick={handleLogout} className="bg-red-500/10 text-red-500 px-12 py-5 font-black text-[12px] rounded-[2rem] hover:bg-red-500 hover:text-white transition-all uppercase tracking-[0.3em] shadow-sm italic active:scale-90 border border-red-500/20">
                                         Shutdown
                                     </button>
                                 </div>

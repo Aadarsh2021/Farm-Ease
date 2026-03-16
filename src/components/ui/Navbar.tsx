@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
-import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, Command } from "lucide-react";
+import { Menu, X, Leaf, ShoppingCart, User as UserIcon, LogOut, Command, Activity, Zap, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -32,56 +32,58 @@ export default function Navbar() {
 
     const navLinks = [
     { name: "Market", path: "/market" },
-    { name: "AI Bio-Scan", path: "/bioscan" },
-    { name: "About", path: "/about" },
+    { name: "Bio-Scan", path: "/bioscan" },
+    { name: "Mission", path: "/about" },
   ];
 
     return (
         <nav 
-            className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-                scrolled ? "bg-white/90 backdrop-blur-md shadow-sm border-b" : "bg-transparent"
+            className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+                scrolled ? "bg-slate-950/50 backdrop-blur-3xl shadow-2xl border-b border-white/5 py-2" : "bg-transparent py-6"
             }`}
         >
-            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-10 h-20 flex items-center justify-between relative">
                 {/* Logo */}
-                <Link to="/" className="flex items-center gap-2 group">
-                    <div className="bg-emerald-600 text-white p-2 rounded-xl group-hover:bg-emerald-700 transition-colors">
-                        <Leaf size={20} />
+                <Link to="/" className="flex items-center gap-4 group relative">
+                    <div className="bg-emerald-600 text-slate-950 p-3 rounded-2xl group-hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover:rotate-12 group-hover:shadow-white/20">
+                        <Leaf size={24} strokeWidth={3} />
                     </div>
-                    <span className="text-xl font-black text-slate-950 tracking-tight italic">
-                        Farm<span className="text-emerald-600">Ease</span>
+                    <span className="text-2xl font-black text-white tracking-tighter italic uppercase">
+                        Farm<span className="text-emerald-500 group-hover:text-white transition-colors duration-500">Ease</span>
                     </span>
+                    <div className="absolute -bottom-1 left-12 w-0 h-0.5 bg-emerald-500 group-hover:w-full transition-all duration-700"></div>
                 </Link>
 
                 {/* Desktop Nav */}
-                <div className="hidden md:flex items-center gap-8">
-                    <div className="flex items-center gap-6">
+                <div className="hidden lg:flex items-center gap-12 bg-white/5 backdrop-blur-2xl px-12 py-4 rounded-[2rem] border border-white/5 shadow-2xl">
+                    <div className="flex items-center gap-10">
                         {navLinks.map((link) => (
                             <Link 
                                 key={link.path}
                                 to={link.path} 
-                                className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:text-emerald-600 italic ${
-                                    location.pathname === link.path ? "text-emerald-600" : "text-slate-400"
+                                className={`text-[10px] font-black uppercase tracking-[0.5em] transition-all hover:text-emerald-400 italic relative group/link ${
+                                    location.pathname === link.path ? "text-emerald-400" : "text-slate-400"
                                 }`}
                             >
                                 {link.name}
+                                <span className={`absolute -bottom-2 left-0 w-full h-0.5 bg-emerald-400 scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 origin-left ${location.pathname === link.path ? "scale-x-100" : ""}`}></span>
                             </Link>
                         ))}
                     </div>
 
-                    <div className="h-6 w-px bg-slate-200 ml-2"></div>
+                    <div className="h-8 w-px bg-white/10 mx-2"></div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-6">
                         {user ? (
                             <>
                                 <button 
                                     onClick={() => setIsCartOpen(true)}
                                     aria-label={`Cart: ${cartCount} items`}
-                                    className="p-2 text-slate-600 hover:text-emerald-600 transition-colors relative"
+                                    className="p-3 text-slate-400 hover:text-emerald-400 transition-all relative group/cart"
                                 >
-                                    <ShoppingCart size={20} />
+                                    <ShoppingCart size={22} strokeWidth={3} className="group-hover/cart:rotate-12" />
                                     {cartCount > 0 && (
-                                        <span className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">
+                                        <span className="absolute -top-1 -right-1 bg-emerald-600 text-slate-950 text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-slate-950 shadow-2xl italic">
                                             {cartCount}
                                         </span>
                                     )}
@@ -89,32 +91,32 @@ export default function Navbar() {
 
                                 <Link 
                                     to={userRole === "farmer" ? "/farmer/dashboard" : userRole === "seller" ? "/seller/dashboard" : "/dashboard"} 
-                                    className="flex items-center gap-2 pl-2 group"
+                                    className="flex items-center gap-4 pl-4 group/user"
                                 >
-                                    <div className="bg-slate-100 p-2 rounded-full group-hover:bg-emerald-50 transition-colors">
-                                        <UserIcon size={18} className="text-slate-600 group-hover:text-emerald-600" />
+                                    <div className="bg-white/5 p-3 rounded-2xl group-hover:bg-emerald-600 group-hover:text-slate-950 transition-all duration-500 border border-white/5">
+                                        <UserIcon size={20} strokeWidth={3} className="text-slate-400 group-hover:text-slate-950" />
                                     </div>
-                                    <span className="text-xs font-semibold text-slate-700 group-hover:text-emerald-600 transition-colors">Dashboard</span>
+                                    <span className="text-[10px] font-black text-slate-400 group-hover:text-white transition-colors uppercase tracking-[0.3em] italic">Node Dash</span>
                                 </Link>
 
                                 <button 
                                     onClick={handleLogout}
                                     aria-label="Logout"
-                                    className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                                    className="p-3 text-slate-600 hover:text-red-500 transition-all group/logout"
                                 >
-                                    <LogOut size={18} />
+                                    <LogOut size={20} strokeWidth={3} className="group-hover:translate-x-1" />
                                 </button>
                             </>
                         ) : (
-                            <div className="flex items-center gap-4">
-                                <Link to="/login" className="text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors">
+                            <div className="flex items-center gap-8">
+                                <Link to="/login" className="text-[10px] font-black text-slate-400 hover:text-white transition-all uppercase tracking-[0.4em] italic leading-none border-b-2 border-transparent hover:border-emerald-500 pb-1">
                                     Sign In
                                 </Link>
                                 <Link 
                                     to="/signup" 
-                                    className="bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-emerald-700 transition-all shadow-md active:scale-95"
+                                    className="bg-emerald-600 text-slate-950 px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white transition-all shadow-2xl active:scale-95 italic border border-emerald-400/20"
                                 >
-                                    Get Started
+                                    Deploy Hub
                                 </Link>
                             </div>
                         )}
@@ -122,24 +124,24 @@ export default function Navbar() {
                         <button 
                             onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
                             aria-label="Command Menu"
-                            className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-slate-100 transition-colors border"
+                            className="p-3 bg-slate-950 text-slate-600 rounded-2xl hover:text-emerald-400 hover:border-emerald-500/30 transition-all border border-white/5 shadow-inner"
                             title="Command Menu (CMD+K)"
                         >
-                            <Command size={16} />
+                            <Command size={18} strokeWidth={3} />
                         </button>
                     </div>
                 </div>
 
                 {/* Mobile Controls */}
-                <div className="md:hidden flex items-center gap-3">
+                <div className="lg:hidden flex items-center gap-6">
                     {user && (
                         <button 
                             onClick={() => setIsCartOpen(true)}
-                            className="p-2 text-slate-600 relative"
+                            className="p-3 text-slate-400 relative"
                         >
-                            <ShoppingCart size={22} />
+                            <ShoppingCart size={24} strokeWidth={3} />
                             {cartCount > 0 && (
-                                <span className="absolute top-1 right-1 bg-emerald-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                <span className="absolute -top-1 -right-1 bg-emerald-600 text-slate-950 text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-slate-950">
                                     {cartCount}
                                 </span>
                             )}
@@ -147,9 +149,9 @@ export default function Navbar() {
                     )}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="p-2 text-slate-600"
+                        className="p-3 bg-white/5 rounded-2xl border border-white/5 text-emerald-500"
                     >
-                        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {isMenuOpen ? <X size={28} strokeWidth={4} /> : <Menu size={28} strokeWidth={4} />}
                     </button>
                 </div>
             </div>
@@ -158,58 +160,68 @@ export default function Navbar() {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="md:hidden absolute top-20 left-0 right-0 bg-white border-b shadow-lg p-6 flex flex-col gap-6"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="lg:hidden absolute top-full left-0 right-0 bg-slate-950/95 backdrop-blur-3xl border-b border-white/5 overflow-hidden"
                     >
-                        <div className="flex flex-col gap-4">
-                            {navLinks.map((link) => (
-                                <Link 
-                                    key={link.path}
-                                    to={link.path} 
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="text-lg font-semibold text-slate-900 border-b pb-2"
-                                >
-                                    {link.name}
-                                </Link>
-                            ))}
-                        </div>
+                        <div className="p-10 flex flex-col gap-8">
+                            <div className="flex flex-col gap-6">
+                                {navLinks.map((link) => (
+                                    <Link 
+                                        key={link.path}
+                                        to={link.path} 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="text-4xl font-black text-white italic uppercase tracking-tighter border-b border-white/5 pb-6 flex justify-between items-center group"
+                                    >
+                                        {link.name} <ArrowLeft size={32} className="rotate-180 opacity-20 group-hover:opacity-100 group-hover:translate-x-4 transition-all duration-500" />
+                                    </Link>
+                                ))}
+                            </div>
 
-                        {user ? (
-                            <div className="flex flex-col gap-4">
-                                <Link 
-                                    to="/dashboard" 
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="flex items-center gap-3 text-lg font-semibold text-emerald-600"
-                                >
-                                    <UserIcon size={20} /> Dashboard
-                                </Link>
-                                <button 
-                                    onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-                                    className="flex items-center gap-3 text-lg font-semibold text-red-500"
-                                >
-                                    <LogOut size={20} /> Sign Out
-                                </button>
+                            {user ? (
+                                <div className="flex flex-col gap-6 pt-6">
+                                    <Link 
+                                        to="/dashboard" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center justify-between gap-6 text-2xl font-black text-emerald-500 italic uppercase tracking-widest bg-emerald-500/10 p-8 rounded-[2rem] border border-emerald-500/20"
+                                    >
+                                        <div className="flex items-center gap-6">
+                                            <UserIcon size={28} strokeWidth={3} /> Operational Dash
+                                        </div>
+                                        <Zap size={24} className="animate-pulse" />
+                                    </Link>
+                                    <button 
+                                        onClick={() => { handleLogout(); setIsMenuOpen(false); }}
+                                        className="flex items-center gap-6 text-2xl font-black text-red-500 italic uppercase tracking-widest p-8 rounded-[2rem] bg-red-500/5"
+                                    >
+                                        <LogOut size={28} strokeWidth={3} /> Terminate Session
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-6 pt-6">
+                                    <Link 
+                                        to="/login" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="w-full text-center py-8 bg-white/5 rounded-[2.5rem] font-black text-2xl text-white uppercase italic tracking-widest border border-white/5"
+                                    >
+                                        Identify Entity
+                                    </Link>
+                                    <Link 
+                                        to="/signup" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="w-full text-center py-8 bg-emerald-600 text-slate-950 rounded-[2.5rem] font-black text-2xl uppercase italic tracking-widest shadow-2xl"
+                                    >
+                                        Deploy Hub
+                                    </Link>
+                                </div>
+                            )}
+
+                            <div className="flex items-center justify-center gap-4 py-8 opacity-40">
+                                <Activity size={12} className="text-emerald-500 animate-pulse" />
+                                <span className="text-[10px] font-black text-white uppercase tracking-[0.8em] italic">System Status: Optimal</span>
                             </div>
-                        ) : (
-                            <div className="flex flex-col gap-3">
-                                <Link 
-                                    to="/login" 
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="w-full text-center py-3 border rounded-xl font-bold text-slate-600"
-                                >
-                                    Sign In
-                                </Link>
-                                <Link 
-                                    to="/signup" 
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="w-full text-center py-3 bg-emerald-600 text-white rounded-xl font-bold"
-                                >
-                                    Get Started
-                                </Link>
-                            </div>
-                        )}
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
