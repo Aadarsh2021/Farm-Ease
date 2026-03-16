@@ -57,12 +57,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative isolate pt-20">
+    <div className="relative isolate pt-12">
       {/* Dynamic Background */}
       <div className="mesh-bg opacity-40" />
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-24 sm:pt-24 sm:pb-32 overflow-hidden">
+      <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-x-16 items-center">
             <motion.div 
@@ -85,39 +85,39 @@ export default function Home() {
                 )}
               </AnimatePresence>
               
-              <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-950 leading-[1.05] tracking-tight mb-8">
+              <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-950 leading-[1.1] tracking-tight mb-6">
                 Empowering <span className="text-gradient">Agriculture</span> Through Innovation.
               </h1>
               
-              <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mb-12 lg:mx-0 mx-auto font-medium">
+              <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mb-8 lg:mx-0 mx-auto font-medium opacity-90">
                 The ultimate digital ecosystem where modern farmers meet verified sellers. Secure escrow payments, direct connections, and premium quality guaranteed.
               </p>
               
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-950 text-white rounded-[1.5rem] font-bold text-lg overflow-hidden transition-all hover:shadow-2xl hover:bg-green-600 active:scale-95">
-                  <span className="relative z-10 flex items-center gap-4">
-                    {user ? "Go to Dashboard" : "Start Shopping"} <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                <Link to={user ? "/dashboard" : "/market"} className="group relative px-8 py-4 bg-slate-950 text-white rounded-xl font-bold text-base overflow-hidden transition-all hover:bg-green-600 active:scale-95">
+                  <span className="relative z-10 flex items-center gap-3">
+                    {user ? "Go to Dashboard" : "Start Shopping"} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>
-                <Link to="/signup" className="px-10 py-5 bg-white border border-slate-200 text-slate-950 rounded-[1.5rem] font-bold text-lg hover:bg-slate-50 transition-all active:scale-95 shadow-sm">
+                <Link to="/signup" className="px-8 py-4 bg-white border border-slate-200 text-slate-950 rounded-xl font-bold text-base hover:bg-slate-50 transition-all active:scale-95 shadow-sm">
                   Become a Seller
                 </Link>
               </div>
 
-              <div className="mt-16 flex items-center justify-center lg:justify-start gap-12">
-                <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-4xl font-extrabold text-slate-950 tracking-tight">10K+</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Farmers</span>
+              <div className="mt-12 flex items-center justify-center lg:justify-start gap-8">
+                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                  <span className="text-3xl font-extrabold text-slate-950 tracking-tight">10K+</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Farmers</span>
                 </div>
-                <div className="h-12 w-px bg-slate-200"></div>
-                <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-4xl font-extrabold text-slate-950 tracking-tight">500+</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Entities</span>
+                <div className="h-10 w-px bg-slate-200"></div>
+                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                  <span className="text-3xl font-extrabold text-slate-950 tracking-tight">500+</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Entities</span>
                 </div>
-                <div className="h-12 w-px bg-slate-200"></div>
-                <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-4xl font-extrabold text-slate-950 tracking-tight">100%</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Secure</span>
+                <div className="h-10 w-px bg-slate-200"></div>
+                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                  <span className="text-3xl font-extrabold text-slate-950 tracking-tight">100%</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Secure</span>
                 </div>
               </div>
             </motion.div>
@@ -173,18 +173,18 @@ export default function Home() {
       </section>
 
       {/* Categories Grid */}
-      <section className="py-40 bg-slate-50 relative overflow-hidden">
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-24">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <motion.span 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="text-green-600 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block"
+              className="text-green-600 font-black uppercase tracking-[0.5em] text-[10px] mb-4 block"
             >
               System Overview
             </motion.span>
-            <h2 className="text-6xl lg:text-7xl font-black text-slate-950 mb-8 tracking-tighter italic uppercase">Universal <span className="text-slate-300">Market Sync.</span></h2>
-            <p className="text-xl text-slate-500 font-bold italic">Whether you are sourcing strategic genetic assets, precision tools, or prime harvest, our ecosystem ensures zero-latency access.</p>
+            <h2 className="text-4xl lg:text-5xl font-black text-slate-950 mb-6 tracking-tighter italic uppercase">Universal <span className="text-slate-300">Market Sync.</span></h2>
+            <p className="text-lg text-slate-500 font-bold italic">Whether you are sourcing strategic genetic assets, precision tools, or prime harvest, our ecosystem ensures zero-latency access.</p>
           </div>
 
           <motion.div 
@@ -219,16 +219,16 @@ export default function Home() {
       </section>
 
       {/* Trending Products */}
-      <section className="py-40 bg-white">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="max-w-2xl">
-              <span className="text-amber-500 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block italic">Live Market Feed</span>
-              <h2 className="text-6xl lg:text-7xl font-black text-slate-950 mb-8 tracking-tighter italic uppercase leading-none">Featured <span className="text-slate-300">Catalog.</span></h2>
-              <p className="text-xl text-slate-500 font-bold italic">Real-time inventory injection from our globally verified vendor network.</p>
+              <span className="text-amber-500 font-black uppercase tracking-[0.5em] text-[10px] mb-4 block italic">Live Market Feed</span>
+              <h2 className="text-4xl lg:text-5xl font-black text-slate-950 mb-6 tracking-tighter italic uppercase leading-none">Featured <span className="text-slate-300">Catalog.</span></h2>
+              <p className="text-lg text-slate-500 font-bold italic">Real-time inventory injection from our globally verified vendor network.</p>
             </div>
-            <Link to="/market" className="inline-flex items-center gap-4 px-10 py-5 bg-slate-950 text-white rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-green-600 hover:text-slate-950 transition-all border-4 border-white shadow-2xl active:scale-95 italic">
-              Access Full Terminal <ArrowRight size={22} strokeWidth={3} />
+            <Link to="/market" className="inline-flex items-center gap-3 px-8 py-4 bg-slate-950 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-green-600 hover:text-slate-950 transition-all border-2 border-white shadow-xl active:scale-95 italic">
+              Access Full Terminal <ArrowRight size={18} strokeWidth={3} />
             </Link>
           </div>
 
@@ -322,9 +322,9 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-6 lg:px-8">
+      <section className="py-20 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="relative rounded-[5rem] overflow-hidden bg-slate-950 py-32 px-12 text-center shadow-premium group">
+          <div className="relative rounded-[3rem] overflow-hidden bg-slate-950 py-20 px-10 text-center shadow-premium group">
             <div className="absolute inset-0 grayscale opacity-20 mix-blend-overlay group-hover:opacity-30 transition-opacity">
                <div className="absolute inset-0 bg-green-950 animate-pulse"></div>
             </div>
@@ -335,15 +335,15 @@ export default function Home() {
               viewport={{ once: true }}
               className="relative z-10"
             >
-              <h2 className="text-6xl lg:text-7xl font-extrabold text-white mb-10 tracking-tight leading-none uppercase">Forge Your <span className="text-green-500">Legacy.</span></h2>
-              <p className="text-xl text-slate-400 mb-16 max-w-3xl mx-auto font-medium opacity-90">
+              <h2 className="text-4xl lg:text-5xl font-extrabold text-white mb-8 tracking-tight leading-none uppercase">Forge Your <span className="text-green-500">Legacy.</span></h2>
+              <p className="text-lg text-slate-400 mb-12 max-w-3xl mx-auto font-medium opacity-90">
                 Join the vanguard of the modern agrarian movement. Scalable. Transparent. Hyper-Secure.
               </p>
-              <div className="flex flex-wrap justify-center gap-6">
-                <Link to="/signup" className="px-12 py-5 bg-white text-slate-950 rounded-[1.5rem] font-bold text-lg hover:bg-green-50 transition-all active:scale-95">
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link to="/signup" className="px-10 py-4 bg-white text-slate-950 rounded-xl font-bold text-base hover:bg-green-50 transition-all active:scale-95">
                   Initialize Profile
                 </Link>
-                <Link to="/market" className="px-12 py-5 bg-slate-900 text-white border border-slate-800 rounded-[1.5rem] font-bold text-lg hover:border-white transition-all active:scale-95">
+                <Link to="/market" className="px-10 py-4 bg-slate-900 text-white border border-slate-800 rounded-xl font-bold text-base hover:border-white transition-all active:scale-95">
                   Enter Ecosystem
                 </Link>
               </div>

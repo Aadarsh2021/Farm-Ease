@@ -3,21 +3,21 @@ import { Leaf, Twitter, Facebook, Instagram, ShieldCheck, Truck, Headphones, Che
 
 export default function Footer() {
     return (
-        <footer className="bg-slate-950 text-white pt-24 pb-12 mt-auto overflow-hidden relative">
+        <footer className="bg-slate-950 text-white pt-16 pb-8 mt-auto overflow-hidden relative">
             {/* Background Decoration */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-green-500/10 blur-[120px] rounded-full"></div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
                 {/* Top Features / Trust Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-20 border-b border-slate-900">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 border-b border-slate-900">
                     <div className="flex items-start gap-6 group">
                         <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-green-500 group-hover:bg-green-600 group-hover:text-white transition-all shadow-xl">
                             <ShieldCheck size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-extrabold text-xl mb-2 tracking-tight">Escrow Secured</h4>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed opacity-80">Advanced encryption and payment protection for every agrarian trade.</p>
+                            <h4 className="font-extrabold text-lg mb-1 tracking-tight">Escrow Secured</h4>
+                            <p className="text-slate-400 text-xs font-medium leading-relaxed opacity-80">Advanced encryption and payment protection for every agrarian trade.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-6 group">
@@ -25,8 +25,8 @@ export default function Footer() {
                             <Truck size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-extrabold text-xl mb-2 tracking-tight">Farm Logistics</h4>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed opacity-80">Direct farm-to-door network ensuring peak freshness and speed.</p>
+                            <h4 className="font-extrabold text-lg mb-1 tracking-tight">Farm Logistics</h4>
+                            <p className="text-slate-400 text-xs font-medium leading-relaxed opacity-80">Direct farm-to-door network ensuring peak freshness and speed.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-6 group">
@@ -34,14 +34,14 @@ export default function Footer() {
                             <Headphones size={32} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h4 className="font-extrabold text-xl mb-2 tracking-tight">Expert Support</h4>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed opacity-80">Multilingual dedicated support for farmers and global agri-sellers.</p>
+                            <h4 className="font-extrabold text-lg mb-1 tracking-tight">Expert Support</h4>
+                            <p className="text-slate-400 text-xs font-medium leading-relaxed opacity-80">Multilingual dedicated support for farmers and global agri-sellers.</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Main Content */}
-                <div className="py-24 grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div className="py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
                     {/* Brand Section */}
                     <div className="lg:col-span-4">
                         <Link to="/" className="flex items-center gap-3 mb-8 group">
@@ -52,7 +52,7 @@ export default function Footer() {
                                 Farm<span className="text-green-500">Ease</span>
                             </span>
                         </Link>
-                        <p className="text-slate-400 font-medium leading-relaxed mb-10 max-w-sm">
+                        <p className="text-slate-400 text-sm font-medium leading-relaxed mb-8 max-w-sm">
                             The world&apos;s premier digital ecosystem for modern agriculture. Connecting the source directly to the future.
                         </p>
                         <div className="flex gap-4">
@@ -113,8 +113,8 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="pt-12 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-8">
-                    <p className="text-slate-500 font-bold text-sm italic">
+                <div className="pt-10 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <p className="text-slate-500 font-bold text-xs italic">
                         © {new Date().getFullYear()} Farm-Ease Global Corp. All rights reserved.
                     </p>
                     <div className="flex gap-8 text-[12px] font-black uppercase tracking-widest text-slate-400">

@@ -68,15 +68,15 @@ export default function Market() {
     }, [fetchProducts]);
 
     return (
-        <div className="bg-gray-50 min-h-screen py-32 px-4 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 {/* Page Header */}
                 <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
-                        <h1 className="text-5xl font-extrabold text-slate-950 tracking-tight mb-4 leading-none lowercase">
+                        <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight mb-3 leading-none lowercase">
                             Global <span className="text-gradient">Market</span>
                         </h1>
-                        <p className="text-slate-500 font-medium text-lg max-w-xl">
+                        <p className="text-slate-500 font-medium text-base max-w-xl">
                             Elite agricultural produce directly from verified source origins.
                         </p>
                     </div>
@@ -96,8 +96,8 @@ export default function Market() {
 
                 <div className="flex flex-col lg:flex-row gap-12">
                     {/* Sidebar Filters */}
-                    <div className="w-full lg:w-72 flex-shrink-0">
-                        <div className="bg-white rounded-[2rem] shadow-premium border border-slate-100 p-6 sticky top-32">
+                    <div className="w-full lg:w-64 flex-shrink-0">
+                        <div className="bg-white rounded-3xl shadow-premium border border-slate-100 p-5 sticky top-24">
                             <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-50">
                                 <div className="bg-slate-950 p-2.5 rounded-xl text-white shadow-lg">
                                     <SlidersHorizontal size={18} strokeWidth={2.5} />
@@ -146,7 +146,7 @@ export default function Market() {
 
                     {/* Product Grid */}
                     <div className="flex-1">
-                        <div className="glass p-5 rounded-[2rem] border border-white/20 mb-10 flex justify-between items-center shadow-premium">
+                        <div className="glass p-4 rounded-2xl border border-white/20 mb-8 flex justify-between items-center shadow-premium">
                             <p className="text-slate-500 font-bold italic">
                                 {loadingProducts ? "Summoning crops..." : <><span className="font-black text-slate-900 not-italic">{products.length}</span> luxury listings verified</>}
                             </p>
@@ -165,9 +165,9 @@ export default function Market() {
                                 <p className="text-slate-400 font-black tracking-widest uppercase text-sm">Synchronizing Grid...</p>
                             </div>
                         ) : products.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {products.map((product) => (
-                                    <div key={product.id} className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden transition-all duration-500 group flex flex-col relative active:scale-[0.98] hover-lift">
+                                    <div key={product.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-500 group flex flex-col relative active:scale-[0.98] hover-lift">
                                         <div className="absolute top-4 left-4 z-10">
                                             <span className="px-3 py-1.5 bg-white/90 backdrop-blur-md text-slate-950 text-[10px] font-bold rounded-lg shadow-sm border border-slate-100 uppercase tracking-widest">
                                                 {product.category}
@@ -184,7 +184,7 @@ export default function Market() {
                                                 )}
                                             </div>
                                         </Link>
-                                        <div className="p-8 flex-1 flex flex-col">
+                                        <div className="p-6 flex-1 flex flex-col">
                                             <div className="mb-6">
                                                 <Link to={`/market/${product.id}`}>
                                                     <h3 className="text-lg font-bold text-slate-950 group-hover:text-green-600 transition-colors line-clamp-2 mb-2 leading-tight tracking-tight">{product.name}</h3>
