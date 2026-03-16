@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, Leaf, ShieldCheck, Sprout, Tractor, ShoppingCart, Star, CheckCircle2, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Leaf, ShieldCheck, Sprout, Tractor, ShoppingCart, User, Loader2, Star, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { supabase } from "@/lib/supabase";
@@ -16,109 +16,25 @@ interface Product {
   seller_id: string;
 }
 
-// --- High-End Components ---
-
-const ScrollProgress = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 h-1 bg-green-500 origin-left z-[100]"
-      style={{ scaleX }}
-    />
-  );
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: "easeOut" }
 };
 
-const SectionReveal = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
 };
-
-const SpotlightCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
-  const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const div = divRef.current;
-    const rect = div.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  return (
-    <div
-      ref={divRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
-      className={`relative overflow-hidden ${className}`}
-    >
-      <div
-        className="pointer-events-none absolute -inset-px transition duration-500"
-        style={{
-          opacity,
-          background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, rgba(22, 163, 74, 0.15), transparent 80%)`,
-        }}
-      />
-      {children}
-    </div>
-  );
-};
-
-const WordReveal = ({ text }: { text: string }) => {
-  const words = text.split(" ");
-  return (
-    <div className="flex flex-wrap justify-center lg:justify-start">
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            delay: i * 0.1,
-            ease: [0.2, 0.65, 0.3, 0.9],
-          }}
-          className="mr-[0.25em] inline-block"
-        >
-          {word}
-        </motion.span>
-      ))}
-    </div>
-  );
-};
-
-// --- Page Component ---
 
 export default function Home() {
   const { user } = useAuth();
   const { addToCart } = useCart();
   const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-
-  const scrollRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start start", "end start"],
-  });
-
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   useEffect(() => {
     async function fetchTrending() {
@@ -138,234 +54,237 @@ export default function Home() {
       }
     }
     fetchTrending();
-
-    // REAL-TIME SUBSCRIPTION
-    const channel = supabase
-      .channel('realtime_products')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
-        console.log('Real-time update:', payload);
-        if (payload.eventType === 'INSERT') {
-          setTrendingProducts((prev) => [payload.new as Product, ...prev].slice(0, 8));
-        } else if (payload.eventType === 'DELETE') {
-          setTrendingProducts((prev) => prev.filter((p) => p.id !== payload.old.id));
-        } else if (payload.eventType === 'UPDATE') {
-          setTrendingProducts((prev) => prev.map((p) => p.id === payload.new.id ? payload.new as Product : p));
-        }
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, []);
 
   return (
-    <div className="relative isolate bg-white selection:bg-green-100 selection:text-green-900" ref={scrollRef}>
-      <ScrollProgress />
-
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-green-500/10 blur-[120px] rounded-full animate-pulse"></div>
-        <div className="absolute bottom-[10%] right-[-5%] w-[35%] h-[35%] bg-emerald-500/10 blur-[100px] rounded-full animate-pulse delay-700"></div>
-        <div className="absolute top-[40%] left-[20%] w-[30%] h-[30%] bg-slate-200/20 blur-[150px] rounded-full"></div>
+    <div className="relative isolate pt-20">
+      {/* Background Decor */}
+      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-green-200 to-emerald-400 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" }}></div>
       </div>
 
-      <section className="relative min-h-[80vh] flex items-center pt-24 pb-20 overflow-hidden z-10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
+      {/* Hero Section */}
+      <section className="relative pt-24 pb-32 sm:pt-32 sm:pb-40 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 items-center">
             <motion.div 
-              style={{ y: heroY, opacity: heroOpacity }}
-              className="text-center lg:text-left relative z-10"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center lg:text-left"
             >
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="inline-flex items-center gap-3 px-5 py-2 rounded-full glass border-white/50 text-green-700 text-[10px] font-black uppercase tracking-[0.25em] mb-8 shadow-premium"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                The Best Agriculture Platform
-              </motion.div>
+              <AnimatePresence mode="wait">
+                {user && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 text-green-700 text-sm font-semibold mb-8 shadow-sm"
+                  >
+                    <User size={16} /> 
+                    <span>Welcome back, <span className="text-green-900 font-bold">{user.displayName || user.email?.split('@')[0] || "Farmer"}</span></span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               
-              <h1 className="text-5xl lg:text-[4.75rem] font-[1000] text-slate-900 leading-[0.98] tracking-[-0.04em] mb-8">
-                <WordReveal text="Connecting Nature & Modernity." />
+              <h1 className="text-5xl lg:text-8xl font-black text-slate-900 leading-[1.1] tracking-tighter mb-8 italic">
+                Empowering <span className="text-green-600">Agriculture</span> through Innovation.
               </h1>
               
-              <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl mb-10 font-medium opacity-90">
-                Experience the world&apos;s most sophisticated digital marketplace. Real-time escrow, verified local sourcing, and a global community.
+              <p className="text-xl text-slate-500 leading-relaxed max-w-2xl mb-12 lg:mx-0 mx-auto font-bold italic">
+                The ultimate digital ecosystem where modern farmers meet verified sellers. Secure escrow payments, direct connections, and premium quality guaranteed.
               </p>
               
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-900 text-white rounded-[1.75rem] font-black text-lg overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] hover:bg-green-600 active:scale-95">
-                  <span className="relative z-10 flex items-center gap-2">
-                    {user ? "Dashboard" : "Start Trading"} 
-                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                <Link to={user ? "/dashboard" : "/market"} className="group relative px-10 py-5 bg-slate-950 text-white rounded-[2rem] font-black text-lg overflow-hidden transition-all hover:shadow-2xl hover:bg-green-600 hover:text-slate-950 active:scale-95 uppercase tracking-tighter italic">
+                  <span className="relative z-10 flex items-center gap-4">
+                    {user ? "Go to Dashboard" : "Start Shopping"} <ArrowRight size={24} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>
-                <Link to="/register" className="group flex items-center gap-3 px-10 py-5 bg-white border-2 border-slate-100 text-slate-900 rounded-[1.75rem] font-black text-lg hover:border-green-600 transition-all active:scale-95 shadow-sm">
-                   Become a Seller
+                <Link to="/signup" className="px-10 py-5 bg-white border-4 border-slate-950 text-slate-950 rounded-[2rem] font-black text-lg hover:bg-slate-50 transition-all active:scale-95 shadow-premium uppercase tracking-tighter italic">
+                  Become a Seller
                 </Link>
+              </div>
+
+              <div className="mt-16 flex items-center justify-center lg:justify-start gap-12">
+                <div className="flex flex-col items-center lg:items-start">
+                  <span className="text-4xl font-black text-slate-950 italic tracking-tighter">10K+</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Farmers</span>
+                </div>
+                <div className="h-12 w-1 bg-slate-100"></div>
+                <div className="flex flex-col items-center lg:items-start">
+                  <span className="text-4xl font-black text-slate-950 italic tracking-tighter">500+</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Entities</span>
+                </div>
+                <div className="h-12 w-1 bg-slate-100"></div>
+                <div className="flex flex-col items-center lg:items-start">
+                  <span className="text-4xl font-black text-slate-950 italic tracking-tighter">100%</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Encrypted</span>
+                </div>
               </div>
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, x: 50, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-16 lg:mt-0 relative hidden lg:block"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="mt-20 lg:mt-0 relative"
             >
-              <div className="relative rounded-[3.5rem] overflow-hidden glass p-4 shadow-premium border-white/40">
-                <div className="aspect-[4/5] bg-slate-900 rounded-[2.5rem] flex items-center justify-center relative overflow-hidden group">
-                   <div className="absolute inset-0 opacity-40">
-                      <div className="absolute top-0 -left-1/4 w-[150%] h-[150%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent animate-[spin_40s_linear_infinite]"></div>
+              <div className="relative rounded-[4rem] overflow-hidden bg-white p-6 shadow-premium border-8 border-white group">
+                <div className="aspect-[4/3] bg-slate-950 rounded-[3rem] flex items-center justify-center relative overflow-hidden">
+                   <div className="absolute inset-0 opacity-20">
+                     <div className="grid grid-cols-5 gap-4 p-8 h-full w-full">
+                        {[...Array(20)].map((_, i) => (
+                          <div key={i} className="bg-white/10 rounded-xl animate-pulse" style={{ animationDelay: `${i * 0.15}s` }}></div>
+                        ))}
+                     </div>
                    </div>
+                   <Tractor size={160} className="text-green-500 drop-shadow-[0_0_30px_rgba(34,197,94,0.3)] z-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" strokeWidth={1} />
                    
-                   <motion.div
-                    animate={{ y: [0, -15, 0], rotate: [0, 3, 0] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    className="z-20 pointer-events-none"
-                   >
-                     <Tractor size={150} className="text-green-500 drop-shadow-[0_25px_25px_rgba(0,0,0,0.4)]" strokeWidth={0.5} />
-                   </motion.div>
-
-                   <div className="absolute bottom-8 left-8 right-8 p-6 glass rounded-[2rem] border-white/20 shadow-2xl z-30">
-                      <div className="flex items-center gap-4">
-                        <div className="bg-green-600 h-12 w-12 rounded-xl flex items-center justify-center text-white shadow-lg">
-                          <ShieldCheck size={24} />
+                   <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/90 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 shadow-2xl z-20 transform group-hover:translate-y-2 transition-transform">
+                      <div className="flex items-center gap-6">
+                        <div className="bg-slate-950 p-4 rounded-2xl text-white shadow-xl">
+                          <ShieldCheck size={32} strokeWidth={3} />
                         </div>
                         <div>
-                          <p className="font-black text-lg text-slate-900">Escrow Security</p>
-                          <p className="text-xs font-semibold text-slate-600">Zero-risk, high-faith commerce.</p>
+                          <p className="font-black text-slate-950 text-xl italic uppercase tracking-tighter leading-none mb-1">Decentralized Trade</p>
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Encrypted Ledger Protection</p>
                         </div>
                       </div>
                    </div>
                 </div>
-
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1, duration: 0.8 }}
-                  className="absolute -top-6 -right-6 bg-white px-6 py-4 rounded-3xl shadow-premium border border-slate-100 flex items-center gap-3 z-40"
-                >
-                  <Star fill="#16a34a" className="text-green-600" size={18} />
-                  <span className="text-lg font-black text-slate-900 tracking-tighter">4.9/5 Score</span>
-                </motion.div>
               </div>
+
+              {/* Floating Element */}
+              <motion.div 
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-12 -right-12 hidden xl:flex bg-slate-950 p-8 rounded-[2.5rem] shadow-premium border-4 border-white z-30"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-4 w-4 rounded-full bg-green-500 animate-ping"></div>
+                  <span className="font-black text-white text-xs uppercase tracking-[0.4em] italic leading-none">Live Escrow Pulse</span>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="py-32 bg-slate-950 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,rgba(22,163,74,0.3),transparent_60%)]"></div>
-        </div>
-
+      {/* Categories Grid */}
+      <section className="py-40 bg-slate-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <SectionReveal className="grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-              <span className="text-green-500 font-extrabold uppercase tracking-[0.3em] text-xs mb-4 block">Our Ecosystem</span>
-              <h2 className="text-5xl font-black mb-8 leading-[1] tracking-tight">The ultimate <span className="text-green-500 italic">agrarian</span> hub.</h2>
-              <p className="text-lg text-slate-400 mb-10 leading-relaxed font-medium">Curated local produce, professional tools, and verified seeds—all in one place.</p>
-              
-              <div className="flex flex-col gap-5">
-                 {[
-                   { name: "Verified Network", desc: "Access the most trusted sellers globaly." },
-                   { name: "Live Tracking", desc: "Monitor your shipment from source to door." },
-                   { name: "Escrow Locked", desc: "Your capital is safe until receipt." }
-                 ].map((item, i) => (
-                   <div key={i} className="flex items-center gap-4 group cursor-default">
-                     <div className="h-9 w-9 rounded-full border border-slate-800 flex items-center justify-center group-hover:bg-green-500 group-hover:border-green-500 transition-all">
-                        <CheckCircle2 size={16} className="text-slate-600 group-hover:text-white" />
-                     </div>
-                     <div>
-                        <h4 className="font-bold text-sm uppercase tracking-widest text-slate-200 group-hover:text-green-500 transition-colors">{item.name}</h4>
-                        <p className="text-slate-500 text-xs font-medium">{item.desc}</p>
-                     </div>
-                   </div>
-                 ))}
-              </div>
-            </div>
+          <div className="text-center max-w-3xl mx-auto mb-24">
+            <motion.span 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-green-600 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block"
+            >
+              System Overview
+            </motion.span>
+            <h2 className="text-6xl lg:text-7xl font-black text-slate-950 mb-8 tracking-tighter italic uppercase">Universal <span className="text-slate-300">Market Sync.</span></h2>
+            <p className="text-xl text-slate-500 font-bold italic">Whether you are sourcing strategic genetic assets, precision tools, or prime harvest, our ecosystem ensures zero-latency access.</p>
+          </div>
 
-            <div className="grid grid-cols-2 gap-5">
-              {[
-                { title: "Produce", icon: Leaf, color: "green" },
-                { title: "Seeds", icon: Sprout, color: "emerald" },
-                { title: "Tools", icon: Tractor, color: "blue" },
-                { title: "Global", icon: ShoppingCart, color: "amber" }
-              ].map((item, idx) => (
-                <motion.div 
-                  key={idx}
-                  whileHover={{ y: -10, rotate: idx % 2 === 0 ? 1 : -1 }}
-                  className="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] flex flex-col items-center justify-center group transition-colors hover:border-green-500/40"
-                >
-                  <item.icon size={40} className={`text-${item.color}-500 mb-4 group-hover:scale-110 transition-transform`} strokeWidth={1} />
-                  <span className="text-xs font-black tracking-widest uppercase text-slate-300">{item.title}</span>
-                </motion.div>
-              ))}
-            </div>
-          </SectionReveal>
+          <motion.div 
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-12"
+          >
+            {[
+              { title: "Prime Produce", desc: "Strategic bio-assets harvested from verified decentralized field nodes.", icon: Leaf, color: "green", path: "/market" },
+              { title: "Soil Matrices", desc: "High-yield soil structures and genetic genetic catalysts.", icon: Sprout, color: "emerald", path: "/market" },
+              { title: "Precision Gear", desc: "Mechanized assets and smart harvesting systems for peak throughput.", icon: Tractor, color: "blue", path: "/market" }
+            ].map((cat, idx) => (
+              <motion.div 
+                key={idx}
+                variants={fadeInUp}
+                className="group p-12 bg-white rounded-[3.5rem] border border-slate-100 shadow-sm hover:shadow-premium transition-all duration-500 hover:-translate-y-2"
+              >
+                <div className="w-20 h-20 rounded-[1.5rem] bg-slate-950 text-white flex items-center justify-center mb-10 group-hover:bg-green-600 transition-colors shadow-2xl">
+                  <cat.icon size={36} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" />
+                </div>
+                <h3 className="text-3xl font-black text-slate-950 mb-4 italic uppercase tracking-tighter">{cat.title}</h3>
+                <p className="text-slate-400 mb-10 leading-relaxed font-bold italic text-sm">{cat.desc}</p>
+                <Link to={cat.path} className="flex items-center gap-4 font-black text-[10px] uppercase tracking-[0.4em] text-slate-950 hover:text-green-600 transition-colors">
+                  Access Manifest <ArrowRight size={18} strokeWidth={3} />
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      <section className="py-32 bg-white">
+      {/* Trending Products */}
+      <section className="py-40 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <SectionReveal className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
             <div className="max-w-2xl">
-              <span className="text-slate-900 font-extrabold uppercase tracking-[0.3em] text-xs mb-4 block border-l-3 border-green-600 pl-3">Direct Marketplace</span>
-              <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-[1] mb-5">Trending Harvests.</h2>
-              <p className="text-lg text-slate-500 font-medium">Verified local assets secured by our global community.</p>
+              <span className="text-amber-500 font-black uppercase tracking-[0.5em] text-[10px] mb-6 block italic">Live Market Feed</span>
+              <h2 className="text-6xl lg:text-7xl font-black text-slate-950 mb-8 tracking-tighter italic uppercase leading-none">Featured <span className="text-slate-300">Catalog.</span></h2>
+              <p className="text-xl text-slate-500 font-bold italic">Real-time inventory injection from our globally verified vendor network.</p>
             </div>
-            <Link to="/market" className="group flex items-center gap-2 px-10 py-5 bg-slate-50 text-slate-900 rounded-[1.5rem] font-black text-base hover:bg-slate-900 hover:text-white transition-all border border-slate-100 hover:border-slate-900">
-               Explore Gallery <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            <Link to="/market" className="inline-flex items-center gap-4 px-10 py-5 bg-slate-950 text-white rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-green-600 hover:text-slate-950 transition-all border-4 border-white shadow-2xl active:scale-95 italic">
+              Access Full Terminal <ArrowRight size={22} strokeWidth={3} />
             </Link>
-          </SectionReveal>
+          </div>
 
           {loadingProducts ? (
-            <div className="flex flex-col items-center justify-center py-20 rounded-[3rem] bg-slate-50 border border-slate-100">
-              <div className="relative">
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="h-16 w-16 rounded-full border-3 border-slate-200 border-t-green-600"
-                ></motion.div>
-                <Leaf size={20} className="absolute inset-0 m-auto text-green-600" />
-              </div>
-              <p className="mt-8 text-slate-400 font-black uppercase tracking-widest text-[10px]">Syncing verified source...</p>
+            <div className="flex flex-col items-center justify-center py-40 rounded-[4rem] bg-slate-50 border border-slate-100 shadow-inner">
+              <Loader2 className="animate-spin text-slate-950 mb-10" size={64} strokeWidth={3} />
+              <p className="text-slate-300 font-black uppercase tracking-[0.6em] text-[10px] animate-pulse">Synchronizing Market Bloackchain...</p>
             </div>
           ) : trendingProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <motion.div 
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
+            >
               {trendingProducts.map((product) => (
-                <SpotlightCard 
+                <motion.div 
                   key={product.id}
-                  className="group bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-card hover:shadow-premium transition-all duration-500 flex flex-col"
+                  variants={fadeInUp}
+                  className="group bg-white rounded-[3rem] border border-slate-100 overflow-hidden shadow-premium hover:shadow-2xl transition-all duration-700 flex flex-col hover:-translate-y-2"
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden bg-slate-50">
-                    <img 
-                      src={product.image_url || "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?auto=format&fit=crop&q=80"} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                    />
-                    <div className="absolute top-5 left-5">
-                      <div className="px-3 py-1.5 glass rounded-xl flex items-center gap-1.5 border-white/50 shadow-sm">
-                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
-                        <span className="text-[9px] font-black text-slate-900 uppercase tracking-widest">In Stock</span>
+                  <div className="relative aspect-square overflow-hidden bg-slate-50">
+                    {product.image_url ? (
+                      <img 
+                        src={product.image_url} 
+                        alt={product.name} 
+                        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                      />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center bg-slate-50">
+                        <Leaf size={64} className="text-slate-200" strokeWidth={1} />
+                      </div>
+                    )}
+                    <div className="absolute top-6 left-6">
+                      <div className="px-5 py-2 bg-slate-950/90 backdrop-blur-xl rounded-2xl flex items-center gap-3 border border-white/20 shadow-2xl">
+                        <Star size={14} className="fill-amber-400 text-amber-400" />
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest italic leading-none">Tier 1</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-8 flex-1 flex flex-col relative z-10">
-                    <div className="mb-6">
-                       <span className="text-[9px] font-black text-green-600 uppercase tracking-widest mb-1 block">FARM DIRECT</span>
-                       <h3 className="text-xl font-black text-slate-900 group-hover:text-green-600 transition-colors line-clamp-2 leading-tight">{product.name}</h3>
+                  <div className="p-10 flex-1 flex flex-col">
+                    <div className="mb-8">
+                       <div className="flex items-center gap-3 text-green-600 mb-3">
+                          <CheckCircle2 size={16} strokeWidth={3} />
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em] italic">Validated Asset</span>
+                       </div>
+                       <Link to={`/market/${product.id}`} className="block">
+                        <h3 className="text-3xl font-black text-slate-950 group-hover:text-green-600 transition-colors line-clamp-1 italic uppercase tracking-tighter leading-none">{product.name}</h3>
+                       </Link>
                     </div>
 
-                    <div className="mt-auto flex items-center justify-between">
+                    <div className="mt-auto flex items-center justify-between pt-8 border-t border-slate-50">
                       <div>
-                        <p className="text-2xl font-black text-slate-900 tracking-tighter">₹{product.price}</p>
-                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Per {product.unit}</p>
+                        <p className="text-4xl font-black text-slate-950 tracking-tighter italic">₹{product.price.toLocaleString()}</p>
+                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest italic">/{product.unit}</p>
                       </div>
                       <button 
                         onClick={() => addToCart({
@@ -377,56 +296,60 @@ export default function Home() {
                           vendor_id: product.seller_id,
                           image: product.image_url || ""
                         })}
-                        className="h-12 w-12 bg-slate-900 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all shadow-lg active:scale-90"
+                        className="h-16 w-16 bg-slate-950 text-white rounded-2xl flex items-center justify-center hover:bg-green-600 hover:text-slate-950 transition-all hover:shadow-2xl active:scale-95 group/btn"
                       >
-                        <ShoppingCart size={18} />
+                        <ShoppingCart size={28} strokeWidth={3} className="group-hover/btn:rotate-12 transition-transform" />
                       </button>
                     </div>
                   </div>
-                </SpotlightCard>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <div className="text-center py-32 rounded-[3.5rem] border-2 border-dashed border-slate-100 bg-slate-50/30">
-              <Sprout size={40} className="text-slate-200 mx-auto mb-6" />
-              <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">Market is Preparing.</h3>
-              <p className="text-slate-400 mb-8 max-w-xs mx-auto font-medium text-sm leading-relaxed">Our verified source is currently preparing new harvests. Please check back shortly.</p>
-              <Link to="/market" className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-[1.25rem] font-black text-sm hover:bg-green-600 transition-all shadow-xl active:scale-95">
-                 Visit Marketplace
+            <div className="text-center py-40 rounded-[4rem] border-4 border-dashed border-slate-100 bg-slate-50 flex flex-col items-center">
+              <div className="bg-white p-10 rounded-[2.5rem] shadow-premium mb-10">
+                <Sprout size={80} className="text-slate-200" strokeWidth={1} />
+              </div>
+              <h3 className="text-4xl font-black text-slate-950 mb-6 tracking-tighter italic uppercase">Market Stagnation</h3>
+              <p className="text-slate-400 mb-12 max-w-sm mx-auto font-bold italic leading-relaxed">System is awaiting first asset injections from the verified community nodes.</p>
+              <Link to="/market" className="px-12 py-6 bg-slate-950 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] hover:bg-green-600 hover:text-slate-950 transition-all shadow-premium active:scale-95 italic">
+                 Force Market Access
               </Link>
             </div>
           )}
         </div>
       </section>
 
-      <section className="py-20 px-6 lg:px-8 bg-white">
+      {/* CTA Section */}
+      <section className="py-32 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <SectionReveal className="relative rounded-[4rem] overflow-hidden bg-slate-950 pt-24 pb-20 px-10 text-center shadow-2xl border border-slate-900">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fee74a62?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-10 grayscale"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
-            
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-white/10 bg-white/5 text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-10">
-                 The Global Choice
-              </div>
-              <h2 className="text-5xl lg:text-7xl font-[1000] text-white mb-8 tracking-[-0.04em] leading-[0.9]">Start your legacy <br/><span className="text-green-500 italic">today.</span></h2>
-              <p className="text-xl text-slate-400 mb-12 max-w-xl mx-auto font-medium leading-relaxed">
-                Experience the most trusted agriculture ecosystem ever built. Professional, secure, and direct.
-              </p>
-              <div className="flex flex-wrap justify-center gap-6">
-                <Link to="/signup" className="group flex items-center gap-3 px-10 py-6 bg-white text-slate-900 rounded-[1.75rem] font-black text-xl hover:bg-green-500 hover:text-white transition-all active:scale-95">
-                  Join Now <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link to="/about" className="group flex items-center gap-3 px-10 py-6 bg-slate-900 text-white border border-slate-800 rounded-[1.75rem] font-black text-xl hover:bg-slate-800 transition-all active:scale-95">
-                  Learn Story
-                </Link>
-              </div>
+          <div className="relative rounded-[5rem] overflow-hidden bg-slate-950 py-32 px-12 text-center shadow-premium group">
+            <div className="absolute inset-0 grayscale opacity-20 mix-blend-overlay group-hover:opacity-30 transition-opacity">
+               <div className="absolute inset-0 bg-green-950 animate-pulse"></div>
             </div>
-          </SectionReveal>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative z-10"
+            >
+              <h2 className="text-6xl lg:text-8xl font-black text-white mb-10 tracking-tighter italic uppercase leading-none">Forge Your <span className="text-green-500">Legacy.</span></h2>
+              <p className="text-2xl text-slate-400 mb-16 max-w-3xl mx-auto font-bold italic opacity-80 uppercase tracking-tight">
+                Join the vanguard of the modern agrarian movement. Scalable. Transparent. Hyper-Secure.
+              </p>
+              <div className="flex flex-wrap justify-center gap-10">
+                <Link to="/signup" className="px-12 py-6 bg-white text-slate-950 rounded-[2rem] font-black text-xl hover:bg-green-50 hover:shadow-2xl transition-all active:scale-95 italic uppercase tracking-tighter">
+                  Initialize Profile
+                </Link>
+                <Link to="/market" className="px-12 py-6 bg-slate-900 text-white border-4 border-slate-800 rounded-[2rem] font-black text-xl hover:border-white transition-all active:scale-95 italic uppercase tracking-tighter">
+                  Enter Ecosystem
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
-
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-100 to-transparent"></div>
     </div>
   );
 }

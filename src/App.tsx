@@ -1,28 +1,50 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from '@/context/AuthContext';
-import { CartProvider } from '@/context/CartContext';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '@/components/ui/Footer';
-import Home from '@/pages/Home';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Market from "./pages/Market";
+import ProductDetails from "./pages/ProductDetails";
+import About from "./pages/About";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Dashboard from "./pages/Dashboard";
+import FarmerDashboard from "./pages/FarmerDashboard";
+import SellerDashboard from "./pages/SellerDashboard";
+import NotFound from "./pages/NotFound";
+import Navbar from "./components/ui/Navbar";
+import Footer from "./components/ui/Footer";
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 
-// Root App Component
-export default function App() {
+function App() {
   return (
     <Router>
-      <div className="antialiased bg-white text-slate-900 min-h-screen flex flex-col font-sans selection:bg-green-100 selection:text-green-900">
-        <AuthProvider>
-          <CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <div className="min-h-screen bg-white">
             <Navbar />
-            <main className="flex-grow">
+            <main>
               <Routes>
                 <Route path="/" element={<Home />} />
-                {/* Fallback or other routes can be added here */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/market" element={<Market />} />
+                <Route path="/market/:id" element={<ProductDetails />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
+                <Route path="/seller/dashboard" element={<SellerDashboard />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
             <Footer />
-          </CartProvider>
-        </AuthProvider>
-      </div>
+          </div>
+        </CartProvider>
+      </AuthProvider>
     </Router>
   );
 }
+
+export default App;
